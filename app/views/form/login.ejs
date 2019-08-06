@@ -1,28 +1,55 @@
 <!DOCTYPE html>
-	<html lang="pt-br">
-		<head>
-			<meta charset="utf-8"/>
-			<title>Login</title>
-		</head>
-	<body>
+<html lang="en">
 
-		<h1>Login</h1>
+<head>
+	<%- include('../partials/head'); %>
+</head>
 
-		<table>
+<body>
+    
+    <div class="page">
 
-			<tr>
-				<th>id</th>
-				<th>nome</th>
-			</tr>
+        <div class="altdor-col col">
+            <div class="middle">
+                <div class="titulo">
+                    <h1>Faça Login!</h1>
+                    <p class="descricao">Para se divertir e aprender é só fazer login!</p>
+                </div>
+            </div>
+        </div>
+		
+		<div class="form-col col">
+            <div class="middle">
+                <div class="form">
+				
+					<form action="" method="POST">
+					    <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Ex: joao_santos@email.com">
 
-			<tr>
-				<td><%= login[0].id_jogador %></td>
-				<td><%= login[0].apelido_jogador %></td>
-			</tr>
-			
+                            <label for="pass">Senha</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="">
+                        </div>
+						
+						  <div class="form-group">
+                            <div class="btns">
+                                <button class="btnLogin" id="btnLogin" name="btnLogin" type="submit" value="">Entrar</button>
+                                <button class="btnFCadastro" id="btnFCadastro" name="btnFCadastro" type="" value="">Cadastrar</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="passRec"><a href="#">Esqueci a Senha!</a></div>
+
+				</div>
+            </div>
+        </div>
+
+    </div>
+   
+	<%- include('../partials/scripts'); %>
+
+</body>
 
 
-		</table>
-
-	</body>
 </html>
