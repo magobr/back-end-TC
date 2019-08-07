@@ -5,7 +5,7 @@ module.exports = function(app){
     	var formModel = app.app.models.formModel;
 
     	formModel.getLogin(connection, function(erro, result){
-            res.render('form/login', {login: result});
+            res.render('forms/login/login', {login: result});
         });
 
     });

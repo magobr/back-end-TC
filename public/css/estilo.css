@@ -14,8 +14,12 @@ body{margin: 0; padding: 0;}
     position: relative;
 }
 
+.form-col{
+    background-color: #2d3436;
+}
+
 .altdor-col{
-    background-image: url(../img/game.jpg);
+    background-image: url(/static/img/game.jpg);
     background-size: cover;
 }
 .titulo{
@@ -25,7 +29,7 @@ body{margin: 0; padding: 0;}
     border-radius: 30px;
 }
 .altdor-col h1 {
-    font-size: 3em;
+    font-size: 2em;
     text-align: center;
     margin: 30px;
     color: #000000;
@@ -48,18 +52,29 @@ body{margin: 0; padding: 0;}
 .form{
     width: 100%;
 }
-.form label{
-    text-align: left;   
+.form-group{
+    width: 325px;
 }
-.form input{
-    width: 95%;
+.form label {
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #dfe6e9;
+}
+label {
+    text-transform: uppercase;
+}
+.form input {
+    width: 305px;
     padding: 10px;
-    margin: 20px 0 20px 0;
-    font-size: 14pt;
+    margin: 0 0 25px 0;
+    font-size: 12pt;
 }
 .form input::placeholder{
     width: 100%;
     text-align: left;
+    color: #b2bec3;
 }
 .form-control {
     background-color: transparent;
@@ -71,12 +86,20 @@ body{margin: 0; padding: 0;}
     outline: none;
 }
 .form-control:focus{
-    border-color: #111;
+    border-color: #636e72;
     outline: none;
 }
 
+/* Botão(s) */
+
 .btns {
-    padding-left: 40px;
+    padding: 0;
+}
+.btn{
+    width: 160px;
+    border: solid 0.5px rgb(0, 0, 0);
+    background: #fff;
+    border-radius: 10px;
 }
 
 .form .btnLogin:hover,.btnCadastro:hover {
@@ -88,10 +111,6 @@ body{margin: 0; padding: 0;}
 
 .form .btnLogin,.btnCadastro {
     height: 40px;
-    width: 45%;
-    background: #fff;
-    border: solid 0.5px #ccc;
-    border-radius: 30px;
     color: #2e802e;
 }
 
@@ -103,19 +122,11 @@ body{margin: 0; padding: 0;}
 }
 .form .btnCancelar {
     height: 40px;
-    width: 45%;
-    background: #fff;
-    border: solid 0.5px #ccc;
-    border-radius: 30px;
     color: #af1919;
 }
 
-.btnFCadastro {
+.form .btnFCadastro {
     height: 40px;
-    width: 45%;
-    background: #fff;
-    border: solid 0.5px #ccc;
-    border-radius: 30px;
     color: #f08306;
 }
 
@@ -125,6 +136,7 @@ body{margin: 0; padding: 0;}
     color: #fff;
     transition: 0.5s;
 }
+/* Fim Botão(s) */
 
 .passRec{
     width: 100%;
@@ -144,11 +156,6 @@ body{margin: 0; padding: 0;}
     color: #555555;
 }
 
-label {
-    font-size: .85rem;
-    text-transform: uppercase;
-    color: #ccc;
-}
 /* Fim Formulário */
 
 /* Responsibilidade */
@@ -157,10 +164,7 @@ label {
         flex: 100%;
     }
 
-    .form .btnCancelar,
-    .form .btnLogin,
-    .btnCadastro,
-    .btnFCadastro{
+    .btn{
         float: none;
         width: 100%;
         margin: 5px;
@@ -170,3 +174,5 @@ label {
         padding-left: 0;
     }
 }
+
+/* Fim Responsibilidade */
