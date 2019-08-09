@@ -1,4 +1,4 @@
-*{font-family: 'Montserrat', sans-serif;}
+*{font-family: 'Calibri', sans-serif;}
 body{margin: 0; padding: 0;}
 
 /* Página corpo (layout)*/
@@ -70,6 +70,7 @@ label {
     padding: 10px;
     margin: 0 0 25px 0;
     font-size: 12pt;
+    color: #FFFFFF;
 }
 .form input::placeholder{
     width: 100%;
@@ -97,7 +98,7 @@ label {
 }
 .btn{
     width: 160px;
-    border: solid 0.5px rgb(0, 0, 0);
+    border: solid 0.5px rgb(255, 255, 255);
     background: #fff;
     border-radius: 10px;
 }
