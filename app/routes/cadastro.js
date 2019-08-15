@@ -6,6 +6,9 @@ module.exports = function(app){
 
     	formModel.cadastro(connection, function(erro, result){
             res.render('forms/cadastro/cadastro', {noticia: result});
+       
+       
+       
         });
 
     });
