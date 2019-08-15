@@ -6,6 +6,10 @@ module.exports = function(){
 	this.cadastro = function(connection,callback){
 		connection.query('', callback);
 	}
+	
+	this.ResPass = function(connection,callback){
+		connection.query('', callback);
+	}
 
 	return this;
 }
