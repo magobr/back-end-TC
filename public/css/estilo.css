@@ -104,7 +104,7 @@ label {
     color: #ffffff;
 }
 
-.form .btnLogin:hover,.btnCadastro:hover {
+.form .btnLogin:hover,.btnCadastro:hover,.btnAlter:hover {
     border: none;
     background: #ffffff;
     color: #2e802e;
@@ -112,7 +112,7 @@ label {
     cursor: pointer;
 }
 
-.form .btnLogin,.btnCadastro {
+.form .btnLogin,.btnCadastro,.btnAlter {
     height: 40px;
     background: #2e802e;
 }

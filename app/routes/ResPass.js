@@ -5,7 +5,7 @@ module.exports = function(app){
     	var formModel = app.app.models.formModel;
 
     	formModel.ResPass(connection, function(erro, result){
-            res.render('forms/ResPass/ResPass');
+            res.render('forms/resPass/resPass');
         });
 
     });
