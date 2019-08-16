@@ -60,7 +60,7 @@ body{margin: 0; padding: 0;}
     font-weight: 600;
     font-size: 14px;
     text-transform: uppercase;
-    color: #dfe6e9;
+    color: #00b3ff;
 }
 label {
     text-transform: uppercase;
@@ -70,18 +70,19 @@ label {
     padding: 10px;
     margin: 0 0 25px 0;
     font-size: 12pt;
+    color: #FFFFFF;
 }
 .form input::placeholder{
     width: 100%;
     text-align: left;
-    color: #b2bec3;
+    color: #c5c5c5;
 }
 .form-control {
     background-color: transparent;
     border-top: 0;
     border-right: 0;
     border-left: 0;
-    border-bottom: solid 1px #ccc;
+    border-bottom: solid 1px #FFFFFF;
     border-radius: 0;
     outline: none;
 }
@@ -97,44 +98,47 @@ label {
 }
 .btn{
     width: 160px;
-    border: solid 0.5px rgb(0, 0, 0);
-    background: #fff;
+    /* border: solid 0.5px rgb(0, 0, 0); */
+    border: 0;
     border-radius: 10px;
+    color: #ffffff;
 }
 
-.form .btnLogin:hover,.btnCadastro:hover {
+.form .btnLogin:hover,.btnCadastro:hover,.btnAlter:hover {
     border: none;
-    background: #2e802e;
-    color: #fff;
-    transition: 0.5s;
-}
-
-.form .btnLogin,.btnCadastro {
-    height: 40px;
+    background: #ffffff;
     color: #2e802e;
+    transition: 0.5s;
+    cursor: pointer;
 }
 
-.form .btnCancelar:hover {
-    border: none;
-    background: #af1919;
-    color: #fff;
-    transition: 0.5s;
+.form .btnLogin,.btnCadastro,.btnAlter {
+    height: 40px;
+    background: #2e802e;
 }
+
 .form .btnCancelar {
     height: 40px;
+    background: #af1919;
+}
+.form .btnCancelar:hover {
+    border: none;
+    background: #ffffff;
     color: #af1919;
+    transition: 0.5s;
+    cursor: pointer;
 }
 
 .form .btnFCadastro {
     height: 40px;
-    color: #f08306;
+    background-color: #f08306;
 }
-
 .btnFCadastro:hover {
     border: none;
-    background: #f08306;
-    color: #fff;
+    background: #ffffff;
+    color: #f08306;
     transition: 0.5s;
+    cursor: pointer;
 }
 /* Fim Botão(s) */
 
@@ -147,18 +151,17 @@ label {
 }
 .passRec a{
     text-decoration: none;
-    color: #000;
+    color: rgb(255, 255, 255);
 }
 
 .passRec a:hover{
     transition: 0.5s;
     text-decoration: underline;
-    color: #555555;
 }
 
 /* Fim Formulário */
 
-/* Responsibilidade */
+/* Responsivdade */
 @media screen and (max-width: 800px){
     .col{
         flex: 100%;
@@ -174,5 +177,20 @@ label {
         padding-left: 0;
     }
 }
+
+/* ----- Iphone Lixo! */
+@media screen and (max-width: 320px){
+    .form input {
+        width: 170px;
+        padding: 7px;
+        margin: 0 0 25px 0;
+        font-size: 12pt;
+        color: #FFFFFF;
+    }
+    .form-group {
+        width: 200px;
+    }
+}
+/* -----Fim Iphone Lixo! */
 
 /* Fim Responsibilidade */
