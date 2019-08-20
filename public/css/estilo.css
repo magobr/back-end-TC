@@ -98,13 +98,8 @@ label {
 }
 .btn{
     width: 160px;
-<<<<<<< HEAD
-    border: solid 0.5px rgb(255, 255, 255);
-    background: #fff;
-=======
     /* border: solid 0.5px rgb(0, 0, 0); */
     border: 0;
->>>>>>> 5fa793b7f7eb5ecb12f192155b730e422f376e7f
     border-radius: 10px;
     color: #ffffff;
 }
