@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../../utils/head'); %>
+
+<body>
+    
+    <div class="page">
+
+        <div class="altdor-col col">
+            <div class="middle">
+                <div class="titulo">
+                    <h1>Alterar Senha</h1>
+                    <p class="descricao">Esqueceu a Senha? </br> Alterea-a Aqui!</p>
+                </div>
+            </div>
+        </div>
+		
+		<div class="form-col col">
+            <div class="middle">
+                <div class="form">
+				
+					<form action="" method="POST">
+					    <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="">
+
+                            <label for="pass">Nova Senha</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="">
+
+                            <label for="rePass">Repita a Senha</label>
+                            <input type="password" class="form-control" id="rePass" name="rePass" placeholder="">
+                        </div>
+						
+						  <div class="form-group">
+                            <div class="btns">
+                                <button class="btn btnAlter" id="btnAlter" name="btnAlter" type="submit" value="">Alterar</button>
+                                <button class="btn btnCancelar" id="Cancelar" name="btnCancelar" type="" value="">Cancelar</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    
+                    <div class="passRec">
+                        <a href=#>Página Inicial</a>
+                    </div>
+
+				</div>
+            </div>
+        </div>
+
+    </div>
+   
+	<%- include('scripts'); %>
+
+</body>
+
+
+</html>
