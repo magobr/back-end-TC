@@ -104,7 +104,7 @@ label {
     color: #ffffff;
 }
 
-.form .btnLogin:hover,.btnCadastro:hover,.btnAlter:hover {
+.form .btnVerde:hover {
     border: none;
     background: #ffffff;
     color: #2e802e;
@@ -112,33 +112,35 @@ label {
     cursor: pointer;
 }
 
-.form .btnLogin,.btnCadastro,.btnAlter {
+.form .btnVerde {
     height: 40px;
     background: #2e802e;
 }
 
-.form .btnCancelar {
-    height: 40px;
-    background: #af1919;
-}
-.form .btnCancelar:hover {
+.form .btnVermelho:hover {
     border: none;
     background: #ffffff;
     color: #af1919;
     transition: 0.5s;
     cursor: pointer;
 }
-
-.form .btnFCadastro {
+.form .btnVermelho {
     height: 40px;
-    background-color: #f08306;
+    background: #af1919;
 }
-.btnFCadastro:hover {
+
+
+
+.form .btnLaranja:hover {
     border: none;
     background: #ffffff;
     color: #f08306;
     transition: 0.5s;
     cursor: pointer;
+}
+.form .btnLaranja {
+    height: 40px;
+    background-color: #f08306;
 }
 /* Fim Botão(s) */
 
