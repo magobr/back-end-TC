@@ -34,8 +34,10 @@
 						
 						  <div class="form-group">
                             <div class="btns">
-                                <button class="btn btnAlter" id="btnAlter" name="btnAlter" type="submit" value="">Alterar</button>
-                                <button class="btn btnCancelar" id="Cancelar" name="btnCancelar" type="" value="">Cancelar</button>
+                                <%- include('../../utils/components/btnVerde'); %>
+                                <%- include('../../utils/components/btnVermelho'); %>
+                                <!--<button class="btn btnAlter" id="btnAlter" name="btnAlter" type="submit" value="">Alterar</button>-->
+                                <!--<button class="btn btnCancelar" id="Cancelar" name="btnCancelar" type="" value="">Cancelar</button>-->
                             </div>
                         </div>
                         
@@ -51,6 +53,7 @@
 
     </div>
    
+    <%- include('util'); %>
 	<%- include('scripts'); %>
 
 </body>

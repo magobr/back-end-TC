@@ -45,8 +45,10 @@
 
 						<div class="form-group">
 							<div class="btns">
-								<button class="btn btnCadastro" id="btnCadastro" name="btnCadastro" type="submit" value="">Cadastrar</button>
-								<button class="btn btnCancelar" id="btnCancelar" name="btnCancelar" type="" value="">Cancelar</button>
+								<%- include('../../utils/components/btnVerde'); %>
+								<%- include('../../utils/components/btnVermelho'); %>
+								<!--<button class="btn btnCadastro" id="btnCadastro" name="btnCadastro" type="submit" value="">Cadastrar</button>-->
+								<!-- <button class="btn btnCancelar" id="btnCancelar" name="btnCancelar" type="" value="">Cancelar</button>-->
 							</div>
 						</div>
 
@@ -58,7 +60,7 @@
 
 	</div>
 
-
+	<%- include('util'); %>
 	<%- include('scripts'); %>
 
 </body>
