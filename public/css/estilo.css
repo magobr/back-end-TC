@@ -19,7 +19,7 @@ body{margin: 0; padding: 0;}
 }
 
 .altdor-col{
-    background-image: url(/static/img/game.jpg);
+    background-image: url(/static/img/astro.jpg);
     background-size: cover;
 }
 .titulo{
@@ -43,6 +43,7 @@ body{margin: 0; padding: 0;}
     position: absolute;
     top: 50%;
     left: 50%;
+    text-align: center;
     transform: translate(-50%,-50%);
 }
 /* Fim Página corpo (layout)*/
@@ -129,20 +130,37 @@ label {
     cursor: pointer;
 }
 
-.form .btnFCadastro {
+.form .btnCadastrar, .btnFCadastro {
     height: 40px;
     background-color: #f08306;
+
 }
-.btnFCadastro:hover {
+
+.form .btnFCadastro:hover, .btnCadastrar:hover {
     border: none;
     background: #ffffff;
     color: #f08306;
     transition: 0.5s;
     cursor: pointer;
+    height: 40px;
+}
+
+.btnLogin {
+    height: 40px;
+    background-color: #2e802e;
+
+}
+.btnLogin:hover {
+    border: none;
+    background: #ffffff;
+    color: #2e802e;
+    transition: 0.5s;
+    cursor: pointer;
+    height: 40px;
 }
 /* Fim Botão(s) */
 
-.passRec{
+.passRec {
     width: 100%;
     height: 10px;
     font-size: 10pt;

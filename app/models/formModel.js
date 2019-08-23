@@ -7,9 +7,18 @@ module.exports = function(){
 		connection.query('', callback);
 	}
 	
-	this.ResPass = function(connection,callback){
+	this.resPass = function(connection,callback){
 		connection.query('', callback);
 	}
+
+	this.home = function(connection,callback){
+		connection.query('', callback);
+	}
+
+	this.game = function(connection,callback){
+		connection.query('', callback);
+	}
+
 
 	return this;
 }
