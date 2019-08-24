@@ -1,5 +1,12 @@
 module.exports = function(app){
+
     app.get('/',function(req, res){
-        res.render('home/index')
+    	var connection = app.config.dbConnection();
+    	var formModel = app.app.models.formModel;
+
+    	formModel.home(connection, function(erro, result){
+            res.render('home/index', {noticia: result})
+        });
+
     });
-}
+};
