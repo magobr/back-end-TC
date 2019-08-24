@@ -5,7 +5,7 @@ module.exports = function(app){
     	var formModel = app.app.models.formModel;
 
     	formModel.game(connection, function(erro, result){
-            res.render('forms/game/game', {noticia: result})
+            res.render('/game/', {noticia: result})
         });
 
     });

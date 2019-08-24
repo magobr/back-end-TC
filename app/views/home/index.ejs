@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-
-	<%- include('../utils/head'); %>
-
-<body>
-=======
-<head>
-	<%- include('../utils/head'); %>
-</head>
+    <head>
+        <%- include('../utils/head'); %>
+    </head>
 <body>
 	<div class="page">
 
@@ -17,16 +11,22 @@
                 <div class="titulo">
                     <h1>Bem-Vindo</h1>
                     <p class="descricao">QUER JOGAR? FAÇA SEU LOGIN OU CADASTRE-SE AGORA!</p>
-                    <div class="btns">
-                        <a href="/login"><button class="btn btnLogin" id="btnLogin" name="btnLogin" type="submit" value=""  >LOGIN</button></a> 
-                        <a href="/cadastro"><button class="btn btnFCadastro" id="btnFCadastro" name="btnFCadastro" type="" value="" >CADASTRE-SE</button></a>
-                    </div>
+                </div>
+                
+                <div class="opition-link">
+                    <a href="/login">Login</a>
+                    <a href="/cadastro">Cadastrar-se</a>
                 </div>
 
             </div>
+
+            
         </div>
     </div>
->>>>>>> 5344ef6dd1d05f29dbf9de12bc1c93a5604265a8
+
+
+    <%- include('util'); %>
+	<%- include('scripts'); %>
 
 </body>
 </html>
