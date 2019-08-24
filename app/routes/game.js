@@ -1,12 +1,13 @@
 module.exports = function(app){
 
-    app.get('/',function(req, res){
+    app.get('/game',function(req, res){
     	var connection = app.config.dbConnection();
     	var formModel = app.app.models.formModel;
 
-    	formModel.home(connection, function(erro, result){
-            res.render('home/index', {noticia: result})
+    	formModel.game(connection, function(erro, result){
+            res.render('/game/', {noticia: result})
         });
 
     });
+
 };

@@ -1,7 +1,21 @@
 *{font-family: 'Calibri', sans-serif;}
 body{margin: 0; padding: 0;}
 
+a{
+    text-decoration: none;
+    color: rgb(255, 255, 255); 
+}
+
 /* Página corpo (layout)*/
+.opition-link {
+    text-align: center;
+    padding: 10px;
+}
+
+.opition-link a{
+    padding: 10px;
+}
+
 .page{
     background: #ffffff;
     display: flex;
@@ -19,7 +33,7 @@ body{margin: 0; padding: 0;}
 }
 
 .altdor-col{
-    background-image: url(/static/img/game.jpg);
+    background-image: url(/static/img/astro.jpg);
     background-size: cover;
 }
 .titulo{
@@ -137,6 +151,21 @@ label {
     color: #f08306;
     transition: 0.5s;
     cursor: pointer;
+    height: 40px;
+}
+
+.btnLogin {
+    height: 40px;
+    background-color: #2e802e;
+
+}
+.btnLogin:hover {
+    border: none;
+    background: #ffffff;
+    color: #2e802e;
+    transition: 0.5s;
+    cursor: pointer;
+    height: 40px;
 }
 .form .btnLaranja {
     height: 40px;
@@ -144,18 +173,13 @@ label {
 }
 /* Fim Botão(s) */
 
-.passRec{
+.passRec {
     width: 100%;
     height: 10px;
     font-size: 10pt;
     text-align: center;
     padding: 17px 0 0 0;
 }
-.passRec a{
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-}
-
 .passRec a:hover{
     transition: 0.5s;
     text-decoration: underline;
