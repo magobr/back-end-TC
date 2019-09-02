@@ -1,0 +1,222 @@
+*{font-family: 'Calibri', sans-serif;}
+body{margin: 0; padding: 0;}
+
+a{
+    text-decoration: none;
+    color: rgb(255, 255, 255); 
+}
+
+/* Página corpo (layout)*/
+.opition-link {
+    text-align: center;
+    padding: 10px;
+}
+
+.opition-link a{
+    padding: 10px;
+}
+
+.page{
+    background: #ffffff;
+    display: flex;
+    flex-wrap:  wrap;
+}
+
+.col{
+    flex: 1;
+    height: 100vh;
+    position: relative;
+}
+
+.form-col{
+    background-color: #2d3436;
+}
+
+.altdor-col{
+    background-image: url(/static/img/astro.jpg);
+    background-size: cover;
+}
+.titulo{
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff8a;
+    border-radius: 30px;
+}
+.altdor-col h1 {
+    font-size: 2em;
+    text-align: center;
+    margin: 30px;
+    color: #000000;
+}
+.altdor-col .descricao {
+    font-size: 1em;
+    text-align: center;
+    color: #000000;
+}
+.middle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+/* Fim Página corpo (layout)*/
+
+
+/* Formulário */
+.form{
+    width: 100%;
+}
+.form-group{
+    width: 325px;
+}
+.form label {
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #00b3ff;
+}
+label {
+    text-transform: uppercase;
+}
+.form input {
+    width: 305px;
+    padding: 10px;
+    margin: 0 0 25px 0;
+    font-size: 12pt;
+    color: #FFFFFF;
+}
+.form input::placeholder{
+    width: 100%;
+    text-align: left;
+    color: #c5c5c5;
+}
+.form-control {
+    background-color: transparent;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    border-bottom: solid 1px #FFFFFF;
+    border-radius: 0;
+    outline: none;
+}
+.form-control:focus{
+    border-color: #636e72;
+    outline: none;
+}
+
+/* Botão(s) */
+
+.btns {
+    padding: 0;
+}
+.btn{
+    width: 160px;
+    /* border: solid 0.5px rgb(0, 0, 0); */
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.form .btnVerde:hover {
+    border: none;
+    background: #ffffff;
+    color: #2e802e;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.form .btnVerde {
+    height: 40px;
+    background: #2e802e;
+}
+
+.form .btnVermelho:hover {
+    border: none;
+    background: #ffffff;
+    color: #af1919;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.form .btnVermelho {
+    height: 40px;
+    background: #af1919;
+}
+
+
+
+.form .btnLaranja:hover {
+    border: none;
+    background: #ffffff;
+    color: #f08306;
+    transition: 0.5s;
+    cursor: pointer;
+    height: 40px;
+}
+
+.btnLogin {
+    height: 40px;
+    background-color: #2e802e;
+
+}
+.btnLogin:hover {
+    border: none;
+    background: #ffffff;
+    color: #2e802e;
+    transition: 0.5s;
+    cursor: pointer;
+    height: 40px;
+}
+.form .btnLaranja {
+    height: 40px;
+    background-color: #f08306;
+}
+/* Fim Botão(s) */
+
+.passRec {
+    width: 100%;
+    height: 10px;
+    font-size: 10pt;
+    text-align: center;
+    padding: 17px 0 0 0;
+}
+.passRec a:hover{
+    transition: 0.5s;
+    text-decoration: underline;
+}
+
+/* Fim Formulário */
+
+/* Responsivdade */
+@media screen and (max-width: 800px){
+    .col{
+        flex: 100%;
+    }
+
+    .btn{
+        float: none;
+        width: 100%;
+        margin: 5px;
+    }
+
+    .btns {
+        padding-left: 0;
+    }
+}
+
+/* ----- Iphone Lixo! */
+@media screen and (max-width: 320px){
+    .form input {
+        width: 170px;
+        padding: 7px;
+        margin: 0 0 25px 0;
+        font-size: 12pt;
+        color: #FFFFFF;
+    }
+    .form-group {
+        width: 200px;
+    }
+}
+/* -----Fim Iphone Lixo! */
+
+/* Fim Responsibilidade */
