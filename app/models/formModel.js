@@ -3,8 +3,8 @@ module.exports = function(){
 		connection.query('select * from usuario', callback);
 	};
 
-	this.cadastro = function(connection,callback){
-		connection.query('', callback);
+	this.salvarCadastro = function(cadastro, connection, callback){
+		connection.query('insert into usuario set id_jogador = auto, ?', cadastro, callback);
 	}
 	
 	this.resPass = function(connection,callback){

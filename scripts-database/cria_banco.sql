@@ -15,11 +15,11 @@ CREATE TABLE usuario(
 
 CREATE TABLE usuario_dados(
 	id_jogador int auto_increment not null,
-	fase_jogador int not null,
-	blocos_jogador int not null,
-	retries_jogador int not null,
-	passos_jogador int not null,
-	pontuação_jogador int not null,
+	fase_jogador int,
+	blocos_jogador int,
+	retries_jogador int,
+	passos_jogador int,
+	pontuação_jogador int,
 	primary key(id_jogador)
 );
 
@@ -28,8 +28,8 @@ CREATE TABLE nivel_jogo(
 	primary key (nivel_jogo)
 );
 
-ALTER TABLE usuario ADD CONSTRAINT FOREIGN KEY (id_jogador) REFERENCES usuario_dados(id_jogador);
-ALTER TABLE usuario_dados ADD CONSTRAINT FOREIGN KEY (id_jogador) REFERENCES nivel_jogo(nivel_jogo);
+ALTER TABLE usuario_dados ADD CONSTRAINT FOREIGN KEY (id_jogador) REFERENCES  usuario(id_usuario);
+ALTER TABLE nivel_jogo ADD CONSTRAINT FOREIGN KEY (nivel_jogo) REFERENCES usuario_dados(id_jogador);
 
 
 DELIMITER $$

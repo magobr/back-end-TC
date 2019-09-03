@@ -1,14 +1,19 @@
 module.exports = function(app){
 
     app.get('/cadastro',function(req, res){
-    	var connection = app.config.dbConnection();
+        res.render('forms/cadastro/cadastro');
+    });
+
+    app.post('/cadastrado',function(req, res){
+        var cadastro = req.body;
+        res.send(cadastro);
+
+        var connection = app.config.dbConnection();
     	var formModel = app.app.models.formModel;
 
-    	formModel.cadastro(connection, function(erro, result){
-            res.render('forms/cadastro/cadastro', {noticia: result});
-
+        formModel.salvarCadastro(cadastro, connection, function(erro, result){
+            res.redirect('/login')
         });
-
     });
 
 };
