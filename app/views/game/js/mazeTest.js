@@ -45,7 +45,7 @@ Maze.reset = function(first) {
     Maze.scheduleFinish(false);
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.stepSpeed = 70;
+        Maze.stepSpeed = 100;
         Maze.schedule(
           [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
           [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]
@@ -93,6 +93,12 @@ Maze.reset = function(first) {
     );
     flowerIcon.style.opacity = "1";
   });
+
+  numberOfSteps = 0;
+  points = 0;
+  document.getElementById("points").innerHTML = points;
+  document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
+  console.log("workspace", Game.workspace.getAllBlocks());
 };
 
 /**
@@ -183,8 +189,12 @@ Maze.runButtonClick = function(e) {
   }
   runButton.style.display = "none";
   resetButton.style.display = "inline";
+  // Maze.numberOfBlocks = Game.workspace.getAllBlocks().length;
+  // console.log("numberOfBlocks", Maze.numberOfBlocks);
   Maze.reset(false);
   Maze.execute();
+  numberOfBlocks = Game.workspace.getAllBlocks().length;
+  console.log("numberOfBlocks", numberOfBlocks);
 };
 
 Maze.resetButtonClick = function(e) {
@@ -196,16 +206,38 @@ Maze.resetButtonClick = function(e) {
   runButton.style.display = "inline";
   document.getElementById("resetButton").style.display = "none";
   Game.workspace.highlightBlock(null);
+  numberOfTries++;
   Maze.reset(false);
   Maze.levelHelp();
 };
 
-/**
- * Is the player at the finish marker?
- * @return {boolean} True if not done, false if done.
- */
-Maze.notDone = function() {
-  return Maze.pegmanX != Maze.finish_.x || Maze.pegmanY != Maze.finish_.y;
+Maze.updateCapacity = function() {
+  var cap = Game.workspace.remainingCapacity();
+  var p = document.getElementById("capacity");
+  if (cap == Infinity) {
+    p.style.display = "none";
+  } else {
+    p.style.display = "inline";
+    p.innerHTML = "";
+    cap = Number(cap);
+    var capSpan = document.createElement("span");
+    capSpan.className = "capacityNumber";
+    capSpan.appendChild(document.createTextNode(cap));
+    if (cap == 0) {
+      var msg = Blockly.Msg.MAZE_CAPACITY_0;
+    } else if (cap == 1) {
+      var msg = Blockly.Msg.MAZE_CAPACITY_1;
+    } else {
+      var msg = Blockly.Msg.MAZE_CAPACITY_2;
+    }
+    var parts = msg.split(/%\d/);
+    for (var i = 0; i < parts.length; i++) {
+      p.appendChild(document.createTextNode(parts[i]));
+      if (i != parts.length - 1) {
+        p.appendChild(capSpan.cloneNode(true));
+      }
+    }
+  }
 };
 
 Maze.initInterpreter = function(interpreter, scope) {
@@ -385,7 +417,6 @@ Maze.init = function() {
         Maze.finish_ = { x: x, y: y };
       } else if (Maze.map[y][x] == Maze.SquareType.COLLECT) {
         Maze.flowers.push({ id: flowerId, x: x, y: y });
-        console.log("maze.collect.id", Maze.flowers);
 
         flowerId++;
       }
@@ -393,7 +424,9 @@ Maze.init = function() {
   }
 
   Maze.reset(true);
-  //Game.workspace.addChangeListener(function() {Maze.updateCapacity();});
+  Game.workspace.addChangeListener(function() {
+    Maze.updateCapacity();
+  });
 
   // document.body.addEventListener("mousemove", Maze.updatePegSpin_, true);
 

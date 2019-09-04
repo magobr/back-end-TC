@@ -1,4 +1,11 @@
 Maze.pidList = [];
+numberOfSteps = 0;
+points = 0;
+var numberOfTries = 1;
+
+numberOfBlocks = 0;
+
+console.log("numberOfSteps", numberOfSteps);
 
 Maze.constrainDirection4 = function(d) {
   d = Math.round(d) % 4;
@@ -47,6 +54,8 @@ Maze.move = function(direction, id) {
       command = "west";
       break;
   }
+  numberOfSteps++;
+  console.log("numberOfSteps", numberOfSteps);
   Maze.log.push([command, id]);
 };
 
@@ -104,6 +113,14 @@ Maze.isPath = function(direction, id) {
     Maze.log.push([command, id]);
   }
   return square !== Maze.SquareType.WALL && square !== undefined;
+};
+
+/**
+ * Is the player at the finish marker?
+ * @return {boolean} True if not done, false if done.
+ */
+Maze.notDone = function() {
+  return Maze.pegmanX != Maze.finish_.x || Maze.pegmanY != Maze.finish_.y;
 };
 
 Maze.collect = function(direction, id) {
@@ -386,12 +403,13 @@ Maze.scheduleFinish = function(sound) {
 
 Maze.animate = function() {
   var action = Maze.log.shift();
-  console.log("action", action);
+
   if (!action) {
     Game.highlight(null);
     Maze.levelHelp();
     return;
   }
+
   Game.highlight(action[1]);
 
   switch (action[0]) {
@@ -459,7 +477,14 @@ Maze.animate = function() {
       Maze.flowers.map(flower => {
         if (Maze.pegmanX === flower.x && Maze.pegmanY === flower.y) {
           var flowerIcon = document.getElementById("flower" + flower.id);
-          flowerIcon.style.opacity = "0";
+          if (flowerIcon.style.opacity === "0") {
+            alert("Não há nada para coletar");
+          } else {
+            flowerIcon.style.opacity = "0";
+            points = points + 10;
+            document.getElementById("points").innerHTML = points;
+            console.log("points", points);
+          }
         }
       });
 
