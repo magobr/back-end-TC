@@ -38,7 +38,7 @@ Game.getNumberParamFromUrl = function(name, minValue, maxValue) {
 //   return lang;
 // };
 
-Game.MAX_LEVEL = 16;
+Game.MAX_LEVEL = 15;
 
 /**
  * User's level (e.g. 5).
@@ -126,7 +126,7 @@ Game.initWorkspace = function(maxBlocks) {
     grid: {
       spacing: 25,
       length: 3,
-      colour: "#000",
+      colour: "#ccc",
       snap: true
     },
     maxBlocks: maxBlocks,
