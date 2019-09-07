@@ -24,7 +24,7 @@
 
     <style>
       body {
-        background-color: #fff;
+        background-color: #ffffff;
         font-family: sans-serif;
       }
       h1 {
@@ -34,16 +34,10 @@
     </style>
   </head>
   <body>
-    <!-- <div>
-      <select id="languageMenu">
-        <option>Português</option>
-        <option>English</option>
-      </select>
-    </div> -->
     <div style="width: 100%; display: flex; flex-direction: row">
       <div
         id="blockly"
-        style="display: inline-block; height: 480px; width: 58%"
+        style="display: inline-block; height: 90%; width:45%"
       ></div>
       <div>
         <div id="visualization">
@@ -67,16 +61,18 @@
             <div id="capacity"></div>
           </div>
         </div>
-        <div><p>
-          <div><button id="runButton">Executar</button></div> 
-        </p>
+        <div>
+            <h1 type="text" name="tentativas" value="Tentativas" id="numberOfTries"> Tentativas =
+                <label for="numberOfTries" id="lbl_numberOfTries"></label> </h1>
+
         <p>
+          
+          <div><button id="runButton">Executar</button></div> 
           <div><button id="resetButton">Reiniciar</button></div> 
         </p>
       </div>
-        <input type="text" name="tentativas" value="Tentativas" id="numberOfTries">
-        <label for="numberOfTries" id="lbl_numberOfTries"></label>
-      </div>
+
+    </div>
      
     </div>
     <xml id="toolbox" style="display: none"></xml>

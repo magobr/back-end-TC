@@ -126,7 +126,7 @@ Game.initWorkspace = function(maxBlocks) {
     grid: {
       spacing: 25,
       length: 3,
-      colour: "#ccc",
+      colour: "#000",
       snap: true
     },
     maxBlocks: maxBlocks,
