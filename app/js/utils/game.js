@@ -38,7 +38,7 @@ Game.getNumberParamFromUrl = function(name, minValue, maxValue) {
 //   return lang;
 // };
 
-Game.MAX_LEVEL = 10;
+Game.MAX_LEVEL = 15;
 
 /**
  * User's level (e.g. 5).
