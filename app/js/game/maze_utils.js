@@ -1,26 +1,21 @@
 //BlocklyGames.NAME = 'maze';
 Maze.blocks = [
+  ["maze_moveForward"],
+  ["maze_moveForward", "maze_turnRight", "maze_turnLeft", "maze_collect"],
   [
     "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "controls_repeat",
+    "maze_forever"
   ],
   [
     "maze_moveForward",
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "maze_forever",
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -30,6 +25,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -39,6 +35,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -48,6 +45,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -57,6 +55,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -66,6 +65,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -75,6 +75,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -84,6 +85,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -93,6 +95,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -102,6 +105,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -111,6 +115,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -120,6 +125,17 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
+    "controls_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "controls_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -142,7 +158,6 @@ Maze.MAX_BLOCKS = [
   Infinity,
   Infinity,
   Infinity,
-  Infinity,
   Infinity
 ][Game.LEVEL];
 
@@ -150,7 +165,6 @@ Maze.MAX_BLOCKS = [
 Maze.CRASH_STOP = 1;
 Maze.CRASH_SPIN = 2;
 Maze.CRASH_FALL = 3;
-
 
 Maze.SKINS = [
   // sprite: A 1029x51 set of 21 avatar images.
@@ -170,9 +184,12 @@ Maze.SKINS = [
     graph: false,
     look: "#000",
     winSound: ["../../../static/img/win.mp3", "../../../static/img/win.ogg"],
-    crashSound: ["../../../static/img/fail_pegman.mp3", "../../../static/img/fail_pegman.ogg"],
+    crashSound: [
+      "../../../static/img/fail_pegman.mp3",
+      "../../../static/img/fail_pegman.ogg"
+    ],
     crashType: Maze.CRASH_STOP
-  },
+  }
 ];
 Maze.SKIN_ID = Game.getNumberParamFromUrl("skin", 0, Maze.SKINS.length);
 Maze.SKIN = Maze.SKINS[Maze.SKIN_ID];
@@ -320,8 +337,8 @@ Maze.map = [
   ],
 
   //level 11
-  
-   [
+
+  [
     [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
     [0, 0, 0, 1, 4, 0, 1, 1, 0, 0, 0],
@@ -333,9 +350,9 @@ Maze.map = [
     [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
     [0, 0, 0, 0, 2, 1, 4, 1, 1, 1, 1]
   ],
-  
- // level 12
-   [
+
+  // level 12
+  [
     [2, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0],
     [0, 0, 0, 1, 4, 1, 0, 1, 1, 1, 0, 0],
     [0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0],
@@ -366,9 +383,9 @@ Maze.map = [
     [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0],
     [0, 1, 4, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 0]
   ],
-  
+
   //level 14
-   [
+  [
     [0, 0, 0, 0, 2, 1, 0, 0, 0, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
     [0, 0, 0, 0, 1, 1, 1, 1, 1, 4, 0, 0, 0],
@@ -382,9 +399,9 @@ Maze.map = [
     [0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ],
-  
+
   //level 15
-   [
+  [
     [0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 1, 1, 4, 1, 0, 0, 0, 0],
     [0, 0, 0, 1, 1, 0, 0, 4, 1, 0, 0, 0],
@@ -397,6 +414,5 @@ Maze.map = [
     [0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, 0],
     [0, 0, 2, 1, 1, 1, 4, 1, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  ],
-
+  ]
 ][Game.LEVEL];
