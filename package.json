@@ -9,6 +9,7 @@
   "author": "Thiago",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "consign": "^0.1.6",
     "consolidate": "^0.15.1",
     "ejs": "^2.6.2",
@@ -24,5 +25,8 @@
     "mysql": "^2.17.1",
     "path": "^0.12.7",
     "webdriverio": "^5.12.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
   }
 }
