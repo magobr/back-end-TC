@@ -2,8 +2,8 @@ function Forms(connection){
 	this._connetction = connection;
 }
 
-Forms.prototype.getLogin = function(connection, callback){
-	connection.query('select * from usuario', callback);
+Forms.prototype.getLogin = function(login, connection, callback){
+	connection.query('select * from usuario where (email = ?) and (senha = ?)', login, callback);
 }
 
 Forms.prototype.salvarCadastro = function(cadastro, connection, callback){
