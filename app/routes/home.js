@@ -5,7 +5,7 @@ module.exports = function(app){
     	var formModel = new app.app.models.formModel;
 
     	formModel.home(connection, function(erro, result){
-            res.render('home/index', {noticia: result})
+            res.render('home/index')
         });
 
     });

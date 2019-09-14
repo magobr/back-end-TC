@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../utils/head'); %>
+    </head>
+<body>
+	<div class="page">
+
+        <% for(var i = 0; i < login.length; i++){ %>
+            <tr>
+                <td><%= login[i].email %></td>
+                <td><%= login[i].nome %></td>
+            </tr>	
+        <% } %>
+
+    </div>
+
+    <%- include('util'); %>
+
+</body>
+</html>
