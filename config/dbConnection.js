@@ -5,10 +5,11 @@ var connMySQL = function(){
         host: 'localhost',
         user: 'root',
         password: 'root',
-        database: 'logicGamesTc'
+        database: 'LogicaGamesTC'
     });
 
 }
 module.exports = function(){
+    console.log('Connected!');
 	return connMySQL;
 }
