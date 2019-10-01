@@ -314,7 +314,7 @@ Maze.scheduleFail = function(forward) {
       Maze.pegmanY + deltaY,
       direction16
     );
-    BlocklyGames.workspace.getAudioManager().play("fail", 0.5);
+    Game.workspace.getAudioManager().play("fail", 0.5);
     Maze.pidList.push(
       setTimeout(function() {
         Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
@@ -327,7 +327,7 @@ Maze.scheduleFail = function(forward) {
           Maze.pegmanY + deltaY,
           direction16
         );
-        BlocklyGames.workspace.getAudioManager().play("fail", 0.5);
+        Game.workspace.getAudioManager().play("fail", 0.5);
       }, Maze.stepSpeed * 2)
     );
     Maze.pidList.push(

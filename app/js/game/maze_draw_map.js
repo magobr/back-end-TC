@@ -48,7 +48,7 @@ Maze.drawMap = function() {
   if (Maze.SKIN.background) {
     var tile = document.createElementNS(Blockly.SVG_NS, "image");
     tile.setAttributeNS(
-      Blockly.utils.dom.XLINK_NS,
+      "http://www.w3.org/1999/xlink",
       "xlink:href",
       Maze.SKIN.background
     );
@@ -64,7 +64,7 @@ Maze.drawMap = function() {
     // The grid lines are offset so that the lines pass through the centre of
     // each square.  A half-pixel offset is also added to as standard SVG
     // practice to avoid blurriness.
-    var offset = Maze.SQUARE_SIZE / 2 + 0.5;
+    var offset = Maze.SQUARE_SIZE;
     for (var k = 0; k < Maze.ROWS; k++) {
       var h_line = document.createElementNS(Blockly.SVG_NS, "line");
       h_line.setAttribute("y1", k * Maze.SQUARE_SIZE + offset);
@@ -158,10 +158,10 @@ Maze.drawMap = function() {
         bonus.setAttributeNS(
           "http://www.w3.org/1999/xlink",
           "xlink:href",
-          Maze.SKIN.marker
+          "../../../static/img/flower.jpg"
         );
-        bonus.setAttribute("height", 34);
-        bonus.setAttribute("width", 20);
+        bonus.setAttribute("height", 36);
+        bonus.setAttribute("width", 36);
         svg.appendChild(bonus);
         flowerId++;
         // k++;
