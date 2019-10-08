@@ -357,7 +357,7 @@ Maze.levelHelp = function(opt_event) {
   var toolbar = Game.workspace.flyout_.workspace_.getTopBlocks(true);
   var content = document.getElementById("tipsPopup");
   var origin = null;
-  var style = { width: "370px", top: "10%", left: "70%" };
+  var style = { width: "370px", left: "30%", top: "3em" };
 
   if (Game.LEVEL == 1) {
     if (Game.workspace.getAllBlocks().length < 2) {
@@ -393,10 +393,18 @@ Maze.levelHelp = function(opt_event) {
       }
     }
   } else if (Game.LEVEL == 2) {
-    var linesText = document.getElementById("tipsText");
-    linesText.textContent =
-      "Utilize os blocos 'direita' e 'esquerda' para direcionar o rei para a direção correta";
-
+    if (
+      userBlocks.indexOf("maze_turnRight") == -1 &&
+      userBlocks.indexOf("maze_turnLeft") == -1
+    ) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Utilize os blocos 'direita' e 'esquerda' para direcionar o rei para a direção correta";
+    } else if (userBlocks.indexOf("collect") == -1) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Utilize o bloco coletar para pegar a flor durante o caminho e ganhar pontos.";
+    }
     if (
       Maze.result != Maze.ResultType.UNSET &&
       document.getElementById("runButton").style.display == "none"
@@ -454,68 +462,17 @@ Maze.levelHelp = function(opt_event) {
         origin = toolbar[3].getSvgRoot();
       }
     }
+  } else if (Game.LEVEL == 5) {
+    if (Maze.SKIN_ID == 0 && !Maze.showPegmanMenu.activatedOnce) {
+      content = document.getElementById("dialogHelpSkins");
+      style = { width: "360px", top: "60px" };
+      style[rtl ? "left" : "right"] = "20px";
+      origin = document.getElementById("pegmanButton");
+    }
+  } else if (Game.LEVEL > 5) {
+    content = null;
   }
-  // } else if (Game.LEVEL == 5) {
-  //   if (Maze.SKIN_ID == 0 && !Maze.showPegmanMenu.activatedOnce) {
-  //     content = document.getElementById('dialogHelpSkins');
-  //     style = {'width': '360px', 'top': '60px'};
-  //     style[rtl ? 'left' : 'right'] = '20px';
-  //     origin = document.getElementById('pegmanButton');
-  //   }
-  // } else if (Game.LEVEL == 6) {
-  //   if (userBlocks.indexOf('maze_if') == -1) {
-  //     content = document.getElementById('dialogHelpIf');
-  //     style = {'width': '360px', 'top': '430px'};
-  //     style[rtl ? 'right' : 'left'] = '425px';
-  //     origin = toolbar[4].getSvgRoot();
-  //   }
-  // } else if (Game.LEVEL == 7) {
-  //   if (!Maze.levelHelp.initialized7_) {
-  //     // Create fake dropdown.
-  //     var span = document.createElement('span');
-  //     span.className = 'helpMenuFake';
-  //     var options =
-  //         [Game.getMsg('Maze_pathAhead'),
-  //          Game.getMsg('Maze_pathLeft'),
-  //          Game.getMsg('Maze_pathRight')];
-  //     var prefix = Blockly.utils.string.commonWordPrefix(options);
-  //     var suffix = Blockly.utils.string.commonWordSuffix(options);
-  //     if (suffix) {
-  //       var option = options[0].slice(prefix, -suffix);
-  //     } else {
-  //       var option = options[0].substring(prefix);
-  //     }
-  //     // Add dropdown arrow: "option ▾" (LTR) or "▾ אופציה" (RTL)
-  //     span.textContent = option + ' ' + Blockly.FieldDropdown.ARROW_CHAR;
-  //     // Inject fake dropdown into message.
-  //     var container = document.getElementById('helpMenuText');
-  //     var msg = container.textContent;
-  //     container.textContent = '';
-  //     var parts = msg.split(/%\d/);
-  //     for (var i = 0; i < parts.length; i++) {
-  //       container.appendChild(document.createTextNode(parts[i]));
-  //       if (i != parts.length - 1) {
-  //         container.appendChild(span.cloneNode(true));
-  //       }
-  //     }
-  //     Maze.levelHelp.initialized7_ = true;
-  //   }
-  //   // The hint says to change from 'ahead', but keep the hint visible
-  //   // until the user chooses 'right'.
-  //   if (userBlocks.indexOf('isPathRight') == -1) {
-  //     content = document.getElementById('dialogHelpMenu');
-  //     style = {'width': '360px', 'top': '430px'};
-  //     style[rtl ? 'right' : 'left'] = '425px';
-  //     origin = toolbar[4].getSvgRoot();
-  //   }
-  // } else if (Game.LEVEL == 9) {
-  //   if (userBlocks.indexOf('maze_ifElse') == -1) {
-  //     content = document.getElementById('dialogHelpIfElse');
-  //     style = {'width': '360px', 'top': '305px'};
-  //     style[rtl ? 'right' : 'left'] = '425px';
-  //     origin = toolbar[5].getSvgRoot();
-  //   }
-  // }
+
   if (content) {
     if (content.parentNode != document.getElementById("dialog")) {
       GameDialogs.showDialog(content, origin, true, false, style, null);
@@ -664,7 +621,6 @@ Maze.init = function() {
     setTimeout(function() {
       Game.workspace.addChangeListener(Maze.levelHelp);
       Maze.levelHelp();
-      console.log("entrou2!!!", Game.workspace.getAllBlocks().length);
     }, 5000);
   }
 

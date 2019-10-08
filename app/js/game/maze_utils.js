@@ -174,9 +174,9 @@ Maze.SKINS = [
   // crashType: Behaviour when player crashes (stop, spin, or fall).
   {
     sprite: "../../../static/img/pegman.png",
-    tiles: "../../../static/img/tiles_panda.png",
+    tiles: "../../../static/img/tiles_garden.png",
     marker: "../../../static/img/marker.png",
-    background: "../../../static/img/testemap.png",
+    background: "../../../static/img/garden.png",
     graph: "#ccc",
     look: "#000",
     winSound: ["../../../static/img/win.mp3", "../../../static/img/win.ogg"],
