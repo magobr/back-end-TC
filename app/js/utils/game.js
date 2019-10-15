@@ -257,3 +257,14 @@ Game.stripCode = function(code) {
   // Strip out serial numbers.
   return goog.string.trimRight(code.replace(/(,\s*)?'block_id_[^']+'\)/g, ")"));
 };
+
+Game.injectReadonly = function(id, xml) {
+  var div = document.getElementById(id);
+  if (!div.firstChild) {
+    var workspace = Blockly.inject(div, { readOnly: true });
+    if (typeof xml != "string") {
+      xml = xml.join("");
+    }
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  }
+};
