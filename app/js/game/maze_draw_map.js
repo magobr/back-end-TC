@@ -184,8 +184,8 @@ Maze.drawMap = function() {
     "xlink:href",
     Maze.SKIN.marker
   );
-  finishMarker.setAttribute("height", 34);
-  finishMarker.setAttribute("width", 20);
+  finishMarker.setAttribute("height", 36);
+  finishMarker.setAttribute("width", 40);
   svg.appendChild(finishMarker);
 
   // Pegman's clipPath element, whose (x, y) is reset by Maze.displayPegman

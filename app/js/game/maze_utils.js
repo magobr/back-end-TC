@@ -173,9 +173,9 @@ Maze.SKINS = [
   // crashSound: List of sounds (in various formats) for player crashes.
   // crashType: Behaviour when player crashes (stop, spin, or fall).
   {
-    sprite: "../../../static/img/pegman.png",
+    sprite: "../../../static/img/king.png",
     tiles: "../../../static/img/tiles_garden.png",
-    marker: "../../../static/img/marker.png",
+    marker: "../../../static/img/crown.png",
     background: "../../../static/img/garden.png",
     graph: "#ccc",
     look: "#000",
