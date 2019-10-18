@@ -18,8 +18,8 @@ Forms.prototype.home = function(connection,callback){
 	connection.query('', callback);
 }
 
-Forms.prototype.game = function(connection,callback){
-	connection.query('', callback);
+Forms.prototype.salvarDados = function(dadosGame, connection, callback){
+	connection.query('insert into niveis(n_passos , n_pontos , n_tentativas , id_nivel, resultadoDesempenho) values (?, ?, ?, ?, ?) ', dadosGame, callback);
 }
 
 module.exports = function(){

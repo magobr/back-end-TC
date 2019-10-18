@@ -47,11 +47,9 @@ $(document).ready(function(){
             }
 
             var reSenha = $('#reSenha').val();
-            if (reSenha == 'undefined' || reSenha == '' || reSenha.length < 3){
-                if ( reSenha != senha ) {    
-                    alert('Defina uma Senha');
-                    return false;
-                }
+            if ( reSenha != senha || reSenha == 'undefined' || reSenha == '' || reSenha.length < 3){
+                alert('Defina uma Senha');
+                return false;
             }
 
         });

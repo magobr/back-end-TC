@@ -94,11 +94,14 @@ Maze.reset = function(first) {
     flowerIcon.style.opacity = "1";
   });
 
+  /*Count*/
   numberOfSteps = 0;
   points = 0;
   document.getElementById("points").innerHTML = points;
   document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
   console.log("workspace", Game.workspace.getAllBlocks());
+  /*fim Count*/
+
 };
 
 /**
@@ -207,6 +210,7 @@ Maze.resetButtonClick = function(e) {
   document.getElementById("resetButton").style.display = "none";
   Game.workspace.highlightBlock(null);
   numberOfTries++;
+  console.log(numberOfTries);
   Maze.reset(false);
   Maze.levelHelp();
 };
