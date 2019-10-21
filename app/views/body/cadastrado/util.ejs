@@ -1,0 +1,77 @@
+<script>
+
+$(document).ready(function(){
+    
+        $('#dataNascimento').mask('00/00/0000');
+
+        $('#btnVerde').
+        attr({
+            id: 'btnCadastro',
+            name: 'btnCadastro'
+        }).
+        html('Cadastrar');
+
+        
+        $('#btnVermelho').
+        attr({
+            id: 'btnCancelar',
+            name: 'btnCancelar'
+        }).
+        html('Cancelar');
+
+        $('#btnCadastro').click(function(){
+
+            var nome = $("#nome").val();
+            var email = $('#email').val();
+            var nickName = $('#nickName').val();
+            var dataNascimento = $('#dataNascimento').val();
+            var pass = $('#pass').val();
+            var repass = $('#repass').val();
+        
+
+            if (nome == 'undefined' || nome == '' || nome.length < 3) {
+                alert('nome');
+                return false;
+            }
+
+            if (email == 'undefined' || email == '' || email.length < 3) {
+                alert('email');
+                return false;
+            }
+
+            if (nickName == 'undefined' || nickName == '' || nickName.length < 3) {
+                alert('nickName');
+                return false;
+            }
+
+            if (dataNascimento == 'undefined' || dataNascimento == '' || dataNascimento.length < 3) {
+                alert('Data Nascimento');
+                return false;
+            } else{
+
+                var dia  = dataNascimento.split("/")[0];
+                var mes  = dataNascimento.split("/")[1];
+                var ano  = dataNascimento.split("/")[2];
+
+                var dataReplace = ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+
+                return dataReplace;
+
+                //alert(replace);
+
+            }
+
+            if (pass == 'undefined' || pass == '' || pass.length < 3) {
+                alert('Defina uma Senha');
+                return false;
+            }
+
+            if (rePass != pass ||  (repass == 'undefined' || repass == '' || repass.length < 3) ) {    
+                alert('Defina uma Senha');
+                return false;
+            }
+
+        });
+
+    });
+</script>
