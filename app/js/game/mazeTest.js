@@ -37,25 +37,25 @@ Maze.reset = function(first) {
   Maze.pidList = [];
 
   // Move Pegman into position.
-  Maze.pegmanX = Maze.start_.x;
-  Maze.pegmanY = Maze.start_.y;
+  Maze.kingX = Maze.start_.x;
+  Maze.kingY = Maze.start_.y;
 
   if (first) {
-    Maze.pegmanD = Maze.startDirection + 1;
+    Maze.kingD = Maze.startDirection + 1;
     Maze.scheduleFinish(false);
     Maze.pidList.push(
       setTimeout(function() {
         Maze.stepSpeed = 100;
         Maze.schedule(
-          [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-          [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]
+          [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+          [Maze.kingX, Maze.kingY, Maze.kingD * 4 - 4]
         );
-        Maze.pegmanD++;
+        Maze.kingD++;
       }, Maze.stepSpeed * 5)
     );
   } else {
-    Maze.pegmanD = Maze.startDirection;
-    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4);
+    Maze.kingD = Maze.startDirection;
+    Maze.displayPegman(Maze.kingX, Maze.kingY, Maze.kingD * 4);
   }
 
   // Move the finish icon into position.
@@ -121,7 +121,7 @@ Maze.execute = function() {
   var interpreter = new Interpreter(code, Maze.initInterpreter);
 
   // Try running the user's code.  There are four possible outcomes:
-  // 1. If pegman reaches the finish [SUCCESS], true is thrown.
+  // 1. If king reaches the finish [SUCCESS], true is thrown.
   // 2. If the program is terminated due to running too long [TIMEOUT],
   //    false is thrown.
   // 3. If another error occurs [ERROR], that error is thrown.
@@ -457,6 +457,33 @@ Maze.initLevelDialog = function() {
   }
 };
 
+Game.displayLevelLink = function() {
+  var levelLink = document.getElementById("levelLink");
+
+  for (var i = 1; i <= Game.MAX_LEVEL; ++i) {
+    if (i == Game.LEVEL) {
+      var levelDone = document.createElement("SPAN");
+      levelDone.setAttribute("id", "level" + i);
+      levelDone.className = "level_number level_done";
+      levelDone.innerHTML = i;
+      levelLink.appendChild(levelDone);
+    } else if (i == Game.MAX_LEVEL) {
+      var level = document.createElement("a");
+      level.setAttribute("id", "level" + i);
+      level.className = "level_number";
+      level.href = "?level=" + i;
+      level.innerHTML = i;
+      levelLink.appendChild(level);
+    } else {
+      var levelDot = document.createElement("a");
+      levelDot.setAttribute("id", "level" + i);
+      levelDot.className = "level_dot";
+      levelDot.href = "?level=" + i;
+      levelLink.appendChild(levelDot);
+    }
+  }
+};
+
 Maze.init = function() {
   // BlocklyInterface.init();
 
@@ -515,6 +542,7 @@ Maze.init = function() {
     }
   }
 
+  Game.displayLevelLink();
   Maze.reset(true);
 
   // document.body.addEventListener("mousemove", Maze.updatePegSpin_, true);

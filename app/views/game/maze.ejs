@@ -1,11 +1,17 @@
-
-
 <html>
   <head>
     <meta charset="utf-8" />
     <title>Blockly Demo: Step Execution with JS Interpreter</title>
-    <link rel="stylesheet" type="text/css" href="../../../static/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../../static/css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../../static/css/common.css"
+    />
 
     <script src="../../../static/js/blockly/blockly_compressed.js"></script>
     <script src="../../../static/js/blockly/blocks_compressed.js"></script>
@@ -34,15 +40,26 @@
     </style>
   </head>
   <body>
+    <table style="width: 100%;">
+      <tr>
+        <td>
+          <h1
+            style="display: flex;align-items: center;justify-content: center;"
+            id="levelLink"
+          >
+            Logic Game &nbsp;
+          </h1>
+        </td>
+      </tr>
+    </table>
+
     <div style="width: 100%; display: flex; flex-direction: row">
-      <div
-        id="blockly"
-      ></div>
+      <div id="blockly"></div>
       <div>
         <div id="visualization">
-            <div id="pointsBubble">
-                <div id="points"></div>
-              </div>
+          <div id="pointsBubble">
+            <div id="points"></div>
+          </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -56,23 +73,17 @@
               <path d="M 0,-55 a 55 55 0 0 1 55 55" />
             </g>
           </svg>
-          <div id="capacityBubble">
-            <div id="capacity"></div>
-          </div>
         </div>
         <div>
-            <h1 type="text" name="tentativas" value="Tentativas" id="numberOfTries"> Tentativas =
-                <label for="numberOfTries" id="lbl_numberOfTries"></label> </h1>
+          <h1 type="text" name="tentativas" id="numberOfTries">
+            Tentativas =
+            <label for="numberOfTries" id="lbl_numberOfTries"></label>
+          </h1>
 
-        <p>
-          
-          <div><button id="runButton">Executar</button></div> 
-          <div><button id="resetButton">Reiniciar</button></div> 
-        </p>
+          <div><button id="runButton">Executar</button></div>
+          <div><button id="resetButton">Reiniciar</button></div>
+        </div>
       </div>
-
-    </div>
-     
     </div>
     <xml id="toolbox" style="display: none"></xml>
 
@@ -94,24 +105,27 @@
     </div>
 
     <div id="dialogStartLevel" class="dialogHiddenContent">
-      <div id="dialogStartLevelText" style="font-size: large; margin: 1em;"></div>
+      <div
+        id="dialogStartLevelText"
+        style="font-size: large; margin: 1em;"
+      ></div>
       <button id="startLevelOk" class="secondary">
-          OK
+        OK
       </button>
     </div>
 
     <div class="layer"></div>
 
-    <div id="tipsPopup"  class="dialogHiddenContent">
+    <div id="tipsPopup" class="dialogHiddenContent">
       <div id="tipsText" style="font-size: large; margin: 1em;"></div>
     </div>
 
     <div id="dialogHelpOneTopBlock" class="dialogHiddenContent">
       Você deve empilhar todos os blocos na área de trabalho branca.
-        <div id="sampleOneTopBlock" class="readonly"></div>
+      <div id="sampleOneTopBlock" class="readonly"></div>
     </div>
 
-    <div id="runPopup"  class="dialogHiddenContent">
+    <div id="runPopup" class="dialogHiddenContent">
       <div id="runText" style="font-size: large; margin: 1em;"></div>
     </div>
   </body>

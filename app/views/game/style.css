@@ -98,14 +98,14 @@ html[dir="RTL"] button.primary {
   background-position: -21px -21px;
 }
 
-#pegmanButton {
+#kingButton {
   padding: 0;
   position: relative;
 }
-#pegmanButton:active {
+#kingButton:active {
   border: 1px solid #000 !important;
 }
-#pegmanButton>img {
+#kingButton>img {
   margin-left: -0.5ex;
   margin-right: 0.5ex;
   height: 38px;
@@ -113,32 +113,32 @@ html[dir="RTL"] button.primary {
   background-position: -980px 0px;
   opacity: 0.8;
 }
-html[dir="RTL"] #pegmanButton>img {
+html[dir="RTL"] #kingButton>img {
   margin-left: 0.5ex;
   margin-right: -0.5ex;
 }
-#pegmanButton>span {
+#kingButton>span {
   position: absolute;
   top: 0.8ex;
   margin-left: -15px;
 }
-html[dir="RTL"] #pegmanButton>span {
+html[dir="RTL"] #kingButton>span {
   margin-right: -15px;
 }
-#pegmanMenu {
+#kingMenu {
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 2px 2px 5px #888;
   display: none;
   position: absolute;
 }
-#pegmanMenu>div {
+#kingMenu>div {
   background-color: #000;
 }
-#pegmanMenu>div:hover {
+#kingMenu>div:hover {
   background-color: #57e;
 }
-#pegmanMenu>div>img {
+#kingMenu>div>img {
   height: 38px;
   width: 49px;
   background-position: -980px 0px;

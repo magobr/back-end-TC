@@ -34,23 +34,23 @@ Maze.move = function(direction, id) {
     throw false;
   }
   // If moving backward, flip the effective direction.
-  var effectiveDirection = Maze.pegmanD + direction;
+  var effectiveDirection = Maze.kingD + direction;
   var command;
   switch (Maze.constrainDirection4(effectiveDirection)) {
     case Maze.DirectionType.NORTH:
-      Maze.pegmanY--;
+      Maze.kingY--;
       command = "north";
       break;
     case Maze.DirectionType.EAST:
-      Maze.pegmanX++;
+      Maze.kingX++;
       command = "east";
       break;
     case Maze.DirectionType.SOUTH:
-      Maze.pegmanY++;
+      Maze.kingY++;
       command = "south";
       break;
     case Maze.DirectionType.WEST:
-      Maze.pegmanX--;
+      Maze.kingX--;
       command = "west";
       break;
   }
@@ -60,25 +60,25 @@ Maze.move = function(direction, id) {
 };
 
 /**
- * Turn pegman left or right.
+ * Turn king left or right.
  * @param {number} direction Direction to turn (0 = left, 1 = right).
  * @param {string} id ID of block that triggered this action.
  */
 Maze.turn = function(direction, id) {
   if (direction) {
     // Right turn (clockwise).
-    Maze.pegmanD++;
+    Maze.kingD++;
     Maze.log.push(["right", id]);
   } else {
     // Left turn (counterclockwise).
-    Maze.pegmanD--;
+    Maze.kingD--;
     Maze.log.push(["left", id]);
   }
-  Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD);
+  Maze.kingD = Maze.constrainDirection4(Maze.kingD);
 };
 
 /**
- * Is there a path next to pegman?
+ * Is there a path next to king?
  * @param {number} direction Direction to look
  *     (0 = forward, 1 = right, 2 = backward, 3 = left).
  * @param {?string} id ID of block that triggered this action.
@@ -86,26 +86,24 @@ Maze.turn = function(direction, id) {
  * @return {boolean} True if there is a path.
  */
 Maze.isPath = function(direction, id) {
-  var effectiveDirection = Maze.pegmanD + direction;
+  var effectiveDirection = Maze.kingD + direction;
   var square;
   var command;
   switch (Maze.constrainDirection4(effectiveDirection)) {
     case Maze.DirectionType.NORTH:
-      square =
-        Maze.map[Maze.pegmanY - 1] && Maze.map[Maze.pegmanY - 1][Maze.pegmanX];
+      square = Maze.map[Maze.kingY - 1] && Maze.map[Maze.kingY - 1][Maze.kingX];
       command = "look_north";
       break;
     case Maze.DirectionType.EAST:
-      square = Maze.map[Maze.pegmanY][Maze.pegmanX + 1];
+      square = Maze.map[Maze.kingY][Maze.kingX + 1];
       command = "look_east";
       break;
     case Maze.DirectionType.SOUTH:
-      square =
-        Maze.map[Maze.pegmanY + 1] && Maze.map[Maze.pegmanY + 1][Maze.pegmanX];
+      square = Maze.map[Maze.kingY + 1] && Maze.map[Maze.kingY + 1][Maze.kingX];
       command = "look_south";
       break;
     case Maze.DirectionType.WEST:
-      square = Maze.map[Maze.pegmanY][Maze.pegmanX - 1];
+      square = Maze.map[Maze.kingY][Maze.kingX - 1];
       command = "look_west";
       break;
   }
@@ -120,30 +118,28 @@ Maze.isPath = function(direction, id) {
  * @return {boolean} True if not done, false if done.
  */
 Maze.notDone = function() {
-  return Maze.pegmanX != Maze.finish_.x || Maze.pegmanY != Maze.finish_.y;
+  return Maze.kingX != Maze.finish_.x || Maze.kingY != Maze.finish_.y;
 };
 
 Maze.collect = function(direction, id) {
-  var effectiveDirection = Maze.pegmanD + direction;
+  var effectiveDirection = Maze.kingD + direction;
   var square;
   var command;
   switch (Maze.constrainDirection4(effectiveDirection)) {
     case Maze.DirectionType.NORTH:
-      square =
-        Maze.map[Maze.pegmanY - 1] && Maze.map[Maze.pegmanY - 1][Maze.pegmanX];
+      square = Maze.map[Maze.kingY - 1] && Maze.map[Maze.kingY - 1][Maze.kingX];
       command = "collect";
       break;
     case Maze.DirectionType.EAST:
-      square = Maze.map[Maze.pegmanY][Maze.pegmanX + 1];
+      square = Maze.map[Maze.kingY][Maze.kingX + 1];
       command = "collect";
       break;
     case Maze.DirectionType.SOUTH:
-      square =
-        Maze.map[Maze.pegmanY + 1] && Maze.map[Maze.pegmanY + 1][Maze.pegmanX];
+      square = Maze.map[Maze.kingY + 1] && Maze.map[Maze.kingY + 1][Maze.kingX];
       command = "collect";
       break;
     case Maze.DirectionType.WEST:
-      square = Maze.map[Maze.pegmanY][Maze.pegmanX - 1];
+      square = Maze.map[Maze.kingY][Maze.kingX - 1];
       command = "collect";
       break;
   }
@@ -154,17 +150,14 @@ Maze.collect = function(direction, id) {
 };
 
 Maze.displayPegman = function(x, y, d, opt_angle) {
-  var pegmanIcon = document.getElementById("pegman");
-  pegmanIcon.setAttribute(
-    "x",
-    x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1
-  );
-  pegmanIcon.setAttribute(
+  var kingIcon = document.getElementById("king");
+  kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
+  kingIcon.setAttribute(
     "y",
     Maze.SQUARE_SIZE * (y + 0.5) - Maze.PEGMAN_HEIGHT / 2 - 8
   );
   if (opt_angle) {
-    pegmanIcon.setAttribute(
+    kingIcon.setAttribute(
       "transform",
       "rotate(" +
         opt_angle +
@@ -175,12 +168,12 @@ Maze.displayPegman = function(x, y, d, opt_angle) {
         ")"
     );
   } else {
-    pegmanIcon.setAttribute("transform", "rotate(0, 0, 0)");
+    kingIcon.setAttribute("transform", "rotate(0, 0, 0)");
   }
 
   var clipRect = document.getElementById("clipRect");
   clipRect.setAttribute("x", x * Maze.SQUARE_SIZE + 1);
-  clipRect.setAttribute("y", pegmanIcon.getAttribute("y"));
+  clipRect.setAttribute("y", kingIcon.getAttribute("y"));
 };
 
 Maze.schedule = function(startPos, endPos) {
@@ -229,8 +222,8 @@ Maze.schedule = function(startPos, endPos) {
  * @param {!Maze.DirectionType} d Direction (0 - 3).
  */
 Maze.scheduleLook = function(d) {
-  var x = Maze.pegmanX;
-  var y = Maze.pegmanY;
+  var x = Maze.kingX;
+  var y = Maze.kingY;
   switch (d) {
     case Maze.DirectionType.NORTH:
       x += 0.5;
@@ -286,7 +279,7 @@ Maze.scheduleLookStep = function(path, delay) {
 Maze.scheduleFail = function(forward) {
   var deltaX = 0;
   var deltaY = 0;
-  switch (Maze.pegmanD) {
+  switch (Maze.kingD) {
     case Maze.DirectionType.NORTH:
       deltaY = -1;
       break;
@@ -308,23 +301,19 @@ Maze.scheduleFail = function(forward) {
     // Bounce bounce.
     deltaX /= 4;
     deltaY /= 4;
-    var direction16 = Maze.constrainDirection16(Maze.pegmanD * 4);
-    Maze.displayPegman(
-      Maze.pegmanX + deltaX,
-      Maze.pegmanY + deltaY,
-      direction16
-    );
+    var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
+    Maze.displayPegman(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
     Game.workspace.getAudioManager().play("fail", 0.5);
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
+        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed)
     );
     Maze.pidList.push(
       setTimeout(function() {
         Maze.displayPegman(
-          Maze.pegmanX + deltaX,
-          Maze.pegmanY + deltaY,
+          Maze.kingX + deltaX,
+          Maze.kingY + deltaY,
           direction16
         );
         Game.workspace.getAudioManager().play("fail", 0.5);
@@ -332,7 +321,7 @@ Maze.scheduleFail = function(forward) {
     );
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
+        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed * 3)
     );
   } else {
@@ -355,11 +344,11 @@ Maze.scheduleFail = function(forward) {
     var setPosition = function(n) {
       return function() {
         var direction16 = Maze.constrainDirection16(
-          Maze.pegmanD * 4 + deltaD * n
+          Maze.kingD * 4 + deltaD * n
         );
         Maze.displayPegman(
-          Maze.pegmanX + deltaX * n,
-          Maze.pegmanY + deltaY * n,
+          Maze.kingX + deltaX * n,
+          Maze.kingY + deltaY * n,
           direction16,
           deltaZ * n
         );
@@ -378,25 +367,25 @@ Maze.scheduleFail = function(forward) {
  * @param {boolean} sound Play the victory sound.
  */
 Maze.scheduleFinish = function(sound) {
-  var direction16 = Maze.constrainDirection16(Maze.pegmanD * 4);
-  Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 16);
+  var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
+  Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
   // if (sound) {
   //   BlocklyGames.workspace.getAudioManager().play("win", 0.5);
   // }
   Maze.stepSpeed = 150; // Slow down victory animation a bit.
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 18);
+      Maze.displayPegman(Maze.kingX, Maze.kingY, 18);
     }, Maze.stepSpeed)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 16);
+      Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
     }, Maze.stepSpeed * 2)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
+      Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
     }, Maze.stepSpeed * 3)
   );
 };
@@ -415,31 +404,31 @@ Maze.animate = function() {
   switch (action[0]) {
     case "north":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX, Maze.pegmanY - 1, Maze.pegmanD * 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX, Maze.kingY - 1, Maze.kingD * 4]
       );
-      Maze.pegmanY--;
+      Maze.kingY--;
       break;
     case "east":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX + 1, Maze.pegmanY, Maze.pegmanD * 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX + 1, Maze.kingY, Maze.kingD * 4]
       );
-      Maze.pegmanX++;
+      Maze.kingX++;
       break;
     case "south":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX, Maze.pegmanY + 1, Maze.pegmanD * 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX, Maze.kingY + 1, Maze.kingD * 4]
       );
-      Maze.pegmanY++;
+      Maze.kingY++;
       break;
     case "west":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX - 1, Maze.pegmanY, Maze.pegmanD * 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX - 1, Maze.kingY, Maze.kingD * 4]
       );
-      Maze.pegmanX--;
+      Maze.kingX--;
       break;
     case "look_north":
       Maze.scheduleLook(Maze.DirectionType.NORTH);
@@ -461,21 +450,21 @@ Maze.animate = function() {
       break;
     case "left":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4 - 4]
       );
-      Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD - 1);
+      Maze.kingD = Maze.constrainDirection4(Maze.kingD - 1);
       break;
     case "right":
       Maze.schedule(
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-        [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 + 4]
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+        [Maze.kingX, Maze.kingY, Maze.kingD * 4 + 4]
       );
-      Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD + 1);
+      Maze.kingD = Maze.constrainDirection4(Maze.kingD + 1);
       break;
     case "collect":
       Maze.flowers.map(flower => {
-        if (Maze.pegmanX === flower.x && Maze.pegmanY === flower.y) {
+        if (Maze.kingX === flower.x && Maze.kingY === flower.y) {
           var flowerIcon = document.getElementById("flower" + flower.id);
           if (flowerIcon.style.opacity === "0") {
             alert("Não há nada para coletar");
