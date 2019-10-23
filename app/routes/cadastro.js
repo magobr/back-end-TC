@@ -5,6 +5,7 @@ module.exports = function(app){
     });
 
     app.post('/cadastrado',function(req, res){
+        
         var cadastro = req.body;
         var nome = req.body.nome;
         var email = req.body.email;
@@ -16,10 +17,9 @@ module.exports = function(app){
         var formModel = new app.app.models.formModel;
         
         if ( (nome == '' || nome == undefined || nome.length < 3) || (email == '' || email == undefined || email.length < 3) || (idade == '' || idade == undefined) || (senha == '' || senha == undefined || senha.length < 3)) {
-            
             res.send('Error');
-        
         } else {
+
             formModel.salvarCadastro(cadastro, connection, function(erro, result) {
         
                 if (erro) {

@@ -1,98 +1,90 @@
-
-
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Blockly Demo: Step Execution with JS Interpreter</title>
-    <link rel="stylesheet" type="text/css" href="../../../static/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/common.css" />
 
-    <script src="../../../static/js/blockly/blockly_compressed.js"></script>
-    <script src="../../../static/js/blockly/blocks_compressed.js"></script>
-    <script src="../../../static/js/blockly/javascript_compressed.js"></script>
-    <script src="../../../static/js/blockly/msg/messages.js"></script>
-    <script src="../../../static/js/utils/game_msg/game_messages.js"></script>
-    <script src="../../../static/js/utils/blocks.js"></script>
-    <script src="../../../static/js/utils/game.js"></script>
-    <script src="../../../static/js/utils/game_dialogs.js"></script>
-    <script src="../../../static/js/game/mazeTest.js"></script>
-    <script src="../../../static/js/game/maze_utils.js"></script>
-    <script src="../../../static/js/game/maze_draw_map.js"></script>
-    <script src="../../../static/js/game/maze_animation.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <title>Blockly Demo: Step Execution with JS Interpreter</title>
+  <link rel="stylesheet" type="text/css" href="../../../static/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="../../../static/css/common.css" />
 
-    <script src="../../../static/js/prettify/prettify.js"></script>
+  <script src="../../../static/js/blockly/blockly_compressed.js"></script>
+  <script src="../../../static/js/blockly/blocks_compressed.js"></script>
+  <script src="../../../static/js/blockly/javascript_compressed.js"></script>
+  <script src="../../../static/js/blockly/msg/messages.js"></script>
+  <script src="../../../static/js/utils/game_msg/game_messages.js"></script>
+  <script src="../../../static/js/utils/blocks.js"></script>
+  <script src="../../../static/js/utils/game.js"></script>
+  <script src="../../../static/js/utils/game_dialogs.js"></script>
+  <script src="../../../static/js/game/mazeTest.js"></script>
+  <script src="../../../static/js/game/maze_utils.js"></script>
+  <script src="../../../static/js/game/maze_draw_map.js"></script>
+  <script src="../../../static/js/game/maze_animation.js"></script>
 
-    <style>
-      body {
-        background-color: #ffffff;
-        font-family: sans-serif;
-      }
-      h1 {
-        font-weight: normal;
-        font-size: 140%;
-      }
-    </style>
-  </head>
-  <body>
-    <div style="width: 100%; display: flex; flex-direction: row">
-      <div
-        id="blockly"
-        style="display: inline-block; height: 480px; width: 58%"
-      ></div>
-      <div>
-        <div id="visualization">
-            <div id="pointsBubble">
-                <div id="points"></div>
-              </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            id="svgMaze"
-            width="400px"
-            height="400px"
-          >
-            <g id="look">
-              <path d="M 0,-15 a 15 15 0 0 1 15 15" />
-              <path d="M 0,-35 a 35 35 0 0 1 35 35" />
-              <path d="M 0,-55 a 55 55 0 0 1 55 55" />
-            </g>
-          </svg>
-          <div id="capacityBubble">
-            <div id="capacity"></div>
-          </div>
+  <script src="../../../static/js/prettify/prettify.js"></script>
+
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="width: 100%; display: flex; flex-direction: row">
+    <div id="blockly" style="display: inline-block; height: 480px; width: 58%"></div>
+    <div>
+      <div id="visualization">
+        <div id="pointsBubble">
+          <div id="points"></div>
         </div>
-        <div>
-            <h1 type="text" name="tentativas" value="Tentativas" id="numberOfTries"> Tentativas =
-                <label for="numberOfTries" id="lbl_numberOfTries"></label> </h1>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svgMaze" width="400px" height="400px">
+          <g id="look">
+            <path d="M 0,-15 a 15 15 0 0 1 15 15" />
+            <path d="M 0,-35 a 35 35 0 0 1 35 35" />
+            <path d="M 0,-55 a 55 55 0 0 1 55 55" />
+          </g>
+        </svg>
+        <div id="capacityBubble">
+          <div id="capacity"></div>
+        </div>
+      </div>
+      <div>
+        <h1 type="text" name="tentativas" value="Tentativas" id="numberOfTries"> Tentativas =
+          <label for="numberOfTries" id="lbl_numberOfTries"></label> </h1>
 
         <p>
-          
-          <div><button id="runButton">Executar</button></div> 
-          <div><button id="resetButton">Reiniciar</button></div> 
+          <div><button id="runButton">Executar</button></div>
+          <div><button id="resetButton">Reiniciar</button></div>
         </p>
       </div>
 
     </div>
-     
-    </div>
-    <xml id="toolbox" style="display: none"></xml>
 
-    <div id="dialogShadow" class="dialogAnimate"></div>
-    <div id="dialogBorder"></div>
-    <div id="dialog"></div>
-    <div id="dialogDone" class="dialogHiddenContent">
-      <div id="dialogLinesText" style="font-size: large; margin: 1em;"></div>
-      <pre id="containerCode"></pre>
-      <div id="dialogDoneText" style="font-size: large; margin: 1em;"></div>
-      <div id="dialogDoneButtons" class="farSide" style="padding: 1ex 3ex 0">
-        <button id="doneCancel">
-          Cancelar
-        </button>
-        <button id="doneOk" class="secondary">
-          OK
-        </button>
-      </div>
+  </div>
+  <xml id="toolbox" style="display: none"></xml>
+
+  <div id="dialogShadow" class="dialogAnimate"></div>
+  <div id="dialogBorder"></div>
+  <div id="dialog"></div>
+  <div id="dialogDone" class="dialogHiddenContent">
+    <div id="dialogLinesText" style="font-size: large; margin: 1em;"></div>
+    <pre id="containerCode"></pre>
+    <div id="dialogDoneText" style="font-size: large; margin: 1em;"></div>
+    <div id="dialogDoneButtons" class="farSide" style="padding: 1ex 3ex 0">
+      <button id="doneCancel">
+        Cancelar
+      </button>
+      <button id="doneOk" class="secondary">
+        OK
+      </button>
     </div>
-    <div class="layer"></div>
-  </body>
+  </div>
+  <div class="layer"></div>
+</body>
+
 </html>

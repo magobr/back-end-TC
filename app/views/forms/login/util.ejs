@@ -4,7 +4,7 @@
 
         $('#btnVerde').attr({
             id: 'btnLogin',
-            name: 'btnLogin'
+            name: 'btnLogin'            
         }).
         html('Login');
 
@@ -27,6 +27,14 @@
                 alert('Defina uma Senha');
                 return false;
             } 
+        });
+
+        $('#btnCadastro').click(function(){
+            alert('teste');
+            $('#formLogin').attr({
+                action: '/login',
+                method: 'GET'
+            })
         });
 
     });
