@@ -1,10 +1,11 @@
-"use strict";
+// "use strict";
 
 goog.provide("Maze");
 
 goog.require("Blockly.FieldDropdown");
 goog.require("BlocklyInterface");
 goog.require("Maze.Blocks");
+
 
 Maze.ResultType = {
   UNSET: 0,
@@ -94,14 +95,11 @@ Maze.reset = function(first) {
     flowerIcon.style.opacity = "1";
   });
 
-  /*Count*/
   numberOfSteps = 0;
   points = 0;
   document.getElementById("points").innerHTML = points;
   document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
   console.log("workspace", Game.workspace.getAllBlocks());
-  /*fim Count*/
-
 };
 
 /**
@@ -154,10 +152,32 @@ Maze.execute = function() {
     }
   }
 
+
+  var dataGame = [
+    numberOfBlocks,
+    numberOfSteps,
+    numberOfTries,
+    points
+  ];
+
   // Fast animation if execution is successful.  Slow otherwise.
   if (Maze.result == Maze.ResultType.SUCCESS) {
     Maze.stepSpeed = 100;
     Maze.log.push(["finish", null]);
+
+    (async () => {
+      const rawResponse = await fetch('/dados', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataGame)
+      });
+      const conteudo = await rawResponse.json();
+      console.log(conteudo);
+      
+    })();
   } else {
     Maze.stepSpeed = 150;
   }
@@ -210,7 +230,6 @@ Maze.resetButtonClick = function(e) {
   document.getElementById("resetButton").style.display = "none";
   Game.workspace.highlightBlock(null);
   numberOfTries++;
-  console.log(numberOfTries);
   Maze.reset(false);
   Maze.levelHelp();
 };

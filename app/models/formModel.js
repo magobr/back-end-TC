@@ -19,7 +19,7 @@ Forms.prototype.home = function(connection,callback){
 }
 
 Forms.prototype.salvarDados = function(dadosGame, connection, callback){
-	connection.query('insert into niveis(n_passos , n_pontos , n_tentativas , id_nivel, resultadoDesempenho) values (?, ?, ?, ?, ?) ', dadosGame, callback);
+	connection.query('insert into niveis(n_passos , n_pontos , n_blocos, n_tentativas , id_nivel, resultadoDesempenho) values (?, ?, ?, ?, null, "") ', dadosGame, callback);
 }
 
 module.exports = function(){
