@@ -54,8 +54,7 @@ Maze.move = function(direction, id) {
       command = "west";
       break;
   }
-  numberOfSteps++;
-  console.log("numberOfSteps", numberOfSteps);
+
   Maze.log.push([command, id]);
 };
 
@@ -408,6 +407,7 @@ Maze.animate = function() {
         [Maze.kingX, Maze.kingY - 1, Maze.kingD * 4]
       );
       Maze.kingY--;
+      numberOfSteps++;
       break;
     case "east":
       Maze.schedule(
@@ -415,6 +415,7 @@ Maze.animate = function() {
         [Maze.kingX + 1, Maze.kingY, Maze.kingD * 4]
       );
       Maze.kingX++;
+      numberOfSteps++;
       break;
     case "south":
       Maze.schedule(
@@ -422,6 +423,7 @@ Maze.animate = function() {
         [Maze.kingX, Maze.kingY + 1, Maze.kingD * 4]
       );
       Maze.kingY++;
+      numberOfSteps++;
       break;
     case "west":
       Maze.schedule(
@@ -429,6 +431,7 @@ Maze.animate = function() {
         [Maze.kingX - 1, Maze.kingY, Maze.kingD * 4]
       );
       Maze.kingX--;
+      numberOfSteps++;
       break;
     case "look_north":
       Maze.scheduleLook(Maze.DirectionType.NORTH);
@@ -482,6 +485,26 @@ Maze.animate = function() {
       Maze.scheduleFinish(true);
       //BlocklyInterface.saveToLocalStorage();
       setTimeout(GameDialogs.congratulations, 1000);
+      var dataGame = [numberOfBlocks, numberOfSteps, numberOfTries, points];
+      (async () => {
+        const rawResponse = await fetch("/dados", {
+          method: "post",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dataGame)
+        });
+        const conteudo = await rawResponse.json();
+        console.log(conteudo);
+      })();
+      console.log(
+        "testeee",
+        numberOfSteps,
+        numberOfBlocks,
+        numberOfTries,
+        points
+      );
   }
 
   Maze.pidList.push(setTimeout(Maze.animate, Maze.stepSpeed * 5));

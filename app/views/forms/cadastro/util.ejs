@@ -21,7 +21,6 @@ $(document).ready(function(){
 
         $('#btnCadastro').click(function(){
 
-
             var nome = $("#nome").val();
             if (nome == 'undefined' || nome == '' || nome.length < 3) {
                 alert('nome');
@@ -47,11 +46,9 @@ $(document).ready(function(){
             }
 
             var reSenha = $('#reSenha').val();
-            if (reSenha == 'undefined' || reSenha == '' || reSenha.length < 3){
-                if ( reSenha != senha ) {    
-                    alert('Defina uma Senha');
-                    return false;
-                }
+            if ( reSenha != senha || reSenha == 'undefined' || reSenha == '' || reSenha.length < 3){
+                alert('Defina uma Senha');
+                return false;
             }
 
         });
