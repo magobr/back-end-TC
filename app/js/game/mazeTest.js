@@ -199,7 +199,7 @@ Maze.runButtonClick = function(e) {
   }
   runButton.style.display = "none";
   resetButton.style.display = "inline";
-  // console.log("numberOfBlocks", Maze.numberOfBlocks);
+
   Maze.reset(false);
   Maze.execute();
   numberOfBlocks = Game.workspace.getAllBlocks().length;

@@ -479,6 +479,9 @@ Maze.animate = function() {
           }
         }
       });
+      if (Maze.map[Maze.kingY][Maze.kingX] !== Maze.SquareType.COLLECT) {
+        alert("Não há nada para coletar");
+      }
 
       break;
     case "finish":
