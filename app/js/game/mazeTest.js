@@ -6,7 +6,6 @@ goog.require("Blockly.FieldDropdown");
 goog.require("BlocklyInterface");
 goog.require("Maze.Blocks");
 
-
 Maze.ResultType = {
   UNSET: 0,
   SUCCESS: 1,
@@ -38,25 +37,25 @@ Maze.reset = function(first) {
   Maze.pidList = [];
 
   // Move Pegman into position.
-  Maze.pegmanX = Maze.start_.x;
-  Maze.pegmanY = Maze.start_.y;
+  Maze.kingX = Maze.start_.x;
+  Maze.kingY = Maze.start_.y;
 
   if (first) {
-    Maze.pegmanD = Maze.startDirection + 1;
+    Maze.kingD = Maze.startDirection + 1;
     Maze.scheduleFinish(false);
     Maze.pidList.push(
       setTimeout(function() {
         Maze.stepSpeed = 100;
         Maze.schedule(
-          [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-          [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]
+          [Maze.kingX, Maze.kingY, Maze.kingD * 4],
+          [Maze.kingX, Maze.kingY, Maze.kingD * 4 - 4]
         );
-        Maze.pegmanD++;
+        Maze.kingD++;
       }, Maze.stepSpeed * 5)
     );
   } else {
-    Maze.pegmanD = Maze.startDirection;
-    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4);
+    Maze.kingD = Maze.startDirection;
+    Maze.displayPegman(Maze.kingX, Maze.kingY, Maze.kingD * 4);
   }
 
   // Move the finish icon into position.
@@ -122,7 +121,7 @@ Maze.execute = function() {
   var interpreter = new Interpreter(code, Maze.initInterpreter);
 
   // Try running the user's code.  There are four possible outcomes:
-  // 1. If pegman reaches the finish [SUCCESS], true is thrown.
+  // 1. If king reaches the finish [SUCCESS], true is thrown.
   // 2. If the program is terminated due to running too long [TIMEOUT],
   //    false is thrown.
   // 3. If another error occurs [ERROR], that error is thrown.
@@ -152,32 +151,10 @@ Maze.execute = function() {
     }
   }
 
-
-  var dataGame = [
-    numberOfBlocks,
-    numberOfSteps,
-    numberOfTries,
-    points
-  ];
-
   // Fast animation if execution is successful.  Slow otherwise.
   if (Maze.result == Maze.ResultType.SUCCESS) {
     Maze.stepSpeed = 100;
     Maze.log.push(["finish", null]);
-
-    (async () => {
-      const rawResponse = await fetch('/dados', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataGame)
-      });
-      const conteudo = await rawResponse.json();
-      console.log(conteudo);
-      
-    })();
   } else {
     Maze.stepSpeed = 150;
   }
@@ -193,7 +170,7 @@ Maze.runButtonClick = function(e) {
   // if (BlocklyInterface.eventSpam(e)) {
   //   return;
   // }
-  // //BlocklyDialogs.hideDialog(false);
+  GameDialogs.hideDialog(false);
   // // Only allow a single top block on level 1.
   // if (
   //   BlocklyGames.LEVEL == 1 &&
@@ -204,6 +181,16 @@ Maze.runButtonClick = function(e) {
   //   Maze.levelHelp();
   //   return;
   // }
+
+  if (
+    Game.LEVEL == 1 &&
+    Game.workspace.getTopBlocks(false).length > 1 &&
+    Maze.result != Maze.ResultType.SUCCESS
+  ) {
+    Maze.levelHelp();
+    return;
+  }
+
   var runButton = document.getElementById("runButton");
   var resetButton = document.getElementById("resetButton");
   // Ensure that Reset button is at least as wide as Run button.
@@ -212,8 +199,7 @@ Maze.runButtonClick = function(e) {
   }
   runButton.style.display = "none";
   resetButton.style.display = "inline";
-  // Maze.numberOfBlocks = Game.workspace.getAllBlocks().length;
-  // console.log("numberOfBlocks", Maze.numberOfBlocks);
+
   Maze.reset(false);
   Maze.execute();
   numberOfBlocks = Game.workspace.getAllBlocks().length;
@@ -232,35 +218,6 @@ Maze.resetButtonClick = function(e) {
   numberOfTries++;
   Maze.reset(false);
   Maze.levelHelp();
-};
-
-Maze.updateCapacity = function() {
-  var cap = Game.workspace.remainingCapacity();
-  var p = document.getElementById("capacity");
-  if (cap == Infinity) {
-    p.style.display = "none";
-  } else {
-    p.style.display = "inline";
-    p.innerHTML = "";
-    cap = Number(cap);
-    var capSpan = document.createElement("span");
-    capSpan.className = "capacityNumber";
-    capSpan.appendChild(document.createTextNode(cap));
-    if (cap == 0) {
-      var msg = Blockly.Msg.MAZE_CAPACITY_0;
-    } else if (cap == 1) {
-      var msg = Blockly.Msg.MAZE_CAPACITY_1;
-    } else {
-      var msg = Blockly.Msg.MAZE_CAPACITY_2;
-    }
-    var parts = msg.split(/%\d/);
-    for (var i = 0; i < parts.length; i++) {
-      p.appendChild(document.createTextNode(parts[i]));
-      if (i != parts.length - 1) {
-        p.appendChild(capSpan.cloneNode(true));
-      }
-    }
-  }
 };
 
 Maze.initInterpreter = function(interpreter, scope) {
@@ -349,36 +306,186 @@ Maze.initInterpreter = function(interpreter, scope) {
   );
 };
 
+Maze.levelHelp = function(opt_event) {
+  if (opt_event && opt_event.type == Blockly.Events.UI) {
+    // Just a change to highlighting or somesuch.
+    return;
+  } else if (Game.workspace.isDragging()) {
+    // Don't change helps during drags.
+    return;
+  }
+  //else if (Maze.result == Maze.ResultType.SUCCESS ||
+  //            Game.loadFromLocalStorage(Game.NAME,
+  //                                              Game.LEVEL)) {
+  //   // The user has already won.  They are just playing around.
+  //   return;
+  // }
+  var rtl = true;
+  var userBlocks = Blockly.Xml.domToText(
+    Blockly.Xml.workspaceToDom(Game.workspace)
+  );
+  var toolbar = Game.workspace.flyout_.workspace_.getTopBlocks(true);
+  var content = document.getElementById("tipsPopup");
+  var origin = null;
+  var style = { width: "370px", left: "70%", top: "3em" };
+
+  if (Game.LEVEL == 1) {
+    var topBlocks = Game.workspace.getTopBlocks(true);
+    console.log("topBlocks", topBlocks);
+    if (topBlocks.length > 1) {
+      var xml = [
+        "<xml>",
+        '<block type="maze_moveForward" x="10" y="10">',
+        "<next>",
+        '<block type="maze_moveForward"></block>',
+        "</next>",
+        "</block>",
+        "</xml>"
+      ];
+      Game.injectReadonly("sampleOneTopBlock", xml);
+      content = document.getElementById("dialogHelpOneTopBlock");
+
+      origin = topBlocks[0].getSvgRoot();
+    } else if (
+      Game.workspace.getAllBlocks().length >= 2 &&
+      Maze.result == Maze.ResultType.UNSET
+    ) {
+      content = document.getElementById("runPopup");
+      style = { width: "360px", top: "410px", right: "400px" };
+      var linesText = document.getElementById("runText");
+      linesText.textContent = "Execute seu programa para ver o que acontece.";
+      origin = document.getElementById("runButton");
+    } else {
+      content = null;
+    }
+  } else if (Game.LEVEL == 2) {
+    if (
+      userBlocks.indexOf("maze_turnRight") == -1 &&
+      userBlocks.indexOf("maze_turnLeft") == -1
+    ) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Utilize os blocos 'direita' e 'esquerda' para direcionar o rei para a direção correta";
+    } else if (userBlocks.indexOf("collect") == -1) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Utilize o bloco coletar para pegar a flor durante o caminho e ganhar pontos.";
+    }
+    if (
+      Maze.result != Maze.ResultType.UNSET &&
+      document.getElementById("runButton").style.display == "none"
+    ) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Seu programa não resolveu o labirinto. Aperte 'Reiniciar' e tente novamente.";
+      origin = document.getElementById("resetButton");
+    }
+  } else if (Game.LEVEL == 3) {
+    if (
+      userBlocks.indexOf("maze_forever") == -1 &&
+      userBlocks.indexOf("controls_repeat") == -1
+    ) {
+      var linesText = document.getElementById("tipsText");
+      linesText.textContent =
+        "Utilize o bloco 'repetir até (quantidade desejada)' ou 'repetir até o objetivo' para executar o comando de um bloco mais de uma vez.";
+    } else {
+      content = null;
+    }
+  } else if (Game.LEVEL == 4) {
+    content = null;
+  } else if (Game.LEVEL == 5) {
+    var linesText = document.getElementById("tipsText");
+    linesText.textContent =
+      "Um bloco 'se' fará alguma coisa apenas se a condição for verdadeira. Já um bloco se-senão fará uma coisa ou outra.";
+  } else if (Game.LEVEL > 5) {
+    content = null;
+  }
+
+  if (content) {
+    if (content.parentNode != document.getElementById("dialog")) {
+      GameDialogs.showDialog(content, origin, true, false, style, null);
+    }
+  } else {
+    GameDialogs.hideDialog(false);
+  }
+};
+
+Maze.closeDialogStartLevel = function() {
+  GameDialogs.hideDialog;
+
+  Game.workspace.addChangeListener(Maze.levelHelp);
+  Maze.levelHelp();
+};
+
+Maze.initLevelDialog = function() {
+  var toolbar = Game.workspace.flyout_.workspace_.getTopBlocks(true);
+  var content = document.getElementById("dialogStartLevel");
+  var style = { width: "370px", left: "30%", top: "3em" };
+  var ok = document.getElementById("startLevelOk");
+  ok.addEventListener("click", Maze.closeDialogStartLevel, true);
+  ok.addEventListener("touchend", Maze.closeDialogStartLevel, true);
+
+  if (Game.LEVEL == 1) {
+    var linesText = document.getElementById("dialogStartLevelText");
+    linesText.textContent =
+      "Arraste alguns blocos 'avançar' para me ajudar a alcançar o objetivo.";
+    origin = toolbar[0].getSvgRoot();
+  } else if (Game.LEVEL == 2) {
+    var linesText = document.getElementById("dialogStartLevelText");
+    linesText.textContent =
+      "Utilize os blocos 'direita' e 'esquerda' para direcionar o rei para a direção correta";
+  } else if (Game.LEVEL == 3) {
+    var linesText = document.getElementById("dialogStartLevelText");
+    linesText.textContent =
+      "Utilize o bloco 'repetir até (quantidade desejada)' ou 'repetir até o objetivo' para executar o comando de um bloco mais de uma vez.";
+  } else if (Game.LEVEL == 4) {
+    content = null;
+  } else if (Game.LEVEL == 5) {
+    var linesText = document.getElementById("dialogStartLevelText");
+    linesText.textContent =
+      "Agora é com você! Tente utilizar a menor quantidade de blocos para guiar o rei até a sua coroa e no caminho tente coletar a maior quantidade de flores que você conseguir ";
+  } else if (Game.LEVEL > 5) {
+    content = null;
+  }
+
+  if (content) {
+    if (content.parentNode != document.getElementById("dialog")) {
+      GameDialogs.showDialog(content, null, false, true, style, null);
+    }
+  } else {
+    GameDialogs.hideDialog(false);
+  }
+};
+
+Game.displayLevelLink = function() {
+  var levelLink = document.getElementById("levelLink");
+
+  for (var i = 1; i <= Game.MAX_LEVEL; ++i) {
+    if (i == Game.LEVEL) {
+      var levelDone = document.createElement("SPAN");
+      levelDone.setAttribute("id", "level" + i);
+      levelDone.className = "level_number level_done";
+      levelDone.innerHTML = i;
+      levelLink.appendChild(levelDone);
+    } else if (i == Game.MAX_LEVEL) {
+      var level = document.createElement("a");
+      level.setAttribute("id", "level" + i);
+      level.className = "level_number";
+      level.href = "?level=" + i;
+      level.innerHTML = i;
+      levelLink.appendChild(level);
+    } else {
+      var levelDot = document.createElement("a");
+      levelDot.setAttribute("id", "level" + i);
+      levelDot.className = "level_dot";
+      levelDot.href = "?level=" + i;
+      levelLink.appendChild(levelDot);
+    }
+  }
+};
+
 Maze.init = function() {
   // BlocklyInterface.init();
-
-  // Setup the Pegman menu.
-  //   var pegmanImg = document.querySelector("#pegmanButton>img");
-  //   pegmanImg.style.backgroundImage = "url(" + Maze.SKIN.sprite + ")";
-  //   var pegmanMenu = document.getElementById("pegmanMenu");
-  //   var handlerFactory = function(n) {
-  //     return function() {
-  //       Maze.changePegman(n);
-  //     };
-  //   };
-  //   for (var i = 0; i < Maze.SKINS.length; i++) {
-  //     if (i == Maze.SKIN_ID) {
-  //       continue;
-  //     }
-  //     var div = document.createElement("div");
-  //     var img = document.createElement("img");
-  //     img.src = "common/1x1.gif";
-  //     img.style.backgroundImage = "url(" + Maze.SKINS[i].sprite + ")";
-  //     div.appendChild(img);
-  //     pegmanMenu.appendChild(div);
-  //     Blockly.bindEvent_(div, "mousedown", null, handlerFactory(i));
-  //   }
-  //   Blockly.bindEvent_(window, "resize", null, Maze.hidePegmanMenu);
-  //   var pegmanButton = document.getElementById("pegmanButton");
-  //   Blockly.bindEvent_(pegmanButton, "mousedown", null, Maze.showPegmanMenu);
-  //   var pegmanButtonArrow = document.getElementById("pegmanButtonArrow");
-  //   var arrow = document.createTextNode(Blockly.FieldDropdown.ARROW_CHAR);
-  //   pegmanButtonArrow.appendChild(arrow);
 
   //var rtl = BlocklyGames.isRtl();
   var blocklyDiv = document.getElementById("blockly");
@@ -396,17 +503,6 @@ Maze.init = function() {
   window.addEventListener("resize", onresize);
   onresize(null);
 
-  // var toolbox = document.getElementById("toolbox");
-  // // Scale the workspace so level 1 = 1.3, and level 10 = 1.0.
-  // var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
-  // Game.workspace = Blockly.inject("blockly", {
-  //   media: "blockly/media/",
-  //   maxBlocks: Maze.MAX_BLOCKS,
-  //   toolbox: toolbox,
-  //   trashcan: true,
-  //   zoom: { startScale: scale }
-  // });
-
   Game.initToolbox(Maze);
   Game.initWorkspace(Maze.MAX_BLOCKS);
 
@@ -420,14 +516,14 @@ Maze.init = function() {
 
   Maze.drawMap();
 
-  //   var defaultXml =
-  //     "<xml>" +
-  //     '  <block movable="' +
-  //     (Game.LEVEL != 1) +
-  //     '" ' +
-  //     'type="maze_moveForward" x="70" y="70"></block>' +
-  //     "</xml>";
-  //   Game.loadBlocks(defaultXml, false);
+  var defaultXml =
+    "<xml>" +
+    '  <block movable="' +
+    (Game.LEVEL != 1) +
+    '" ' +
+    'type="maze_moveForward" x="70" y="70"></block>' +
+    "</xml>";
+  Game.loadBlocks(defaultXml, false);
 
   // Locate the start and finish squares.
 
@@ -446,43 +542,44 @@ Maze.init = function() {
     }
   }
 
+  Game.displayLevelLink();
   Maze.reset(true);
-  Game.workspace.addChangeListener(function() {
-    Maze.updateCapacity();
-  });
 
   // document.body.addEventListener("mousemove", Maze.updatePegSpin_, true);
 
   Game.bindClick(document.getElementById("runButton"), Maze.runButtonClick);
   Game.bindClick(document.getElementById("resetButton"), Maze.resetButtonClick);
 
+  Maze.initLevelDialog();
+
   if (Game.LEVEL == 1) {
     // Make connecting blocks easier for beginners.
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
-  // if (Game.LEVEL == 10) {
-  //   if (!Game.loadFromLocalStorage(Game.NAME, Game.LEVEL)) {
-  //     // Level 10 gets an introductory modal dialog.
-  //     // Skip the dialog if the user has already won.
-  //     var content = document.getElementById("dialogHelpWallFollow");
-  //     var style = {
-  //       width: "30%",
-  //       left: "35%",
-  //       top: "12em"
-  //     };
-  //     BlocklyDialogs.showDialog(
-  //       content,
-  //       null,
-  //       false,
-  //       true,
-  //       style,
-  //       BlocklyDialogs.stopDialogKeyDown
-  //     );
-  //     BlocklyDialogs.startDialogKeyDown();
-  //     setTimeout(BlocklyDialogs.abortOffer, 5 * 60 * 1000);
-  //   }
-  // } else {
+  if (Game.LEVEL == 10) {
+    if (!Game.loadFromLocalStorage(Game.NAME, Game.LEVEL)) {
+      // Level 10 gets an introductory modal dialog.
+      // Skip the dialog if the user has already won.
+      var content = document.getElementById("dialogHelpWallFollow");
+      var style = {
+        width: "30%",
+        left: "35%",
+        top: "12em"
+      };
+      GameDialogs.showDialog(
+        content,
+        null,
+        false,
+        true,
+        style,
+        GameDialogs.stopDialogKeyDown
+      );
+      GameDialogs.startDialogKeyDown();
+      setTimeout(GameDialogs.abortOffer, 5 * 60 * 1000);
+    }
+  }
+  // else {
   //   // All other levels get interactive help.  But wait 5 seconds for the
   //   // user to think a bit before they are told what to do.
   //   setTimeout(function() {
@@ -493,12 +590,12 @@ Maze.init = function() {
 
   // Add the spinning Pegman icon to the done dialog.
   // <img id="pegSpin" src="common/1x1.gif">
-  // var buttonDiv = document.getElementById("dialogDoneButtons");
-  // var pegSpin = document.createElement("img");
-  // pegSpin.id = "pegSpin";
-  // pegSpin.src = "common/1x1.gif";
-  // pegSpin.style.backgroundImage = "url(" + Maze.SKIN.sprite + ")";
-  // buttonDiv.parentNode.insertBefore(pegSpin, buttonDiv);
+  var buttonDiv = document.getElementById("dialogDoneButtons");
+  var pegSpin = document.createElement("img");
+  pegSpin.id = "pegSpin";
+  pegSpin.src = "../../../static/img/1x1.gif";
+  pegSpin.style.backgroundImage = "url(" + Maze.SKIN.sprite + ")";
+  buttonDiv.parentNode.insertBefore(pegSpin, buttonDiv);
 
   // Lazy-load the JavaScript interpreter.
   setTimeout(Game.importInterpreter, 1);
