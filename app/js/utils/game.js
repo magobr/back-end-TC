@@ -121,7 +121,7 @@ Game.initWorkspace = function(maxBlocks) {
   if (maxBlocks == void 0) {
     maxBlocks = Infinity;
   }
-
+  var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
   Game.workspace = Blockly.inject("blockly", {
     grid: {
       spacing: 25,
@@ -134,9 +134,9 @@ Game.initWorkspace = function(maxBlocks) {
     toolbox: toolboxXml,
     trashcan: true,
     zoom: {
-      controls: true,
-      wheel: false
-    }
+      startScale: scale
+    },
+    scrollbars: true
   });
 };
 
@@ -256,4 +256,15 @@ Game.nextLevel = function() {
 Game.stripCode = function(code) {
   // Strip out serial numbers.
   return goog.string.trimRight(code.replace(/(,\s*)?'block_id_[^']+'\)/g, ")"));
+};
+
+Game.injectReadonly = function(id, xml) {
+  var div = document.getElementById(id);
+  if (!div.firstChild) {
+    var workspace = Blockly.inject(div, { readOnly: true });
+    if (typeof xml != "string") {
+      xml = xml.join("");
+    }
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  }
 };
