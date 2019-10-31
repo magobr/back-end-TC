@@ -501,6 +501,22 @@ Maze.animate = function() {
         const conteudo = await rawResponse.json();
         console.log(conteudo);
       })();
+
+      (async () => {
+        await fetch("/py", {
+          method: "post",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            numberOfBlocks: numberOfBlocks,
+            numberOfSteps: numberOfSteps,
+            numberOfTries: numberOfTries,
+            points: points
+          })
+        });
+      })();
       console.log(
         "testeee",
         numberOfSteps,
