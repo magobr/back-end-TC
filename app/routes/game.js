@@ -11,6 +11,9 @@ module.exports = function(app) {
   });
 
   app.post("/dados", function(req, res) {
+    
+   var  userId= req.session.userId
+    console.log("userId",userId)
     var dadosGame = req.body;
     console.log(req.body);
     res.send(dadosGame);
