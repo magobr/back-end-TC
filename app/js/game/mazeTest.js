@@ -557,28 +557,7 @@ Maze.init = function() {
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
-  if (Game.LEVEL == 10) {
-    if (!Game.loadFromLocalStorage(Game.NAME, Game.LEVEL)) {
-      // Level 10 gets an introductory modal dialog.
-      // Skip the dialog if the user has already won.
-      var content = document.getElementById("dialogHelpWallFollow");
-      var style = {
-        width: "30%",
-        left: "35%",
-        top: "12em"
-      };
-      GameDialogs.showDialog(
-        content,
-        null,
-        false,
-        true,
-        style,
-        GameDialogs.stopDialogKeyDown
-      );
-      GameDialogs.startDialogKeyDown();
-      setTimeout(GameDialogs.abortOffer, 5 * 60 * 1000);
-    }
-  }
+ 
   // else {
   //   // All other levels get interactive help.  But wait 5 seconds for the
   //   // user to think a bit before they are told what to do.
