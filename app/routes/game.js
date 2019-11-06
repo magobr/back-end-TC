@@ -12,8 +12,6 @@ module.exports = function(app) {
 
   app.post("/dados", function(req, res) {
     
-   var  userId= req.session.userId
-    console.log("userId",userId)
     var dadosGame = req.body;
     console.log(req.body);
     res.send(dadosGame);
@@ -35,6 +33,8 @@ module.exports = function(app) {
     // child_process module and assign it
     // to variable spawn
     var spawn = require("child_process").spawn;
+    var  userId= req.session.userId
+    console.log("userId",userId)
     console.log(req.body);
     // Parameters passed in spawn -
     // 1. type_of_script
@@ -48,7 +48,9 @@ module.exports = function(app) {
       req.body.numberOfBlocks,
       req.body.numberOfSteps,
       req.body.numberOfTries,
-      req.body.points
+      req.body.points,
+      userId
+
     ]);
 
     // Takes stdout data from script which executed
