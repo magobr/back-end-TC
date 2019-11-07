@@ -14,6 +14,14 @@
         }).
         html('Cancelar');
 
+        $('#btnCancelar').click(function(){
+            $('#formAlterSenha').attr({
+                method: 'POST',
+                action: '/'
+            })
+                
+        });
+
         $('#btnAlter').click(function(){
 
             var email = $('#email').val();
