@@ -35,6 +35,7 @@ module.exports = function(app){
                         req.session.userId = result[0].id_usuario;
                         res.redirect('/game');
                         console.log(result[0].id_usuario);
+
                     } else {
                         res.send('Incorrect Username and/or Password!');
                     }			
