@@ -6,31 +6,43 @@ module.exports = function(app){
 
     app.post('/logado', function(req, res) {
 
-        var login = req.body;
+        var md5 = require('md5');
+
         var email = req.body.email;
-        var senha = req.body.senha;
+        var senha = md5(req.body.senha);
         var login = [email, senha];
+
+        console.log(login);
 
         var connection = app.config.dbConnection();             
         var formModel = new app.app.models.formModel;
-
-        if ( (email == '' || email == undefined || email.length < 3) || (senha == '' || senha == undefined || senha.length < 3) ) {
+        
+      
+        if (email && senha) {
             
-            res.send('Error');
-
-        } else {
 
             formModel.getLogin(login, connection, function(erro, result){
-            
+        
                 if (erro) {
                     throw erro;
-                } else {
-                    console.log(login);
-                    res.render('user/user', {login: result});
-                }
+                } 
+
+                formModel.getIdLogin(login, connection, function(erro, id_usuario){
+                    if (result.length > 0) {
+                        req.session.loggedin = true;
+                        req.session.email = email;
+                        res.redirect('/game');
+                    } else {
+                        res.send('Incorrect Username and/or Password!');
+                    }			
+                    res.end();
+                });
     
             });
 
+        } else {
+            res.send('Please enter Username and Password!');
+            res.end();
         }
         
     })
