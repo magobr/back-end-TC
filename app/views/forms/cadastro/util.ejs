@@ -15,9 +15,16 @@ $(document).ready(function(){
         $('#btnVermelho').
         attr({
             id: 'btnCancelar',
-            name: 'btnCancelar'
+            name: 'btnCancelar',
         }).
         html('Cancelar');
+
+        $('#btnCancelar').click(function(){
+            $('#formCadastro').attr({
+                method: 'POST',
+                action: '/'
+            })
+        });
 
         $('#btnCadastro').click(function(){
 

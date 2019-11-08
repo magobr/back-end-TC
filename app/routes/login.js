@@ -29,9 +29,13 @@ module.exports = function(app){
 
                 formModel.getIdLogin(login, connection, function(erro, id_usuario){
                     if (result.length > 0) {
+                       
                         req.session.loggedin = true;
-                        req.session.email = email;
+                        req.session.email = result[0].email;
+                        req.session.userId = result[0].id_usuario;
                         res.redirect('/game');
+                        console.log(result[0].id_usuario);
+
                     } else {
                         res.send('Incorrect Username and/or Password!');
                     }			

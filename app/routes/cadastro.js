@@ -3,6 +3,9 @@ module.exports = function(app){
     app.get('/cadastro',function(req, res){
         res.render('forms/cadastro/cadastro');
     });
+    app.post('/cadastro',function(req, res){
+        res.render('forms/cadastro/cadastro');
+    });
 
     app.post('/cadastrado',function(req, res){
         

@@ -522,7 +522,7 @@ Maze.animate = function() {
         numberOfSteps,
         numberOfBlocks,
         numberOfTries,
-        points
+        points, Game.LEVEL
       );
   }
 

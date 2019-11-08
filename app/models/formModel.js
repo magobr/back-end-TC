@@ -13,8 +13,8 @@ Forms.prototype.salvarCadastro = function(cadastro, connection, callback){
 	connection.query('insert into usuario(nome, email, idade, senha) values (?, ?, ?, md5(?)) ', cadastro, callback);
 }
 
-Forms.prototype.resPass = function(connection,callback){
-	connection.query('', callback);
+Forms.prototype.resPass = function(dados, connection,callback){
+	connection.query('UPDATE usuario SET senha = ?  WHERE email = ? ' , dados, callback);
 }
 
 Forms.prototype.home = function(connection,callback){

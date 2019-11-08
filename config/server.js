@@ -3,6 +3,8 @@ var consign = require('consign');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+var passport = require('passport');
+
 var app = express();
 app.set('view engine', 'ejs');
 app.set('views','./app/views');
@@ -15,10 +17,15 @@ app.use('/static/libs', express.static('public/libs'));
 
 app.use(session({
 	secret: 'secret',
-	resave: true,
+
+	resave: false,
 	saveUninitialized: true,
-	cookie: { maxAge: 60000 }
+	cookie: {maxAge:4000000 }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(bodyParser.urlencoded({
 	extended:true
