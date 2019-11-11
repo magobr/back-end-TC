@@ -488,42 +488,33 @@ Maze.animate = function() {
       Maze.scheduleFinish(true);
       //BlocklyInterface.saveToLocalStorage();
       setTimeout(GameDialogs.congratulations, 1000);
-      var dataGame = [numberOfBlocks, numberOfSteps, numberOfTries, points];
-      (async () => {
-        const rawResponse = await fetch("/dados", {
-          method: "post",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(dataGame)
-        });
-        const conteudo = await rawResponse.json();
-        console.log(conteudo);
-      })();
-
-      (async () => {
-        await fetch("/py", {
-          method: "post",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            numberOfBlocks: numberOfBlocks,
-            numberOfSteps: numberOfSteps,
-            numberOfTries: numberOfTries,
-            points: points
-          })
-        });
-      })();
-      console.log(
-        "testeee",
-        numberOfSteps,
-        numberOfBlocks,
-        numberOfTries,
-        points, Game.LEVEL
-      );
+      if (Game.LEVEL >= 5) {
+        console.log("entrou no bd!!!");
+        (async () => {
+          await fetch("/py", {
+            method: "post",
+            headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              numberOfBlocks: numberOfBlocks,
+              numberOfSteps: numberOfSteps,
+              numberOfTries: numberOfTries,
+              points: points,
+              level: Game.LEVEL
+            })
+          });
+        })();
+        console.log(
+          "testeee",
+          numberOfSteps,
+          numberOfBlocks,
+          numberOfTries,
+          points,
+          Game.LEVEL
+        );
+      }
   }
 
   Maze.pidList.push(setTimeout(Maze.animate, Maze.stepSpeed * 5));
