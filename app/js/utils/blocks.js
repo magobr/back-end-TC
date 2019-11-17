@@ -20,6 +20,10 @@ Maze.Blocks.LOOPS_HUE = 120;
  * Common HSV hue for all logic blocks.
  */
 Maze.Blocks.LOGIC_HUE = 210;
+/**
+ * Common HSV hue for all collect blocks.
+ */
+Maze.Blocks.COLLECT = 330;
 
 /**
  * Left turn arrow to be appended to messages.
@@ -44,7 +48,7 @@ Blockly.Blocks["maze_moveForward"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_MOVE_FORWARD_TOOLTIP
     });
   }
 };
@@ -65,7 +69,7 @@ Blockly.Blocks["maze_turnRight"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_TURN_RIGHT_TOOLTIP
     });
   }
 };
@@ -87,7 +91,7 @@ Blockly.Blocks["maze_turnLeft"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_TURN_LEFT_TOOLTIP
     });
   }
 };
@@ -198,6 +202,83 @@ Blockly.JavaScript["maze_forever"] = function(block) {
   return "while (notDone()) {\n" + branch + "}\n";
 };
 
+Blockly.Blocks["maze_repeat"] = {
+  /**
+   * Block for moving forward.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.jsonInit({
+      message0: Blockly.Msg.MAZE_REPEAT,
+      args0: [
+        {
+          type: "field_number",
+          name: "TIMES",
+          value: 10,
+          min: 0,
+          precision: 1
+        }
+      ],
+      message1: Blockly.Msg.MAZE_REPEAT_DO,
+      args1: [
+        {
+          type: "input_statement",
+          name: "DO"
+        }
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      style: "loop_blocks",
+      tooltip: "%{BKY_CONTROLS_REPEAT_TOOLTIP}",
+      helpUrl: "%{BKY_CONTROLS_REPEAT_HELPURL}"
+    });
+  }
+};
+
+Blockly.JavaScript["maze_repeat"] = function(block) {
+  // Repeat n times.
+  if (block.getField("TIMES")) {
+    // Internal number.
+    var repeats = String(Number(block.getFieldValue("TIMES")));
+  } else {
+    // External number.
+    var repeats =
+      Blockly.JavaScript.valueToCode(
+        block,
+        "TIMES",
+        Blockly.JavaScript.ORDER_ASSIGNMENT
+      ) || "0";
+  }
+  var branch = Blockly.JavaScript.statementToCode(block, "DO");
+  branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
+  var code = "";
+  var loopVar = Blockly.JavaScript.variableDB_.getDistinctName(
+    "count",
+    Blockly.Variables.NAME_TYPE
+  );
+  var endVar = repeats;
+  if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
+    var endVar = Blockly.JavaScript.variableDB_.getDistinctName(
+      "repeat_end",
+      Blockly.Variables.NAME_TYPE
+    );
+    code += "var " + endVar + " = " + repeats + ";\n";
+  }
+  code +=
+    "for (var " +
+    loopVar +
+    " = 0; " +
+    loopVar +
+    " < " +
+    endVar +
+    "; " +
+    loopVar +
+    "++) {\n" +
+    branch +
+    "}\n";
+  return code;
+};
+
 Blockly.Blocks["maze_collect"] = {
   /**
    * Block for collect.
@@ -208,7 +289,7 @@ Blockly.Blocks["maze_collect"] = {
       message0: Blockly.Msg.MAZE_COLLECT,
       previousStatement: null,
       nextStatement: null,
-      colour: Maze.Blocks.MOVEMENT_HUE,
+      colour: Maze.Blocks.COLLECT,
       tooltip: ""
     });
   }

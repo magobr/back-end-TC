@@ -5,8 +5,6 @@ var numberOfTries = 1;
 
 numberOfBlocks = 0;
 
-console.log("numberOfSteps", numberOfSteps);
-
 Maze.constrainDirection4 = function(d) {
   d = Math.round(d) % 4;
   if (d < 0) {
@@ -475,7 +473,6 @@ Maze.animate = function() {
             flowerIcon.style.opacity = "0";
             points = points + 10;
             document.getElementById("points").innerHTML = points;
-            console.log("points", points);
           }
         }
       });
@@ -486,10 +483,8 @@ Maze.animate = function() {
       break;
     case "finish":
       Maze.scheduleFinish(true);
-      //BlocklyInterface.saveToLocalStorage();
       setTimeout(GameDialogs.congratulations, 1000);
       if (Game.LEVEL >= 5) {
-        console.log("entrou no bd!!!");
         (async () => {
           await fetch("/py", {
             method: "post",
@@ -506,14 +501,6 @@ Maze.animate = function() {
             })
           });
         })();
-        console.log(
-          "testeee",
-          numberOfSteps,
-          numberOfBlocks,
-          numberOfTries,
-          points,
-          Game.LEVEL
-        );
       }
   }
 

@@ -2,11 +2,6 @@
 
 var Game = {};
 
-// Game.LANGUAGE_NAME = {
-//   "pt-br": "Português Brasileiro",
-//   en: "English"
-// };
-
 Game.clamp = function(min, val, max) {
   if (val < min) {
     val = min;
@@ -28,15 +23,6 @@ Game.getNumberParamFromUrl = function(name, minValue, maxValue) {
   var val = Number(Game.getStringParamFromUrl(name, "NaN"));
   return isNaN(val) ? minValue : Game.clamp(minValue, val, maxValue);
 };
-
-// Game.getLang = function() {
-//   var lang = Game.getStringParamFromUrl("lang", "pt-br");
-//   if (Game.LANGUAGE_NAME[lang] === undefined) {
-//     // Default to Chinese.
-//     lang = "pt-br";
-//   }
-//   return lang;
-// };
 
 Game.MAX_LEVEL = 15;
 
@@ -110,7 +96,7 @@ Game.bindClick = function(el, func) {
 };
 
 //
-Game.initWorkspace = function(maxBlocks) {
+Game.initWorkspace = function() {
   // Interpolate translated messages into toolbox.
   var toolboxText = document.getElementById("toolbox").outerHTML;
   toolboxText = toolboxText.replace(/{(\w+)}/g, function(m, p1) {
@@ -118,9 +104,6 @@ Game.initWorkspace = function(maxBlocks) {
   });
   var toolboxXml = Blockly.Xml.textToDom(toolboxText);
 
-  if (maxBlocks == void 0) {
-    maxBlocks = Infinity;
-  }
   var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
   Game.workspace = Blockly.inject("blockly", {
     grid: {
@@ -129,7 +112,6 @@ Game.initWorkspace = function(maxBlocks) {
       colour: "#ccc",
       snap: true
     },
-    maxBlocks: maxBlocks,
     media: "../../../static/js/blockly/media/",
     toolbox: toolboxXml,
     trashcan: true,
@@ -161,8 +143,6 @@ Game.initToolbox = function(game) {
 };
 
 Game.importInterpreter = function() {
-  //<script type="text/javascript"
-  //  src="third-party/JS-Interpreter/compressed.js"></script>
   var script = document.createElement("script");
   script.setAttribute("type", "text/javascript");
   script.setAttribute("src", "../../../static/js/utils/acorn_interpreter.js");
@@ -173,26 +153,8 @@ Game.importInterpreter = function() {
  * Go to the index page.
  */
 Game.indexPage = function() {
-  window.location =
-    (BlocklyGames.IS_HTML ? "index.html" : "./") + "?lang=" + BlocklyGames.LANG;
+  window.location = BlocklyGames.IS_HTML ? "index.html" : "./";
 };
-
-// TODO: Descomentar quando a tradução for implementada
-// Game.nextLevel = function() {
-//   if (Game.LEVEL < Game.MAX_LEVEL) {
-//     window.location =
-//       window.location.protocol +
-//       "//" +
-//       window.location.host +
-//       window.location.pathname +
-//       "?lang=" +
-//       BlocklyGames.LANG +
-//       "&level=" +
-//       (Game.LEVEL + 1);
-//   } else {
-//     Game.indexPage();
-//   }
-// };
 
 Game.nextLevel = function() {
   if (Game.LEVEL < Game.MAX_LEVEL) {
@@ -207,51 +169,6 @@ Game.nextLevel = function() {
     Game.indexPage();
   }
 };
-
-// Game.initLanguage = function() {
-//   // Set the HTML's language.
-//   document.head.parentElement.setAttribute("lang", Game.LANG);
-
-//   // Sort languages alphabetically.
-//   var languages = [];
-//   for (var lang in Game.LANGUAGE_NAME) {
-//     languages.push([Game.LANGUAGE_NAME[lang], lang]);
-//   }
-
-//   // Populate the language selection menu.
-//   var languageMenu = document.getElementById("languageMenu");
-//   console.log(languageMenu);s
-//   languageMenu.options.length = 0;
-//   for (var i = 0; i < languages.length; i++) {
-//     var tuple = languages[i];
-//     var lang = tuple[tuple.length - 1];
-//     var option = new Option(tuple[0], lang);
-//     if (lang == Game.LANG) {
-//       option.selected = true;
-//     }
-//     languageMenu.options.add(option);
-//   }
-//   languageMenu.addEventListener("change", Game.changeLanguage, true);
-
-//   // Inject language strings.
-//   document.getElementById("playBtn").textContent = MSG["play"];
-//   document.getElementById("resetBtn").textContent = MSG["reset"];
-//   document.getElementsByClassName("showcode")[0].textContent = MSG["showcode"];
-//   document.getElementById("html_index").textContent = MSG["index"];
-//   document.getElementById("html_game").textContent = MSG["selegame"];
-//   document.getElementById("html_about").textContent = MSG["about"];
-//   document.querySelector("#innertop_name h3").textContent = MSG[Game.NAME];
-//   document.querySelector("#dialogCode .dialog-h").textContent = MSG["code"];
-//   document.querySelector("#dialogCode #dialogCodeBtn").textContent =
-//     MSG["sure"];
-//   document.querySelector("#dialogTip .dialog-btn").textContent = MSG["sure"];
-//   document.querySelector("#dialogWin .dialog-h").textContent = MSG["success"];
-//   document.querySelector("#dialogWin .dialog-btn-left").textContent =
-//     MSG["replay"];
-//   document.querySelector("#dialogWin .dialog-btn-right").textContent =
-//     MSG["nextLevel"];
-//   document.querySelector("#popover button").textContent = MSG["reduceDiff"];
-// };
 
 Game.stripCode = function(code) {
   // Strip out serial numbers.

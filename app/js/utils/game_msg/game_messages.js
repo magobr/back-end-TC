@@ -33,11 +33,13 @@ Blockly.Msg.MAZE_HELP_IF_ELSE = "Blocos se-senão farão uma coisa ou outra.";
 Blockly.Msg.MAZE_PATH_AHEAD = "se caminho à frente";
 Blockly.Msg.MAZE_PATH_LEFT = "se caminho à esquerda";
 Blockly.Msg.MAZE_PATH_RIGHT = "se caminho à direita";
+Blockly.Msg.MAZE_REPEAT = "repita %1 vezes";
+Blockly.Msg.MAZE_REPEAT_DO = "faça %1";
 Blockly.Msg.MAZE_REPEAT_UNTIL = "repetir até";
 Blockly.Msg.MAZE_COLLECT = "coletar";
 Blockly.Msg.MAZE_MOVE_FORWARD_TOOLTIP = "Move o jogador um espaço para frente.";
-Blockly.Msg.MAZE_TURN_TOOLTIP =
-  "Vira o jogador 90 graus para esquerda ou direita.";
+Blockly.Msg.MAZE_TURN_RIGHT_TOOLTIP = "Vira o jogador 90 graus para direita.";
+Blockly.Msg.MAZE_TURN_LEFT_TOOLTIP = "Vira o jogador 90 graus para esquerda.";
 Blockly.Msg.MAZE_IF_TOOLTIP =
   "Se há um caminho na direção especificada, então faça algumas ações.";
 Blockly.Msg.MAZE_IF_ELSE_TOOLTIP =
