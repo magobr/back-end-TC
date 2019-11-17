@@ -335,7 +335,7 @@ Maze.scheduleFail = function(forward) {
     }
     Maze.pidList.push(
       setTimeout(function() {
-        BlocklyGames.workspace.getAudioManager().play("fail", 0.5);
+        Game.workspace.getAudioManager().play("fail", 0.5);
       }, Maze.stepSpeed * 2)
     );
     var setPosition = function(n) {
@@ -366,9 +366,9 @@ Maze.scheduleFail = function(forward) {
 Maze.scheduleFinish = function(sound) {
   var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
   Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
-  // if (sound) {
-  //   BlocklyGames.workspace.getAudioManager().play("win", 0.5);
-  // }
+  if (sound) {
+    Game.workspace.getAudioManager().play("win", 0.5);
+  }
   Maze.stepSpeed = 150; // Slow down victory animation a bit.
   Maze.pidList.push(
     setTimeout(function() {
