@@ -82,7 +82,7 @@ Maze.reset = function(first) {
   // Move the collect icon into position.
   Maze.flowers.map(flower => {
     var flowerIcon = document.getElementById("flower" + flower.id);
-    console.log("flowerIcon", flowerIcon);
+
     flowerIcon.setAttribute(
       "x",
       Maze.SQUARE_SIZE * (flower.x + 0.5) - flowerIcon.getAttribute("width") / 2
@@ -98,7 +98,6 @@ Maze.reset = function(first) {
   points = 0;
   document.getElementById("points").innerHTML = points;
   document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
-  console.log("workspace", Game.workspace.getAllBlocks());
 };
 
 /**
@@ -107,7 +106,6 @@ Maze.reset = function(first) {
  */
 Maze.execute = function() {
   if (!("Interpreter" in window)) {
-    console.log("teste");
     // Interpreter lazy loads and hasn't arrived yet.  Try again later.
     setTimeout(Maze.execute, 250);
     return;
@@ -116,7 +114,7 @@ Maze.execute = function() {
   Maze.log = [];
   Blockly.selected && Blockly.selected.unselect();
   var code = Blockly.JavaScript.workspaceToCode(Game.workspace);
-  console.log("code", code);
+
   Maze.result = Maze.ResultType.UNSET;
   var interpreter = new Interpreter(code, Maze.initInterpreter);
 
@@ -203,7 +201,6 @@ Maze.runButtonClick = function(e) {
   Maze.reset(false);
   Maze.execute();
   numberOfBlocks = Game.workspace.getAllBlocks().length;
-  console.log("numberOfBlocks", numberOfBlocks);
 };
 
 Maze.resetButtonClick = function(e) {
@@ -296,7 +293,6 @@ Maze.initInterpreter = function(interpreter, scope) {
     interpreter.createNativeFunction(wrapper)
   );
   wrapper = function(id) {
-    console.log("id", id);
     return Maze.collect(3, id);
   };
   interpreter.setProperty(
@@ -331,7 +327,7 @@ Maze.levelHelp = function(opt_event) {
 
   if (Game.LEVEL == 1) {
     var topBlocks = Game.workspace.getTopBlocks(true);
-    console.log("topBlocks", topBlocks);
+
     if (topBlocks.length > 1) {
       var xml = [
         "<xml>",
@@ -504,7 +500,7 @@ Maze.init = function() {
   onresize(null);
 
   Game.initToolbox(Maze);
-  Game.initWorkspace(Maze.MAX_BLOCKS);
+  Game.initWorkspace();
 
   //Game.workspace.getAudioManager().load(Maze.SKIN.winSound, 'win');
   //Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, 'fail');
@@ -557,7 +553,7 @@ Maze.init = function() {
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
- 
+
   // else {
   //   // All other levels get interactive help.  But wait 5 seconds for the
   //   // user to think a bit before they are told what to do.

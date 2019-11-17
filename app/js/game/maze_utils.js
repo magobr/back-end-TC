@@ -6,14 +6,14 @@ Maze.blocks = [
     "maze_moveForward",
     "maze_turnRight",
     "maze_turnLeft",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever"
   ],
   [
     "maze_moveForward",
     "maze_turnRight",
     "maze_turnLeft",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever"
   ],
   [
@@ -21,7 +21,37 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -41,7 +71,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -51,7 +81,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -61,7 +91,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -71,7 +101,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -81,7 +111,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -91,7 +121,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -101,61 +131,12 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
   ]
 ];
-
-Maze.MAX_BLOCKS = [
-  undefined, // Level 0.
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity
-][Game.LEVEL];
 
 // Crash type constants.
 Maze.CRASH_STOP = 1;
