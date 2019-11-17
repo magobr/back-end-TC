@@ -3,7 +3,7 @@
 goog.provide("Maze");
 
 goog.require("Blockly.FieldDropdown");
-goog.require("BlocklyInterface");
+goog.require("Game");
 goog.require("Maze.Blocks");
 
 Maze.ResultType = {
@@ -165,29 +165,10 @@ Maze.execute = function() {
 
 Maze.runButtonClick = function(e) {
   // Prevent double-clicks or double-taps.
-  // if (BlocklyInterface.eventSpam(e)) {
-  //   return;
-  // }
-  GameDialogs.hideDialog(false);
-  // // Only allow a single top block on level 1.
-  // if (
-  //   BlocklyGames.LEVEL == 1 &&
-  //   BlocklyGames.workspace.getTopBlocks(false).length > 1 &&
-  //   Maze.result != Maze.ResultType.SUCCESS &&
-  //   !BlocklyGames.loadFromLocalStorage(BlocklyGames.NAME, BlocklyGames.LEVEL)
-  // ) {
-  //   Maze.levelHelp();
-  //   return;
-  // }
-
-  if (
-    Game.LEVEL == 1 &&
-    Game.workspace.getTopBlocks(false).length > 1 &&
-    Maze.result != Maze.ResultType.SUCCESS
-  ) {
-    Maze.levelHelp();
+  if (Game.eventSpam(e)) {
     return;
   }
+  GameDialogs.hideDialog(false);
 
   var runButton = document.getElementById("runButton");
   var resetButton = document.getElementById("resetButton");
@@ -205,9 +186,9 @@ Maze.runButtonClick = function(e) {
 
 Maze.resetButtonClick = function(e) {
   // Prevent double-clicks or double-taps.
-  // if (BlocklyInterface.eventSpam(e)) {
-  //   return;
-  // }
+  if (Game.eventSpam(e)) {
+    return;
+  }
   var runButton = document.getElementById("runButton");
   runButton.style.display = "inline";
   document.getElementById("resetButton").style.display = "none";
@@ -316,11 +297,11 @@ Maze.levelHelp = function(opt_event) {
   //   // The user has already won.  They are just playing around.
   //   return;
   // }
-  var rtl = true;
+
   var userBlocks = Blockly.Xml.domToText(
     Blockly.Xml.workspaceToDom(Game.workspace)
   );
-  var toolbar = Game.workspace.flyout_.workspace_.getTopBlocks(true);
+
   var content = document.getElementById("tipsPopup");
   var origin = null;
   var style = { width: "370px", left: "70%", top: "3em" };
@@ -483,7 +464,6 @@ Game.displayLevelLink = function() {
 Maze.init = function() {
   // BlocklyInterface.init();
 
-  //var rtl = BlocklyGames.isRtl();
   var blocklyDiv = document.getElementById("blockly");
   var visualization = document.getElementById("visualization");
   var onresize = function(e) {
@@ -502,8 +482,9 @@ Maze.init = function() {
   Game.initToolbox(Maze);
   Game.initWorkspace();
 
-  //Game.workspace.getAudioManager().load(Maze.SKIN.winSound, 'win');
-  //Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, 'fail');
+  Game.workspace.getAudioManager().load(Maze.SKIN.winSound, "win");
+  Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, "fail");
+
   // Not really needed, there are no user-defined functions or variables.
   Blockly.JavaScript.addReservedWords(
     "moveForward,moveBackward," +
@@ -553,15 +534,6 @@ Maze.init = function() {
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
-
-  // else {
-  //   // All other levels get interactive help.  But wait 5 seconds for the
-  //   // user to think a bit before they are told what to do.
-  //   setTimeout(function() {
-  //     Game.workspace.addChangeListener(Maze.levelHelp);
-  //     Maze.levelHelp();
-  //   }, 5000);
-  // }
 
   // Add the spinning Pegman icon to the done dialog.
   // <img id="pegSpin" src="common/1x1.gif">

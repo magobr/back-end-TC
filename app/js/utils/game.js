@@ -1,6 +1,5 @@
 "use strict";
-
-var Game = {};
+goog.provide("Game");
 
 Game.clamp = function(min, val, max) {
   if (val < min) {
@@ -185,3 +184,41 @@ Game.injectReadonly = function(id, xml) {
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
   }
 };
+
+/**
+ * Determine if this event is unwanted.
+ * @param {!Event} e Mouse or touch event.
+ * @return {boolean} True if spam.
+ */
+Game.eventSpam = function(e) {
+  // Touch screens can generate 'touchend' followed shortly thereafter by
+  // 'click'.  For now, just look for this very specific combination.
+  // Some devices have both mice and touch, but assume the two won't occur
+  // within two seconds of each other.
+  var touchMouseTime = 2000;
+  if (
+    e.type == "click" &&
+    Game.eventSpam.previousType_ == "touchend" &&
+    Game.eventSpam.previousDate_ + touchMouseTime > Date.now()
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return true;
+  }
+  // Users double-click or double-tap accidentally.
+  var doubleClickTime = 400;
+  if (
+    Game.eventSpam.previousType_ == e.type &&
+    Game.eventSpam.previousDate_ + doubleClickTime > Date.now()
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return true;
+  }
+  Game.eventSpam.previousType_ = e.type;
+  Game.eventSpam.previousDate_ = Date.now();
+  return false;
+};
+
+Game.eventSpam.previousType_ = null;
+Game.eventSpam.previousDate_ = 0;
