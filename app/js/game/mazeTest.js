@@ -280,7 +280,7 @@ Maze.initInterpreter = function(interpreter, scope) {
     interpreter.createNativeFunction(wrapper)
   );
   wrapper = function(id) {
-    return Maze.collect(3, id);
+    return Maze.collect(id);
   };
   interpreter.setProperty(
     scope,

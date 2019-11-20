@@ -73,17 +73,17 @@ Maze.move = function(direction, id) {
 };
 
 /**
- * Turn king left or right.
- * @param {number} direction Direction to turn (0 = left, 1 = right).
- * @param {string} id ID of block that triggered this action.
+ * Vira o rei para esquerda ou direita.
+ * @param {number} direction Direção para virar (0 = esquerda, 1 = direita).
+ * @param {string} id ID do bloco que chamou essa ação.
  */
 Maze.turn = function(direction, id) {
   if (direction) {
-    // Right turn (clockwise).
+    // Vira para direita.
     Maze.kingD++;
     Maze.log.push(["right", id]);
   } else {
-    // Left turn (counterclockwise).
+    // Vira para esquerda.
     Maze.kingD--;
     Maze.log.push(["left", id]);
   }
@@ -91,10 +91,10 @@ Maze.turn = function(direction, id) {
 };
 
 /**
- * Is there a path next to king?
- * @param {number} direction Direction to look
- *     (0 = forward, 1 = right, 2 = backward, 3 = left).
- * @param {?string} id ID of block that triggered this action.
+ * Existe caminho próximo ao rei?
+ * @param {number} direction Direção para olhar
+ *     (0 = para frente, 1 = direita, 2 =  para trás, 3 = esquerda).
+ * @param {?string} id ID do bloco que chamou essa ação.
  *     Null if called as a helper function in Maze.move().
  * @return {boolean} True if there is a path.
  */
@@ -134,40 +134,18 @@ Maze.notDone = function() {
   return Maze.kingX != Maze.finish_.x || Maze.kingY != Maze.finish_.y;
 };
 
-Maze.collect = function(direction, id) {
-  var effectiveDirection = Maze.kingD + direction;
-  var square;
-  var command;
-  switch (Maze.constrainDirection4(effectiveDirection)) {
-    case Maze.DirectionType.NORTH:
-      square = Maze.map[Maze.kingY - 1] && Maze.map[Maze.kingY - 1][Maze.kingX];
-      command = "collect";
-      break;
-    case Maze.DirectionType.EAST:
-      square = Maze.map[Maze.kingY][Maze.kingX + 1];
-      command = "collect";
-      break;
-    case Maze.DirectionType.SOUTH:
-      square = Maze.map[Maze.kingY + 1] && Maze.map[Maze.kingY + 1][Maze.kingX];
-      command = "collect";
-      break;
-    case Maze.DirectionType.WEST:
-      square = Maze.map[Maze.kingY][Maze.kingX - 1];
-      command = "collect";
-      break;
-  }
+Maze.collect = function(id) {
   if (id) {
-    Maze.log.push([command, id]);
+    Maze.log.push(["collect", id]);
   }
-  return square !== Maze.SquareType.WALL && square !== undefined;
 };
 
 Maze.displayKing = function(x, y, d, opt_angle) {
   var kingIcon = document.getElementById("king");
-  kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
+  kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.KING_WIDTH + 1);
   kingIcon.setAttribute(
     "y",
-    Maze.SQUARE_SIZE * (y + 0.5) - Maze.PEGMAN_HEIGHT / 2 - 8
+    Maze.SQUARE_SIZE * (y + 0.5) - Maze.KING_HEIGHT / 2 - 8
   );
   if (opt_angle) {
     kingIcon.setAttribute(
