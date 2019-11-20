@@ -1,8 +1,8 @@
 Maze.ROWS = Maze.map.length;
 Maze.COLS = Maze.map[0].length;
 Maze.SQUARE_SIZE = 50;
-Maze.PEGMAN_HEIGHT = 52;
-Maze.PEGMAN_WIDTH = 49;
+Maze.KING_HEIGHT = 52;
+Maze.KING_WIDTH = 49;
 
 Maze.MAZE_WIDTH = Maze.SQUARE_SIZE * Maze.COLS;
 Maze.MAZE_HEIGHT = Maze.SQUARE_SIZE * Maze.ROWS;
@@ -186,8 +186,8 @@ Maze.drawMap = function() {
   kingClip.setAttribute("id", "kingClipPath");
   var clipRect = document.createElementNS(Blockly.SVG_NS, "rect");
   clipRect.setAttribute("id", "clipRect");
-  clipRect.setAttribute("width", Maze.PEGMAN_WIDTH);
-  clipRect.setAttribute("height", Maze.PEGMAN_HEIGHT);
+  clipRect.setAttribute("width", Maze.KING_WIDTH);
+  clipRect.setAttribute("height", Maze.KING_HEIGHT);
   kingClip.appendChild(clipRect);
   svg.appendChild(kingClip);
 
@@ -199,8 +199,8 @@ Maze.drawMap = function() {
     "xlink:href",
     Maze.SKIN.sprite
   );
-  kingIcon.setAttribute("height", Maze.PEGMAN_HEIGHT);
-  kingIcon.setAttribute("width", Maze.PEGMAN_WIDTH * 21); // 49 * 21 = 1029
+  kingIcon.setAttribute("height", Maze.KING_HEIGHT);
+  kingIcon.setAttribute("width", Maze.KING_WIDTH * 21); // 49 * 21 = 1029
   kingIcon.setAttribute("clip-path", "url(#kingClipPath)");
   svg.appendChild(kingIcon);
 };

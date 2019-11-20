@@ -280,8 +280,7 @@ GameDialogs.getBBox_ = function(element) {
 };
 
 /**
- * Congratulates the user for completing the level and offers to
- * direct them to the next level, if available.
+ * Parabeniza o usuário por completar o nível e oferece direcioná-lo para o próximo nível, se este estiver disponível.
  */
 GameDialogs.congratulations = function() {
   var content = document.getElementById("dialogDone");
@@ -356,42 +355,9 @@ GameDialogs.congratulations = function() {
 };
 
 /**
- * If the user preses enter, escape, or space, hide the dialog.
- * @param {!Event} e Keyboard event.
- * @private
- */
-GameDialogs.dialogKeyDown_ = function(e) {
-  if (GameDialogs.isDialogVisible_) {
-    if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 32) {
-      GameDialogs.hideDialog(true);
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }
-};
-
-/**
- * Start listening for GameDialogs.dialogKeyDown_.
- */
-GameDialogs.startDialogKeyDown = function() {
-  document.body.addEventListener("keydown", GameDialogs.dialogKeyDown_, true);
-};
-
-/**
- * Stop listening for GameDialogs.dialogKeyDown_.
- */
-GameDialogs.stopDialogKeyDown = function() {
-  document.body.removeEventListener(
-    "keydown",
-    GameDialogs.dialogKeyDown_,
-    true
-  );
-};
-
-/**
- * If the user preses enter, escape, or space, hide the dialog.
+ * Se o usuário pressionar o enter, escape, ou espaço o dialog que aparece quando o usuário termina o nível será fechado.
  * Enter and space move to the next level, escape does not.
- * @param {!Event} e Keyboard event.
+ * @param {!Event} e Evento do teclado.
  */
 GameDialogs.congratulationsKeyDown = function(e) {
   if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 32) {
