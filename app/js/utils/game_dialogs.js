@@ -399,7 +399,7 @@ GameDialogs.congratulationsKeyDown = function(e) {
     e.stopPropagation();
     e.preventDefault();
     if (e.keyCode != 27) {
-      BlocklyInterface.nextLevel();
+      Game.nextLevel();
     }
   }
 };

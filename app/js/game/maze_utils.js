@@ -1,4 +1,3 @@
-//BlocklyGames.NAME = 'maze';
 Maze.blocks = [
   ["maze_moveForward"],
   ["maze_moveForward", "maze_turnRight", "maze_turnLeft", "maze_collect"],
