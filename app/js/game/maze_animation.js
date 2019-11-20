@@ -1,10 +1,19 @@
+/**
+ * ids de animação das tarefas que estão sendo executadas pelo rei.
+ */
 Maze.pidList = [];
+
 numberOfSteps = 0;
 points = 0;
 var numberOfTries = 1;
 
 numberOfBlocks = 0;
 
+/**
+ * Keep the direction within 0-3, wrapping at both ends.
+ * @param {number} d Potentially out-of-bounds direction value.
+ * @return {number} Legal direction value.
+ */
 Maze.constrainDirection4 = function(d) {
   d = Math.round(d) % 4;
   if (d < 0) {
@@ -26,6 +35,13 @@ Maze.constrainDirection16 = function(d) {
   return d;
 };
 
+/**
+ * Attempt to move pegman forward or backward.
+ * @param {number} direction Direction to move (0 = forward, 2 = backward).
+ * @param {string} id ID of block that triggered this action.
+ * @throws {true} If the end of the maze is reached.
+ * @throws {false} If Pegman collides with a wall.
+ */
 Maze.move = function(direction, id) {
   if (!Maze.isPath(direction, null)) {
     Maze.log.push(["fail_" + (direction ? "backward" : "forward"), id]);
@@ -146,7 +162,7 @@ Maze.collect = function(direction, id) {
   return square !== Maze.SquareType.WALL && square !== undefined;
 };
 
-Maze.displayPegman = function(x, y, d, opt_angle) {
+Maze.displayKing = function(x, y, d, opt_angle) {
   var kingIcon = document.getElementById("king");
   kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
   kingIcon.setAttribute(
@@ -173,20 +189,25 @@ Maze.displayPegman = function(x, y, d, opt_angle) {
   clipRect.setAttribute("y", kingIcon.getAttribute("y"));
 };
 
+/**
+ * Schedule the animations for a move or turn.
+ * @param {!Array.<number>} startPos X, Y and direction starting points.
+ * @param {!Array.<number>} endPos X, Y and direction ending points.
+ */
 Maze.schedule = function(startPos, endPos) {
   var deltas = [
     (endPos[0] - startPos[0]) / 4,
     (endPos[1] - startPos[1]) / 4,
     (endPos[2] - startPos[2]) / 4
   ];
-  Maze.displayPegman(
+  Maze.displayKing(
     startPos[0] + deltas[0],
     startPos[1] + deltas[1],
     Maze.constrainDirection16(startPos[2] + deltas[2])
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         startPos[0] + deltas[0] * 2,
         startPos[1] + deltas[1] * 2,
         Maze.constrainDirection16(startPos[2] + deltas[2] * 2)
@@ -195,7 +216,7 @@ Maze.schedule = function(startPos, endPos) {
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         startPos[0] + deltas[0] * 3,
         startPos[1] + deltas[1] * 3,
         Maze.constrainDirection16(startPos[2] + deltas[2] * 3)
@@ -204,7 +225,7 @@ Maze.schedule = function(startPos, endPos) {
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         endPos[0],
         endPos[1],
         Maze.constrainDirection16(endPos[2])
@@ -299,26 +320,22 @@ Maze.scheduleFail = function(forward) {
     deltaX /= 4;
     deltaY /= 4;
     var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
-    Maze.displayPegman(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
+    Maze.displayKing(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
     Game.workspace.getAudioManager().play("fail", 0.5);
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+        Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed)
     );
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(
-          Maze.kingX + deltaX,
-          Maze.kingY + deltaY,
-          direction16
-        );
+        Maze.displayKing(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
         Game.workspace.getAudioManager().play("fail", 0.5);
       }, Maze.stepSpeed * 2)
     );
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+        Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed * 3)
     );
   } else {
@@ -343,7 +360,7 @@ Maze.scheduleFail = function(forward) {
         var direction16 = Maze.constrainDirection16(
           Maze.kingD * 4 + deltaD * n
         );
-        Maze.displayPegman(
+        Maze.displayKing(
           Maze.kingX + deltaX * n,
           Maze.kingY + deltaY * n,
           direction16,
@@ -365,28 +382,31 @@ Maze.scheduleFail = function(forward) {
  */
 Maze.scheduleFinish = function(sound) {
   var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
-  Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
+  Maze.displayKing(Maze.kingX, Maze.kingY, 16);
   if (sound) {
     Game.workspace.getAudioManager().play("win", 0.5);
   }
   Maze.stepSpeed = 150; // Slow down victory animation a bit.
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, 18);
+      Maze.displayKing(Maze.kingX, Maze.kingY, 18);
     }, Maze.stepSpeed)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
+      Maze.displayKing(Maze.kingX, Maze.kingY, 16);
     }, Maze.stepSpeed * 2)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+      Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
     }, Maze.stepSpeed * 3)
   );
 };
 
+/**
+ * Iterate through the recorded path and animate pegman's actions.
+ */
 Maze.animate = function() {
   var action = Maze.log.shift();
 
@@ -484,6 +504,7 @@ Maze.animate = function() {
     case "finish":
       Maze.scheduleFinish(true);
       setTimeout(GameDialogs.congratulations, 1000);
+
       if (Game.LEVEL >= 5) {
         (async () => {
           await fetch("/py", {

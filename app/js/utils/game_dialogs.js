@@ -280,38 +280,6 @@ GameDialogs.getBBox_ = function(element) {
 };
 
 /**
- * Display a storage-related modal dialog.
- * @param {?Element} origin Source of dialog opening animation.
- * @param {string} message Text to alert.
- */
-GameDialogs.storageAlert = function(origin, message) {
-  var container = document.getElementById("containerStorage");
-  container.textContent = "";
-  var lines = message.split("\n");
-  for (var i = 0; i < lines.length; i++) {
-    var p = document.createElement("p");
-    p.appendChild(document.createTextNode(lines[i]));
-    container.appendChild(p);
-  }
-
-  var content = document.getElementById("dialogStorage");
-  var style = {
-    width: "50%",
-    left: "25%",
-    top: "5em"
-  };
-  GameDialogs.showDialog(
-    content,
-    origin,
-    true,
-    true,
-    style,
-    GameDialogs.stopDialogKeyDown
-  );
-  GameDialogs.startDialogKeyDown();
-};
-
-/**
  * Congratulates the user for completing the level and offers to
  * direct them to the next level, if available.
  */
@@ -323,7 +291,7 @@ GameDialogs.congratulations = function() {
     top: "3em"
   };
 
-  // Add the user's code.
+  // Adiciona o código do usuário.
   if (Game.workspace) {
     var linesText = document.getElementById("dialogLinesText");
     linesText.textContent = "";

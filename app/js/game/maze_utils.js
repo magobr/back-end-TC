@@ -156,7 +156,7 @@ Maze.SKINS = [
   {
     sprite: "../../../static/img/king.png",
     tiles: "../../../static/img/tiles_garden.png",
-    marker: "../../../static/img/crown.png",
+    marker: "../../../static/img/crown1.png",
     background: "../../../static/img/garden.png",
     graph: "#ccc",
     look: "#000",

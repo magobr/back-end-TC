@@ -17,7 +17,7 @@ Maze.ResultType = {
 Maze.flowers = [];
 
 /**
- * Result of last execution.
+ * Resultado da última execução.
  */
 Maze.result = Maze.ResultType.UNSET;
 
@@ -30,13 +30,13 @@ Maze.DirectionType = {
 
 Maze.startDirection = Maze.DirectionType.EAST;
 Maze.reset = function(first) {
-  // Kill all tasks.
+  // Encerra todas as tarefas.
   for (var i = 0; i < Maze.pidList.length; i++) {
     window.clearTimeout(Maze.pidList[i]);
   }
   Maze.pidList = [];
 
-  // Move Pegman into position.
+  // Posiciona o rei no local inicial.
   Maze.kingX = Maze.start_.x;
   Maze.kingY = Maze.start_.y;
 
@@ -55,10 +55,10 @@ Maze.reset = function(first) {
     );
   } else {
     Maze.kingD = Maze.startDirection;
-    Maze.displayPegman(Maze.kingX, Maze.kingY, Maze.kingD * 4);
+    Maze.displayKing(Maze.kingX, Maze.kingY, Maze.kingD * 4);
   }
 
-  // Move the finish icon into position.
+  // Posiciona a coroa no local inicial.
   var finishIcon = document.getElementById("finish");
   finishIcon.setAttribute(
     "x",
@@ -71,7 +71,7 @@ Maze.reset = function(first) {
       finishIcon.getAttribute("height")
   );
 
-  // Make 'look' icon invisible and promote to top.
+  // Deixa o ícone "look" invisível.
   var lookIcon = document.getElementById("look");
   lookIcon.style.display = "none";
   lookIcon.parentNode.appendChild(lookIcon);
@@ -79,7 +79,8 @@ Maze.reset = function(first) {
   for (var i = 0, path; (path = paths[i]); i++) {
     path.setAttribute("stroke", Maze.SKIN.look);
   }
-  // Move the collect icon into position.
+
+  // Posiciona as flores para o local inicial.
   Maze.flowers.map(flower => {
     var flowerIcon = document.getElementById("flower" + flower.id);
 
@@ -149,7 +150,7 @@ Maze.execute = function() {
     }
   }
 
-  // Fast animation if execution is successful.  Slow otherwise.
+  // Animação rápida se for executado com sucesso. Caso contrário a animação será lenta.
   if (Maze.result == Maze.ResultType.SUCCESS) {
     Maze.stepSpeed = 100;
     Maze.log.push(["finish", null]);
@@ -164,7 +165,7 @@ Maze.execute = function() {
 };
 
 Maze.runButtonClick = function(e) {
-  // Prevent double-clicks or double-taps.
+  // Previne duplo cliques ou dois toques no botão de executar.
   if (Game.eventSpam(e)) {
     return;
   }
@@ -172,7 +173,7 @@ Maze.runButtonClick = function(e) {
 
   var runButton = document.getElementById("runButton");
   var resetButton = document.getElementById("resetButton");
-  // Ensure that Reset button is at least as wide as Run button.
+
   if (!resetButton.style.minWidth) {
     resetButton.style.minWidth = runButton.offsetWidth + "px";
   }
@@ -185,7 +186,7 @@ Maze.runButtonClick = function(e) {
 };
 
 Maze.resetButtonClick = function(e) {
-  // Prevent double-clicks or double-taps.
+  // Previne duplo cliques ou dois toques no botão de de reiniciar.
   if (Game.eventSpam(e)) {
     return;
   }
@@ -198,6 +199,11 @@ Maze.resetButtonClick = function(e) {
   Maze.levelHelp();
 };
 
+/**
+ * Inject the Maze API into a JavaScript interpreter.
+ * @param {!Interpreter} interpreter The JS Interpreter.
+ * @param {!Interpreter.Object} scope Global scope.
+ */
 Maze.initInterpreter = function(interpreter, scope) {
   // API
   var wrapper;
@@ -288,7 +294,7 @@ Maze.levelHelp = function(opt_event) {
     // Just a change to highlighting or somesuch.
     return;
   } else if (Game.workspace.isDragging()) {
-    // Don't change helps during drags.
+    // Não troca as mensagens de ajuda enquanto o usuário estiver arrastando os blocos.
     return;
   }
   //else if (Maze.result == Maze.ResultType.SUCCESS ||
@@ -373,7 +379,7 @@ Maze.levelHelp = function(opt_event) {
   } else if (Game.LEVEL == 5) {
     var linesText = document.getElementById("tipsText");
     linesText.textContent =
-      "Um bloco 'se' fará alguma coisa apenas se a condição for verdadeira. Já um bloco se-senão fará uma coisa ou outra.";
+      "Um bloco 'se' fará alguma coisa apenas se a condição for verdadeira. Já um bloco se-senão fará uma coisa se a condição 'se' for verdadeira e outra se for falsa.";
   } else if (Game.LEVEL > 5) {
     content = null;
   }
@@ -462,8 +468,6 @@ Game.displayLevelLink = function() {
 };
 
 Maze.init = function() {
-  // BlocklyInterface.init();
-
   var blocklyDiv = document.getElementById("blockly");
   var visualization = document.getElementById("visualization");
   var onresize = function(e) {
@@ -502,7 +506,7 @@ Maze.init = function() {
     "</xml>";
   Game.loadBlocks(defaultXml, false);
 
-  // Locate the start and finish squares.
+  // Localiza as posições do rei (começo), coroa (fim) e das flores no mapa.
 
   var flowerId = 0;
   for (var y = 0; y < Maze.ROWS; y++) {
@@ -530,7 +534,7 @@ Maze.init = function() {
   Maze.initLevelDialog();
 
   if (Game.LEVEL == 1) {
-    // Make connecting blocks easier for beginners.
+    // Facilita o encaixe entre os blocos para usuários iniciantes.
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }

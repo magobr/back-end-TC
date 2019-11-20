@@ -1,6 +1,8 @@
 "use strict";
 goog.provide("Game");
 
+Game.IS_HTML = /\.html$/.test(window.location.pathname);
+
 Game.clamp = function(min, val, max) {
   if (val < min) {
     val = min;
@@ -32,11 +34,7 @@ Game.LEVEL = Game.getNumberParamFromUrl("level", 1, Game.MAX_LEVEL);
 
 Game.workspace = null;
 
-// Game.LANG = Game.getLang();
-
 Game.importPrettify = function() {
-  //<link rel="stylesheet" href="./prettify.css">
-  //<script src="./prettify.js"></script>
   var link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
   link.setAttribute("href", "../../../static/js/prettify/prettify.css");
@@ -97,11 +95,7 @@ Game.bindClick = function(el, func) {
 //
 Game.initWorkspace = function() {
   // Interpolate translated messages into toolbox.
-  var toolboxText = document.getElementById("toolbox").outerHTML;
-  toolboxText = toolboxText.replace(/{(\w+)}/g, function(m, p1) {
-    return MSG[p1];
-  });
-  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  var toolbox = document.getElementById("toolbox");
 
   var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
   Game.workspace = Blockly.inject("blockly", {
@@ -112,7 +106,7 @@ Game.initWorkspace = function() {
       snap: true
     },
     media: "../../../static/js/blockly/media/",
-    toolbox: toolboxXml,
+    toolbox: toolbox,
     trashcan: true,
     zoom: {
       startScale: scale
@@ -152,7 +146,7 @@ Game.importInterpreter = function() {
  * Go to the index page.
  */
 Game.indexPage = function() {
-  window.location = BlocklyGames.IS_HTML ? "index.html" : "./";
+  window.location = Game.IS_HTML ? "index.html" : "./";
 };
 
 Game.nextLevel = function() {
