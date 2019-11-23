@@ -1,30 +1,30 @@
 Maze.ROWS = Maze.map.length;
 Maze.COLS = Maze.map[0].length;
 Maze.SQUARE_SIZE = 50;
-Maze.PEGMAN_HEIGHT = 52;
-Maze.PEGMAN_WIDTH = 49;
+Maze.KING_HEIGHT = 52;
+Maze.KING_WIDTH = 49;
 
 Maze.MAZE_WIDTH = Maze.SQUARE_SIZE * Maze.COLS;
 Maze.MAZE_HEIGHT = Maze.SQUARE_SIZE * Maze.ROWS;
 Maze.PATH_WIDTH = Maze.SQUARE_SIZE / 3;
 
 Maze.tile_SHAPES = {
-  "10010": [4, 0], // Dead ends
+  "10010": [4, 0], // Becos-sem-saída
   "10001": [3, 3],
   "11000": [0, 1],
   "10100": [0, 2],
   "11010": [4, 1], // Vertical
   "10101": [3, 2], // Horizontal
-  "10110": [0, 0], // Elbows
+  "10110": [0, 0], // Esquinas
   "10011": [2, 0],
   "11001": [4, 2],
   "11100": [2, 3],
-  "11110": [1, 1], // Junctions
+  "11110": [1, 1], // Junções
   "10111": [1, 0],
   "11011": [2, 1],
   "11101": [1, 2],
-  "11111": [2, 2], // Cross
-  null0: [4, 3], // Empty
+  "11111": [2, 2], // Cruzamento
+  null0: [4, 3], // Vazio
   null1: [3, 0],
   null2: [3, 1],
   null3: [0, 3],
@@ -36,7 +36,7 @@ Maze.drawMap = function() {
   var scale = Math.max(Maze.ROWS, Maze.COLS) * Maze.SQUARE_SIZE;
   svg.setAttribute("viewBox", "0 0 " + scale + " " + scale);
 
-  // Draw the outer square.
+  // Desenha a área que será mostrado o mapa do jogo.
   var square = document.createElementNS(Blockly.SVG_NS, "rect");
   square.setAttribute("width", Maze.MAZE_WIDTH);
   square.setAttribute("height", Maze.MAZE_HEIGHT);
@@ -60,10 +60,7 @@ Maze.drawMap = function() {
   }
 
   if (Maze.SKIN.graph) {
-    // Draw the grid lines.
-    // The grid lines are offset so that the lines pass through the centre of
-    // each square.  A half-pixel offset is also added to as standard SVG
-    // practice to avoid blurriness.
+    // Desenha as linhas de grade.
     var offset = Maze.SQUARE_SIZE;
     for (var k = 0; k < Maze.ROWS; k++) {
       var h_line = document.createElementNS(Blockly.SVG_NS, "line");
@@ -85,7 +82,7 @@ Maze.drawMap = function() {
     }
   }
 
-  // Draw the tiles making up the maze map.
+  // Desenha os pisos do caminho que compõe o mapa do jogo.
 
   // Return a value of '0' if the specified square is wall or out of bounds,
   // '1' otherwise (empty, start, finish).
@@ -96,20 +93,20 @@ Maze.drawMap = function() {
     return Maze.map[y][x] == Maze.SquareType.WALL ? "0" : "1";
   };
 
-  // Compute and draw the tile for each square.
+  // Calcula e desenha o piso para cada quadrado.
   var tileId = 0;
   var flowerId = 0;
   for (var y = 0; y < Maze.ROWS; y++) {
     for (var x = 0; x < Maze.COLS; x++) {
-      // Compute the tile shape.
+      // Calcula a forma do piso do caminho.
       var tileShape =
         normalize(x, y) +
-        normalize(x, y - 1) + // North.
-        normalize(x + 1, y) + // West.
-        normalize(x, y + 1) + // South.
-        normalize(x - 1, y); // East.
+        normalize(x, y - 1) + // Norte.
+        normalize(x + 1, y) + // Oeste.
+        normalize(x, y + 1) + // Sul.
+        normalize(x - 1, y); // Leste.
 
-      // Draw the tile.
+      // Desenha o piso do caminho.
       if (!Maze.tile_SHAPES[tileShape]) {
         // Empty square.  Use null0 for large areas, with null1-4 for borders.
         // Add some randomness to avoid large empty spaces.
@@ -121,7 +118,7 @@ Maze.drawMap = function() {
       }
       var left = Maze.tile_SHAPES[tileShape][0];
       var top = Maze.tile_SHAPES[tileShape][1];
-      // Tile's clipPath element.
+      // Elemento clipPath do piso.
       var tileClip = document.createElementNS(Blockly.SVG_NS, "clipPath");
       tileClip.setAttribute("id", "tileClipPath" + tileId);
       var clipRect = document.createElementNS(Blockly.SVG_NS, "rect");
@@ -133,14 +130,14 @@ Maze.drawMap = function() {
 
       tileClip.appendChild(clipRect);
       svg.appendChild(tileClip);
-      // Tile sprite.
+      // Sprite do piso.
       var tile = document.createElementNS(Blockly.SVG_NS, "image");
       tile.setAttributeNS(
         "http://www.w3.org/1999/xlink",
         "xlink:href",
         Maze.SKIN.tiles
       );
-      // Position the tile sprite relative to the clipRect.
+      // Posiciona o sprite do piso em relação ao clipRect.
       tile.setAttribute("height", Maze.SQUARE_SIZE * 4);
       tile.setAttribute("width", Maze.SQUARE_SIZE * 5);
       tile.setAttribute("clip-path", "url(#tileClipPath" + tileId + ")");
@@ -148,7 +145,8 @@ Maze.drawMap = function() {
       tile.setAttribute("y", (y - top) * Maze.SQUARE_SIZE);
       svg.appendChild(tile);
       tileId++;
-      // Collect bonus
+
+      // Adiciona a quantidade certa de flores de acordo com o mapa.
       if (Maze.map[y][x] === Maze.SquareType.COLLECT) {
         var bonus = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -164,16 +162,11 @@ Maze.drawMap = function() {
         bonus.setAttribute("width", 36);
         svg.appendChild(bonus);
         flowerId++;
-        // k++;
-        // if (k > Maze.count) {
-        // 	Maze.context.globalCompositeOperation = 'source-over';
-        // 	Maze.context.drawImage(Maze.carrot, j * Maze.SQUARE, i * Maze.SQUARE, Maze.SQUARE, Maze.SQUARE);
-        // }
       }
     }
   }
 
-  // Add finish marker.
+  // Adiciona a coroa(objetivo do jogo).
   var finishMarker = document.createElementNS(
     "http://www.w3.org/2000/svg",
     "image"
@@ -188,17 +181,17 @@ Maze.drawMap = function() {
   finishMarker.setAttribute("width", 40);
   svg.appendChild(finishMarker);
 
-  // Pegman's clipPath element, whose (x, y) is reset by Maze.displayPegman
+  // O elemento clipPath do rei, em qual (x, y) é redefinido pelo Maze.displayKing.
   var kingClip = document.createElementNS(Blockly.SVG_NS, "clipPath");
   kingClip.setAttribute("id", "kingClipPath");
   var clipRect = document.createElementNS(Blockly.SVG_NS, "rect");
   clipRect.setAttribute("id", "clipRect");
-  clipRect.setAttribute("width", Maze.PEGMAN_WIDTH);
-  clipRect.setAttribute("height", Maze.PEGMAN_HEIGHT);
+  clipRect.setAttribute("width", Maze.KING_WIDTH);
+  clipRect.setAttribute("height", Maze.KING_HEIGHT);
   kingClip.appendChild(clipRect);
   svg.appendChild(kingClip);
 
-  // Add Pegman.
+  // Adiciona o rei.
   var kingIcon = document.createElementNS(Blockly.SVG_NS, "image");
   kingIcon.setAttribute("id", "king");
   kingIcon.setAttributeNS(
@@ -206,8 +199,8 @@ Maze.drawMap = function() {
     "xlink:href",
     Maze.SKIN.sprite
   );
-  kingIcon.setAttribute("height", Maze.PEGMAN_HEIGHT);
-  kingIcon.setAttribute("width", Maze.PEGMAN_WIDTH * 21); // 49 * 21 = 1029
+  kingIcon.setAttribute("height", Maze.KING_HEIGHT);
+  kingIcon.setAttribute("width", Maze.KING_WIDTH * 21); // 49 * 21 = 1029
   kingIcon.setAttribute("clip-path", "url(#kingClipPath)");
   svg.appendChild(kingIcon);
 };

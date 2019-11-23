@@ -1,12 +1,19 @@
+/**
+ * ids de animação das tarefas que estão sendo executadas pelo rei.
+ */
 Maze.pidList = [];
+
 numberOfSteps = 0;
 points = 0;
 var numberOfTries = 1;
 
 numberOfBlocks = 0;
 
-console.log("numberOfSteps", numberOfSteps);
-
+/**
+ * Keep the direction within 0-3, wrapping at both ends.
+ * @param {number} d Potentially out-of-bounds direction value.
+ * @return {number} Legal direction value.
+ */
 Maze.constrainDirection4 = function(d) {
   d = Math.round(d) % 4;
   if (d < 0) {
@@ -28,6 +35,13 @@ Maze.constrainDirection16 = function(d) {
   return d;
 };
 
+/**
+ * Attempt to move pegman forward or backward.
+ * @param {number} direction Direction to move (0 = forward, 2 = backward).
+ * @param {string} id ID of block that triggered this action.
+ * @throws {true} If the end of the maze is reached.
+ * @throws {false} If Pegman collides with a wall.
+ */
 Maze.move = function(direction, id) {
   if (!Maze.isPath(direction, null)) {
     Maze.log.push(["fail_" + (direction ? "backward" : "forward"), id]);
@@ -59,17 +73,17 @@ Maze.move = function(direction, id) {
 };
 
 /**
- * Turn king left or right.
- * @param {number} direction Direction to turn (0 = left, 1 = right).
- * @param {string} id ID of block that triggered this action.
+ * Vira o rei para esquerda ou direita.
+ * @param {number} direction Direção para virar (0 = esquerda, 1 = direita).
+ * @param {string} id ID do bloco que chamou essa ação.
  */
 Maze.turn = function(direction, id) {
   if (direction) {
-    // Right turn (clockwise).
+    // Vira para direita.
     Maze.kingD++;
     Maze.log.push(["right", id]);
   } else {
-    // Left turn (counterclockwise).
+    // Vira para esquerda.
     Maze.kingD--;
     Maze.log.push(["left", id]);
   }
@@ -77,10 +91,10 @@ Maze.turn = function(direction, id) {
 };
 
 /**
- * Is there a path next to king?
- * @param {number} direction Direction to look
- *     (0 = forward, 1 = right, 2 = backward, 3 = left).
- * @param {?string} id ID of block that triggered this action.
+ * Existe caminho próximo ao rei?
+ * @param {number} direction Direção para olhar
+ *     (0 = para frente, 1 = direita, 2 =  para trás, 3 = esquerda).
+ * @param {?string} id ID do bloco que chamou essa ação.
  *     Null if called as a helper function in Maze.move().
  * @return {boolean} True if there is a path.
  */
@@ -113,47 +127,24 @@ Maze.isPath = function(direction, id) {
 };
 
 /**
- * Is the player at the finish marker?
- * @return {boolean} True if not done, false if done.
+ * Se o rei estiver na mesma posição da coroa retorna false senão retorna true.
  */
 Maze.notDone = function() {
   return Maze.kingX != Maze.finish_.x || Maze.kingY != Maze.finish_.y;
 };
 
-Maze.collect = function(direction, id) {
-  var effectiveDirection = Maze.kingD + direction;
-  var square;
-  var command;
-  switch (Maze.constrainDirection4(effectiveDirection)) {
-    case Maze.DirectionType.NORTH:
-      square = Maze.map[Maze.kingY - 1] && Maze.map[Maze.kingY - 1][Maze.kingX];
-      command = "collect";
-      break;
-    case Maze.DirectionType.EAST:
-      square = Maze.map[Maze.kingY][Maze.kingX + 1];
-      command = "collect";
-      break;
-    case Maze.DirectionType.SOUTH:
-      square = Maze.map[Maze.kingY + 1] && Maze.map[Maze.kingY + 1][Maze.kingX];
-      command = "collect";
-      break;
-    case Maze.DirectionType.WEST:
-      square = Maze.map[Maze.kingY][Maze.kingX - 1];
-      command = "collect";
-      break;
-  }
+Maze.collect = function(id) {
   if (id) {
-    Maze.log.push([command, id]);
+    Maze.log.push(["collect", id]);
   }
-  return square !== Maze.SquareType.WALL && square !== undefined;
 };
 
-Maze.displayPegman = function(x, y, d, opt_angle) {
+Maze.displayKing = function(x, y, d, opt_angle) {
   var kingIcon = document.getElementById("king");
-  kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
+  kingIcon.setAttribute("x", x * Maze.SQUARE_SIZE - d * Maze.KING_WIDTH + 1);
   kingIcon.setAttribute(
     "y",
-    Maze.SQUARE_SIZE * (y + 0.5) - Maze.PEGMAN_HEIGHT / 2 - 8
+    Maze.SQUARE_SIZE * (y + 0.5) - Maze.KING_HEIGHT / 2 - 8
   );
   if (opt_angle) {
     kingIcon.setAttribute(
@@ -175,20 +166,23 @@ Maze.displayPegman = function(x, y, d, opt_angle) {
   clipRect.setAttribute("y", kingIcon.getAttribute("y"));
 };
 
+/**
+ * Prepara as animações para mover ou virar.
+ */
 Maze.schedule = function(startPos, endPos) {
   var deltas = [
     (endPos[0] - startPos[0]) / 4,
     (endPos[1] - startPos[1]) / 4,
     (endPos[2] - startPos[2]) / 4
   ];
-  Maze.displayPegman(
+  Maze.displayKing(
     startPos[0] + deltas[0],
     startPos[1] + deltas[1],
     Maze.constrainDirection16(startPos[2] + deltas[2])
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         startPos[0] + deltas[0] * 2,
         startPos[1] + deltas[1] * 2,
         Maze.constrainDirection16(startPos[2] + deltas[2] * 2)
@@ -197,7 +191,7 @@ Maze.schedule = function(startPos, endPos) {
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         startPos[0] + deltas[0] * 3,
         startPos[1] + deltas[1] * 3,
         Maze.constrainDirection16(startPos[2] + deltas[2] * 3)
@@ -206,7 +200,7 @@ Maze.schedule = function(startPos, endPos) {
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(
+      Maze.displayKing(
         endPos[0],
         endPos[1],
         Maze.constrainDirection16(endPos[2])
@@ -216,9 +210,7 @@ Maze.schedule = function(startPos, endPos) {
 };
 
 /**
- * Display the look icon at Pegman's current location,
- * in the specified direction.
- * @param {!Maze.DirectionType} d Direction (0 - 3).
+ * Mostra o ícone "look" na localização atual do rei na direção específica.
  */
 Maze.scheduleLook = function(d) {
   var x = Maze.kingX;
@@ -256,7 +248,7 @@ Maze.scheduleLook = function(d) {
 };
 
 /**
- * Schedule one of the 'look' icon's waves to appear, then disappear.
+ * Prepara o ícone de "look" para aparecer e desaparecer.
  * @param {!Element} path Element to make appear.
  * @param {number} delay Milliseconds to wait before making wave appear.
  */
@@ -272,8 +264,7 @@ Maze.scheduleLookStep = function(path, delay) {
 };
 
 /**
- * Schedule the animations and sounds for a failed move.
- * @param {boolean} forward True if forward, false if backward.
+ * Prepara as animações e sons para um movimento de falha.
  */
 Maze.scheduleFail = function(forward) {
   var deltaX = 0;
@@ -297,30 +288,25 @@ Maze.scheduleFail = function(forward) {
     deltaY = -deltaY;
   }
   if (Maze.SKIN.crashType == Maze.CRASH_STOP) {
-    // Bounce bounce.
     deltaX /= 4;
     deltaY /= 4;
     var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
-    Maze.displayPegman(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
+    Maze.displayKing(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
     Game.workspace.getAudioManager().play("fail", 0.5);
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+        Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed)
     );
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(
-          Maze.kingX + deltaX,
-          Maze.kingY + deltaY,
-          direction16
-        );
+        Maze.displayKing(Maze.kingX + deltaX, Maze.kingY + deltaY, direction16);
         Game.workspace.getAudioManager().play("fail", 0.5);
       }, Maze.stepSpeed * 2)
     );
     Maze.pidList.push(
       setTimeout(function() {
-        Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+        Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
       }, Maze.stepSpeed * 3)
     );
   } else {
@@ -337,7 +323,7 @@ Maze.scheduleFail = function(forward) {
     }
     Maze.pidList.push(
       setTimeout(function() {
-        BlocklyGames.workspace.getAudioManager().play("fail", 0.5);
+        Game.workspace.getAudioManager().play("fail", 0.5);
       }, Maze.stepSpeed * 2)
     );
     var setPosition = function(n) {
@@ -345,7 +331,7 @@ Maze.scheduleFail = function(forward) {
         var direction16 = Maze.constrainDirection16(
           Maze.kingD * 4 + deltaD * n
         );
-        Maze.displayPegman(
+        Maze.displayKing(
           Maze.kingX + deltaX * n,
           Maze.kingY + deltaY * n,
           direction16,
@@ -354,7 +340,6 @@ Maze.scheduleFail = function(forward) {
         deltaY += acceleration;
       };
     };
-    // 100 frames should get Pegman offscreen.
     for (var i = 1; i < 100; i++) {
       Maze.pidList.push(setTimeout(setPosition(i), (Maze.stepSpeed * i) / 2));
     }
@@ -362,33 +347,35 @@ Maze.scheduleFail = function(forward) {
 };
 
 /**
- * Schedule the animations and sound for a victory dance.
- * @param {boolean} sound Play the victory sound.
+ * Prepara as animações e os sons para uma dança da vitória.
  */
 Maze.scheduleFinish = function(sound) {
   var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
-  Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
-  // if (sound) {
-  //   BlocklyGames.workspace.getAudioManager().play("win", 0.5);
-  // }
-  Maze.stepSpeed = 150; // Slow down victory animation a bit.
+  Maze.displayKing(Maze.kingX, Maze.kingY, 16);
+  if (sound) {
+    Game.workspace.getAudioManager().play("win", 0.5);
+  }
+  Maze.stepSpeed = 150;
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, 18);
+      Maze.displayKing(Maze.kingX, Maze.kingY, 18);
     }, Maze.stepSpeed)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, 16);
+      Maze.displayKing(Maze.kingX, Maze.kingY, 16);
     }, Maze.stepSpeed * 2)
   );
   Maze.pidList.push(
     setTimeout(function() {
-      Maze.displayPegman(Maze.kingX, Maze.kingY, direction16);
+      Maze.displayKing(Maze.kingX, Maze.kingY, direction16);
     }, Maze.stepSpeed * 3)
   );
 };
 
+/**
+ * Reproduz as animações das ações do rei.
+ */
 Maze.animate = function() {
   var action = Maze.log.shift();
 
@@ -475,7 +462,6 @@ Maze.animate = function() {
             flowerIcon.style.opacity = "0";
             points = points + 10;
             document.getElementById("points").innerHTML = points;
-            console.log("points", points);
           }
         }
       });
@@ -486,44 +472,26 @@ Maze.animate = function() {
       break;
     case "finish":
       Maze.scheduleFinish(true);
-      //BlocklyInterface.saveToLocalStorage();
       setTimeout(GameDialogs.congratulations, 1000);
-      var dataGame = [numberOfBlocks, numberOfSteps, numberOfTries, points];
-      (async () => {
-        const rawResponse = await fetch("/dados", {
-          method: "post",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(dataGame)
-        });
-        const conteudo = await rawResponse.json();
-        console.log(conteudo);
-      })();
 
-      (async () => {
-        await fetch("/py", {
-          method: "post",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            numberOfBlocks: numberOfBlocks,
-            numberOfSteps: numberOfSteps,
-            numberOfTries: numberOfTries,
-            points: points
-          })
-        });
-      })();
-      console.log(
-        "testeee",
-        numberOfSteps,
-        numberOfBlocks,
-        numberOfTries,
-        points, Game.LEVEL
-      );
+      if (Game.LEVEL >= 5) {
+        (async () => {
+          await fetch("/py", {
+            method: "post",
+            headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              numberOfBlocks: numberOfBlocks,
+              numberOfSteps: numberOfSteps,
+              numberOfTries: numberOfTries,
+              points: points,
+              level: Game.LEVEL
+            })
+          });
+        })();
+      }
   }
 
   Maze.pidList.push(setTimeout(Maze.animate, Maze.stepSpeed * 5));
