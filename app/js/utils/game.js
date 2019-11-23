@@ -27,9 +27,6 @@ Game.getNumberParamFromUrl = function(name, minValue, maxValue) {
 
 Game.MAX_LEVEL = 15;
 
-/**
- * User's level (e.g. 5).
- */
 Game.LEVEL = Game.getNumberParamFromUrl("level", 1, Game.MAX_LEVEL);
 
 Game.workspace = null;
@@ -58,28 +55,21 @@ Game.loadBlocks = function(defaultXml) {
   try {
     var loadOnce = window.sessionStorage.loadOnceBlocks;
   } catch (e) {
-    // Firefox sometimes throws a SecurityError when accessing sessionStorage.
-    // Restarting Firefox fixes this, so it looks like a bug.
     var loadOnce = null;
   }
   if ("BlocklyStorage" in window && window.location.hash.length > 1) {
-    // An href with #key trigers an AJAX call to retrieve saved blocks.
     BlocklyStorage.retrieveXml(window.location.hash.substring(1));
   } else if (loadOnce) {
-    // Language switching stores the blocks during the reload.
     delete window.sessionStorage.loadOnceBlocks;
     var xml = Blockly.Xml.textToDom(loadOnce);
     Blockly.Xml.domToWorkspace(xml, Game.workspace);
   } else if (defaultXml) {
-    // Load the editor with default starting blocks.
     var xml = Blockly.Xml.textToDom(defaultXml);
-    // Clear the workspace to avoid merge.
+
     Game.workspace.clear();
     Blockly.Xml.domToWorkspace(xml, Game.workspace);
     Game.workspace.clearUndo();
   } else if ("BlocklyStorage" in window) {
-    // Restore saved blocks in a separate thread so that subsequent
-    // initialization is not affected from a failed load.
     window.setTimeout(BlocklyStorage.restoreBlocks, 0);
   }
 };
@@ -94,7 +84,6 @@ Game.bindClick = function(el, func) {
 
 //
 Game.initWorkspace = function() {
-  // Interpolate translated messages into toolbox.
   var toolbox = document.getElementById("toolbox");
 
   var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
@@ -116,18 +105,15 @@ Game.initWorkspace = function() {
 };
 
 /**
- * Initialize toolbox.
- * @param {Object} game. Current game type.
+ * Inicializa a caixa de ferramentas.
  */
 Game.initToolbox = function(game) {
   var toolbox = document.getElementById("toolbox");
   var block = null;
   var blocks = [];
 
-  // Block type needed.
   blocks = game.blocks[Game.LEVEL - 1];
 
-  // Create toolbox xml.
   for (var index in blocks) {
     block = document.createElement("block");
     block.setAttribute("type", blocks[index]);
@@ -143,7 +129,7 @@ Game.importInterpreter = function() {
 };
 
 /**
- * Go to the index page.
+ * Direciona para a página index.
  */
 Game.indexPage = function() {
   window.location = Game.IS_HTML ? "index.html" : "./";
@@ -164,7 +150,7 @@ Game.nextLevel = function() {
 };
 
 Game.stripCode = function(code) {
-  // Strip out serial numbers.
+  // Retira os números de série.
   return goog.string.trimRight(code.replace(/(,\s*)?'block_id_[^']+'\)/g, ")"));
 };
 
@@ -180,15 +166,9 @@ Game.injectReadonly = function(id, xml) {
 };
 
 /**
- * Determine if this event is unwanted.
- * @param {!Event} e Mouse or touch event.
- * @return {boolean} True if spam.
+ * Determina se o evento é indesejado.
  */
 Game.eventSpam = function(e) {
-  // Touch screens can generate 'touchend' followed shortly thereafter by
-  // 'click'.  For now, just look for this very specific combination.
-  // Some devices have both mice and touch, but assume the two won't occur
-  // within two seconds of each other.
   var touchMouseTime = 2000;
   if (
     e.type == "click" &&
@@ -199,7 +179,7 @@ Game.eventSpam = function(e) {
     e.stopPropagation();
     return true;
   }
-  // Users double-click or double-tap accidentally.
+
   var doubleClickTime = 400;
   if (
     Game.eventSpam.previousType_ == e.type &&

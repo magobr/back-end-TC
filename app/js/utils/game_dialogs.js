@@ -8,29 +8,21 @@ goog.require("goog.style");
 GameDialogs.isDialogVisible_ = false;
 
 /**
- * A closing dialog should animate towards this element.
+ * Uma caixa de diálogo de fechamento deve animar para esse elemento..
  * @type Element
  * @private
  */
 GameDialogs.dialogOrigin_ = null;
 
 /**
- * A function to call when a dialog closes.
+ * Uma função para chamar quando uma caixa de diálogo é fechada.
  * @type Function
  * @private
  */
 GameDialogs.dialogDispose_ = null;
 
 /**
- * Show the dialog pop-up.
- * @param {Element} content DOM element to display in the dialog.
- * @param {Element} origin Animate the dialog opening/closing from/to this
- *     DOM element.  If null, don't show any animations for opening or closing.
- * @param {boolean} animate Animate the dialog opening (if origin not null).
- * @param {boolean} modal If true, grey out background and prevent interaction.
- * @param {!Object} style A dictionary of style rules for the dialog.
- * @param {Function} disposeFunc An optional function to call when the dialog
- *     closes.  Normally used for unhooking events.
+ * Mostra o dialog.
  */
 GameDialogs.showDialog = function(
   content,
@@ -79,7 +71,7 @@ GameDialogs.showDialog = function(
   content.className = content.className.replace("dialogHiddenContent", "");
 
   function endResult() {
-    // Check that the dialog wasn't closed during opening.
+    // Verifica se o dialog não foi fechado durante a abertura.
     if (GameDialogs.isDialogVisible_) {
       dialog.style.visibility = "visible";
       dialog.style.zIndex = 10;
@@ -89,37 +81,35 @@ GameDialogs.showDialog = function(
   if (animate && origin) {
     GameDialogs.matchBorder_(origin, false, 0.2);
     GameDialogs.matchBorder_(dialog, true, 0.8);
-    // In 175ms show the dialog and hide the animated border.
+    // Em 175 ms mostra o dialog e esconde a borda de animação.
     setTimeout(endResult, 175);
   } else {
-    // No animation.  Just set the final state.
+    // Sem animação.  Apenas define o estado final.
     endResult();
   }
 };
 
 /**
- * Horizontal start coordinate of dialog drag.
+ * Coordenada de início horizontal do arrasto da caixa de diálogo.
  */
 GameDialogs.dialogStartX_ = 0;
 
 /**
- * Vertical start coordinate of dialog drag.
+ * Coordenada de início vertical do arrasto da caixa de diálogo.
  */
 GameDialogs.dialogStartY_ = 0;
 
 /**
- * Handle start of drag of dialog.
- * @param {!Event} e Mouse down event.
- * @private
+ * Função responsãvel pelo início do arrasto da caixa de diálogo.
  */
 GameDialogs.dialogMouseDown_ = function(e) {
   GameDialogs.dialogUnbindDragEvents_();
   if (Blockly.utils.isRightButton(e)) {
-    // Right-click.
+    // Clique direito.
     return;
   }
-  // Left click (or middle click).
-  // Record the starting offset between the current location and the mouse.
+  // Clique esquerdo (ou clique do meio).
+  // Grava o deslocamento inicial entre o local atual e o mouse.
   var dialog = document.getElementById("dialog");
   GameDialogs.dialogStartX_ = dialog.offsetLeft - e.clientX;
   GameDialogs.dialogStartY_ = dialog.offsetTop - e.clientY;
@@ -136,14 +126,11 @@ GameDialogs.dialogMouseDown_ = function(e) {
     null,
     GameDialogs.dialogMouseMove_
   );
-  // This event has been handled.  No need to bubble up to the document.
   e.stopPropagation();
 };
 
 /**
- * Drag the dialog to follow the mouse.
- * @param {!Event} e Mouse move event.
- * @private
+ * Arrasta o dialog para seguir o mouse.
  */
 GameDialogs.dialogMouseMove_ = function(e) {
   var dialog = document.getElementById("dialog");
@@ -173,9 +160,7 @@ GameDialogs.dialogUnbindDragEvents_ = function() {
 };
 
 /**
- * Hide the dialog pop-up.
- * @param {boolean} opt_animate Animate the dialog closing.  Defaults to true.
- *     Requires that origin was not null when dialog was opened.
+ * Esconde o dialog.
  */
 GameDialogs.hideDialog = function(opt_animate) {
   if (!GameDialogs.isDialogVisible_) {
@@ -205,10 +190,9 @@ GameDialogs.hideDialog = function(opt_animate) {
   if (origin && dialog) {
     GameDialogs.matchBorder_(dialog, false, 0.8);
     GameDialogs.matchBorder_(origin, true, 0.2);
-    // In 175ms hide both the shadow and the animated border.
+
     setTimeout(endResult, 175);
   } else {
-    // No animation.  Just set the final state.
     endResult();
   }
   dialog.style.visibility = "hidden";
@@ -225,11 +209,7 @@ GameDialogs.hideDialog = function(opt_animate) {
 };
 
 /**
- * Match the animated border to the a element's size and location.
- * @param {!Element} element Element to match.
- * @param {boolean} animate Animate to the new location.
- * @param {number} opacity Opacity of border.
- * @private
+ * Combina a borda animada com o tamanho e a localização de um elemento.
  */
 GameDialogs.matchBorder_ = function(element, animate, opacity) {
   if (!element) {
@@ -255,10 +235,7 @@ GameDialogs.matchBorder_ = function(element, animate, opacity) {
 };
 
 /**
- * Compute the absolute coordinates and dimensions of an HTML or SVG element.
- * @param {!Element} element Element to match.
- * @return {!Object} Contains height, width, x, and y properties.
- * @private
+ * Calcula as coordenadas e as dimensões absolutas de um elemento HTML ou SVG.
  */
 GameDialogs.getBBox_ = function(element) {
   var xy = goog.style.getPageOffset(element);
@@ -267,12 +244,12 @@ GameDialogs.getBBox_ = function(element) {
     y: xy.y
   };
   if (element.getBBox) {
-    // SVG element.
+    // Elemento SVG.
     var bBox = element.getBBox();
     box.height = bBox.height;
     box.width = bBox.width;
   } else {
-    // HTML element.
+    // Elemento HTML.
     box.height = element.offsetHeight;
     box.width = element.offsetWidth;
   }
@@ -294,14 +271,16 @@ GameDialogs.congratulations = function() {
   if (Game.workspace) {
     var linesText = document.getElementById("dialogLinesText");
     linesText.textContent = "";
-    // Line produces warning when compiling Puzzle since there is no JavaScript
-    // generator.  But this function is never called in Puzzle, so no matter.
+
     var code = Blockly.JavaScript.workspaceToCode(Game.workspace);
     code = Game.stripCode(code);
-    var noComments = code.replace(/\/\/[^\n]*/g, ""); // Inline comments.
-    noComments = noComments.replace(/\/\*.*\*\//g, ""); /* Block comments. */
-    noComments = noComments.replace(/[ \t]+\n/g, "\n"); // Trailing spaces.
-    noComments = noComments.replace(/\n+/g, "\n"); // Blank lines.
+    var noComments = code.replace(/\/\/[^\n]*/g, ""); // Comentarios inline.
+    noComments = noComments.replace(
+      /\/\*.*\*\//g,
+      ""
+    ); /* Comentários dos blocos. */
+    noComments = noComments.replace(/[ \t]+\n/g, "\n"); // Espaços desnecessários à direita do texto.
+    noComments = noComments.replace(/\n+/g, "\n"); // Linhas em branco.
     noComments = noComments.trim();
     var lineCount = noComments.split("\n").length;
     var pre = document.getElementById("containerCode");

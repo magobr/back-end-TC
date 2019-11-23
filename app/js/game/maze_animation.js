@@ -10,9 +10,7 @@ var numberOfTries = 1;
 numberOfBlocks = 0;
 
 /**
- * Keep the direction within 0-3, wrapping at both ends.
- * @param {number} d Potentially out-of-bounds direction value.
- * @return {number} Legal direction value.
+ * Mantém a direção dentro de 0-3, envolvendo as duas extremidades.
  */
 Maze.constrainDirection4 = function(d) {
   d = Math.round(d) % 4;
@@ -23,9 +21,7 @@ Maze.constrainDirection4 = function(d) {
 };
 
 /**
- * Keep the direction within 0-15, wrapping at both ends.
- * @param {number} d Potentially out-of-bounds direction value.
- * @return {number} Legal direction value.
+ * Mantém a direção entre 0 e 15, envolvendo as duas extremidades.
  */
 Maze.constrainDirection16 = function(d) {
   d = Math.round(d) % 16;
@@ -36,18 +32,14 @@ Maze.constrainDirection16 = function(d) {
 };
 
 /**
- * Attempt to move pegman forward or backward.
- * @param {number} direction Direction to move (0 = forward, 2 = backward).
- * @param {string} id ID of block that triggered this action.
- * @throws {true} If the end of the maze is reached.
- * @throws {false} If Pegman collides with a wall.
+ * Tentativa de mover o rei para frente ou para trás.
  */
 Maze.move = function(direction, id) {
   if (!Maze.isPath(direction, null)) {
     Maze.log.push(["fail_" + (direction ? "backward" : "forward"), id]);
     throw false;
   }
-  // If moving backward, flip the effective direction.
+  // Se estiver se movimentando do contário, vira para direção correta.
   var effectiveDirection = Maze.kingD + direction;
   var command;
   switch (Maze.constrainDirection4(effectiveDirection)) {
@@ -95,7 +87,6 @@ Maze.turn = function(direction, id) {
  * @param {number} direction Direção para olhar
  *     (0 = para frente, 1 = direita, 2 =  para trás, 3 = esquerda).
  * @param {?string} id ID do bloco que chamou essa ação.
- *     Null if called as a helper function in Maze.move().
  * @return {boolean} True if there is a path.
  */
 Maze.isPath = function(direction, id) {
@@ -474,24 +465,19 @@ Maze.animate = function() {
       Maze.scheduleFinish(true);
       setTimeout(GameDialogs.congratulations, 1000);
 
-      if (Game.LEVEL >= 5) {
-        (async () => {
-          await fetch("/py", {
-            method: "post",
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              numberOfBlocks: numberOfBlocks,
-              numberOfSteps: numberOfSteps,
-              numberOfTries: numberOfTries,
-              points: points,
-              level: Game.LEVEL
-            })
-          });
-        })();
-      }
+      var dataGame = [numberOfBlocks, numberOfSteps, numberOfTries, points];
+      (async () => {
+        const rawResponse = await fetch("/dados", {
+          method: "post",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dataGame)
+        });
+        const conteudo = await rawResponse.json();
+        console.log(conteudo);
+      })();
   }
 
   Maze.pidList.push(setTimeout(Maze.animate, Maze.stepSpeed * 5));

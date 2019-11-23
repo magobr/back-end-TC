@@ -84,8 +84,6 @@ Maze.drawMap = function() {
 
   // Desenha os pisos do caminho que compõe o mapa do jogo.
 
-  // Return a value of '0' if the specified square is wall or out of bounds,
-  // '1' otherwise (empty, start, finish).
   var normalize = function(x, y) {
     if (x < 0 || x >= Maze.COLS || y < 0 || y >= Maze.ROWS) {
       return "0";

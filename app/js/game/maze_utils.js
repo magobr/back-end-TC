@@ -137,21 +137,12 @@ Maze.blocks = [
   ]
 ];
 
-// Crash type constants.
+// Constantes de tipos de falhas.
 Maze.CRASH_STOP = 1;
 Maze.CRASH_SPIN = 2;
 Maze.CRASH_FALL = 3;
 
 Maze.SKINS = [
-  // sprite: A 1029x51 set of 21 avatar images.
-  // tiles: A 250x200 set of 20 map images.
-  // marker: A 20x34 goal image.
-  // background: An optional 400x450 background image, or false.
-  // graph: Colour of optional grid lines, or false.
-  // look: Colour of sonar-like look icon.
-  // winSound: List of sounds (in various formats) to play when the player wins.
-  // crashSound: List of sounds (in various formats) for player crashes.
-  // crashType: Behaviour when player crashes (stop, spin, or fall).
   {
     sprite: "../../../static/img/king.png",
     tiles: "../../../static/img/tiles_garden.png",
@@ -170,15 +161,10 @@ Maze.SKINS = [
 Maze.SKIN_ID = Game.getNumberParamFromUrl("skin", 0, Maze.SKINS.length);
 Maze.SKIN = Maze.SKINS[Maze.SKIN_ID];
 
-/**
- * Milliseconds between each animation frame.
- */
 Maze.stepSpeed;
 
 /**
- * The types of squares in the maze, which is represented
- * as a 2D array of SquareType values.
- * @enum {number}
+ * Tipos de quadrados no jogo.
  */
 Maze.SquareType = {
   WALL: 0,
@@ -188,8 +174,6 @@ Maze.SquareType = {
   COLLECT: 4
 };
 
-// The maze square constants defined above are inlined here
-// for ease of reading and writing the static mazes.
 Maze.map = [
   // Level 0.
   undefined,

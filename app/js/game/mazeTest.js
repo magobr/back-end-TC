@@ -1,5 +1,3 @@
-// "use strict";
-
 goog.provide("Maze");
 
 goog.require("Blockly.FieldDropdown");
@@ -101,13 +99,8 @@ Maze.reset = function(first) {
   document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
 };
 
-/**
- * Click the run button.  Start the program.
- * @param {!Event} e Mouse or touch event.
- */
 Maze.execute = function() {
   if (!("Interpreter" in window)) {
-    // Interpreter lazy loads and hasn't arrived yet.  Try again later.
     setTimeout(Maze.execute, 250);
     return;
   }
@@ -119,15 +112,8 @@ Maze.execute = function() {
   Maze.result = Maze.ResultType.UNSET;
   var interpreter = new Interpreter(code, Maze.initInterpreter);
 
-  // Try running the user's code.  There are four possible outcomes:
-  // 1. If king reaches the finish [SUCCESS], true is thrown.
-  // 2. If the program is terminated due to running too long [TIMEOUT],
-  //    false is thrown.
-  // 3. If another error occurs [ERROR], that error is thrown.
-  // 4. If the program ended normally but without solving the maze [FAILURE],
-  //    no error or exception is thrown.
   try {
-    var ticks = 10000; // 10k ticks runs Pegman for about 8 minutes.
+    var ticks = 10000;
     while (interpreter.step()) {
       if (ticks-- == 0) {
         throw Infinity;
@@ -137,14 +123,11 @@ Maze.execute = function() {
       ? Maze.ResultType.FAILURE
       : Maze.ResultType.SUCCESS;
   } catch (e) {
-    // A boolean is thrown for normal termination.
-    // Abnormal termination is a user error.
     if (e === Infinity) {
       Maze.result = Maze.ResultType.TIMEOUT;
     } else if (e === false) {
       Maze.result = Maze.ResultType.ERROR;
     } else {
-      // Syntax error, can't happen.
       Maze.result = Maze.ResultType.ERROR;
       alert(e);
     }
@@ -158,8 +141,8 @@ Maze.execute = function() {
     Maze.stepSpeed = 150;
   }
 
-  // Maze.log now contains a transcript of all the user's actions.
-  // Reset the maze and animate the transcript.
+  // Maze.log agora contém um transcript de todas as ações do usuários.
+  // Reinicia o mapa e anima o transcript.
   Maze.reset(false);
   Maze.pidList.push(setTimeout(Maze.animate, 100));
 };
@@ -199,13 +182,8 @@ Maze.resetButtonClick = function(e) {
   Maze.levelHelp();
 };
 
-/**
- * Inject the Maze API into a JavaScript interpreter.
- * @param {!Interpreter} interpreter The JS Interpreter.
- * @param {!Interpreter.Object} scope Global scope.
- */
+// Define as ações para cada bloco
 Maze.initInterpreter = function(interpreter, scope) {
-  // API
   var wrapper;
   wrapper = function(id) {
     Maze.move(0, id);
@@ -291,18 +269,11 @@ Maze.initInterpreter = function(interpreter, scope) {
 
 Maze.levelHelp = function(opt_event) {
   if (opt_event && opt_event.type == Blockly.Events.UI) {
-    // Just a change to highlighting or somesuch.
     return;
   } else if (Game.workspace.isDragging()) {
     // Não troca as mensagens de ajuda enquanto o usuário estiver arrastando os blocos.
     return;
   }
-  //else if (Maze.result == Maze.ResultType.SUCCESS ||
-  //            Game.loadFromLocalStorage(Game.NAME,
-  //                                              Game.LEVEL)) {
-  //   // The user has already won.  They are just playing around.
-  //   return;
-  // }
 
   var userBlocks = Blockly.Xml.domToText(
     Blockly.Xml.workspaceToDom(Game.workspace)
@@ -536,9 +507,7 @@ Maze.init = function() {
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
 
-  // Lazy-load the JavaScript interpreter.
   setTimeout(Game.importInterpreter, 1);
-  // Lazy-load the syntax-highlighting.
   setTimeout(Game.importPrettify, 1);
 };
 
