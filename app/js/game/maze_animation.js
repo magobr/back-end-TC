@@ -127,8 +127,7 @@ Maze.isPath = function(direction, id) {
 };
 
 /**
- * Is the player at the finish marker?
- * @return {boolean} True if not done, false if done.
+ * Se o rei estiver na mesma posição da coroa retorna false senão retorna true.
  */
 Maze.notDone = function() {
   return Maze.kingX != Maze.finish_.x || Maze.kingY != Maze.finish_.y;
@@ -168,9 +167,7 @@ Maze.displayKing = function(x, y, d, opt_angle) {
 };
 
 /**
- * Schedule the animations for a move or turn.
- * @param {!Array.<number>} startPos X, Y and direction starting points.
- * @param {!Array.<number>} endPos X, Y and direction ending points.
+ * Prepara as animações para mover ou virar.
  */
 Maze.schedule = function(startPos, endPos) {
   var deltas = [
@@ -213,9 +210,7 @@ Maze.schedule = function(startPos, endPos) {
 };
 
 /**
- * Display the look icon at Pegman's current location,
- * in the specified direction.
- * @param {!Maze.DirectionType} d Direction (0 - 3).
+ * Mostra o ícone "look" na localização atual do rei na direção específica.
  */
 Maze.scheduleLook = function(d) {
   var x = Maze.kingX;
@@ -253,7 +248,7 @@ Maze.scheduleLook = function(d) {
 };
 
 /**
- * Schedule one of the 'look' icon's waves to appear, then disappear.
+ * Prepara o ícone de "look" para aparecer e desaparecer.
  * @param {!Element} path Element to make appear.
  * @param {number} delay Milliseconds to wait before making wave appear.
  */
@@ -269,8 +264,7 @@ Maze.scheduleLookStep = function(path, delay) {
 };
 
 /**
- * Schedule the animations and sounds for a failed move.
- * @param {boolean} forward True if forward, false if backward.
+ * Prepara as animações e sons para um movimento de falha.
  */
 Maze.scheduleFail = function(forward) {
   var deltaX = 0;
@@ -294,7 +288,6 @@ Maze.scheduleFail = function(forward) {
     deltaY = -deltaY;
   }
   if (Maze.SKIN.crashType == Maze.CRASH_STOP) {
-    // Bounce bounce.
     deltaX /= 4;
     deltaY /= 4;
     var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
@@ -347,7 +340,6 @@ Maze.scheduleFail = function(forward) {
         deltaY += acceleration;
       };
     };
-    // 100 frames should get Pegman offscreen.
     for (var i = 1; i < 100; i++) {
       Maze.pidList.push(setTimeout(setPosition(i), (Maze.stepSpeed * i) / 2));
     }
@@ -355,8 +347,7 @@ Maze.scheduleFail = function(forward) {
 };
 
 /**
- * Schedule the animations and sound for a victory dance.
- * @param {boolean} sound Play the victory sound.
+ * Prepara as animações e os sons para uma dança da vitória.
  */
 Maze.scheduleFinish = function(sound) {
   var direction16 = Maze.constrainDirection16(Maze.kingD * 4);
@@ -364,7 +355,7 @@ Maze.scheduleFinish = function(sound) {
   if (sound) {
     Game.workspace.getAudioManager().play("win", 0.5);
   }
-  Maze.stepSpeed = 150; // Slow down victory animation a bit.
+  Maze.stepSpeed = 150;
   Maze.pidList.push(
     setTimeout(function() {
       Maze.displayKing(Maze.kingX, Maze.kingY, 18);
@@ -383,7 +374,7 @@ Maze.scheduleFinish = function(sound) {
 };
 
 /**
- * Iterate through the recorded path and animate pegman's actions.
+ * Reproduz as animações das ações do rei.
  */
 Maze.animate = function() {
   var action = Maze.log.shift();

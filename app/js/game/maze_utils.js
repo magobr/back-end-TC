@@ -226,12 +226,6 @@ Maze.map = [
     [0, 0, 0, 0, 0, 0, 0, 0]
   ],
   // Level 4.
-  /**
-   * Note, the path continues past the start and the goal in both directions.
-   * This is intentionally done so users see the maze is about getting from
-   * the start to the goal and not necessarily about moving over every part of
-   * the maze, 'mowing the lawn' as Neil calls it.
-   */
   [
     [1, 1, 0, 0, 0, 0, 0, 0],
     [0, 2, 1, 0, 0, 0, 0, 0],

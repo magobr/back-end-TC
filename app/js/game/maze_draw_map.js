@@ -36,7 +36,7 @@ Maze.drawMap = function() {
   var scale = Math.max(Maze.ROWS, Maze.COLS) * Maze.SQUARE_SIZE;
   svg.setAttribute("viewBox", "0 0 " + scale + " " + scale);
 
-  // Draw the outer square.
+  // Desenha a área que será mostrado o mapa do jogo.
   var square = document.createElementNS(Blockly.SVG_NS, "rect");
   square.setAttribute("width", Maze.MAZE_WIDTH);
   square.setAttribute("height", Maze.MAZE_HEIGHT);
@@ -82,7 +82,7 @@ Maze.drawMap = function() {
     }
   }
 
-  // Draw the tiles making up the maze map.
+  // Desenha os pisos do caminho que compõe o mapa do jogo.
 
   // Return a value of '0' if the specified square is wall or out of bounds,
   // '1' otherwise (empty, start, finish).

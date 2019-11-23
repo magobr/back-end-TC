@@ -489,7 +489,6 @@ Maze.init = function() {
   Game.workspace.getAudioManager().load(Maze.SKIN.winSound, "win");
   Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, "fail");
 
-  // Not really needed, there are no user-defined functions or variables.
   Blockly.JavaScript.addReservedWords(
     "moveForward,moveBackward," +
       "turnRight,turnLeft,isPathForward,isPathRight,isPathBackward,isPathLeft"
@@ -526,8 +525,6 @@ Maze.init = function() {
   Game.displayLevelLink();
   Maze.reset(true);
 
-  // document.body.addEventListener("mousemove", Maze.updatePegSpin_, true);
-
   Game.bindClick(document.getElementById("runButton"), Maze.runButtonClick);
   Game.bindClick(document.getElementById("resetButton"), Maze.resetButtonClick);
 
@@ -538,15 +535,6 @@ Maze.init = function() {
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
-
-  // Add the spinning Pegman icon to the done dialog.
-  // <img id="pegSpin" src="common/1x1.gif">
-  var buttonDiv = document.getElementById("dialogDoneButtons");
-  var pegSpin = document.createElement("img");
-  pegSpin.id = "pegSpin";
-  pegSpin.src = "../../../static/img/1x1.gif";
-  pegSpin.style.backgroundImage = "url(" + Maze.SKIN.sprite + ")";
-  buttonDiv.parentNode.insertBefore(pegSpin, buttonDiv);
 
   // Lazy-load the JavaScript interpreter.
   setTimeout(Game.importInterpreter, 1);
