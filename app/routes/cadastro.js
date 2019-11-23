@@ -1,16 +1,20 @@
 module.exports = function(app) {
+ 
   app.get("/cadastro", function(req, res) {
     res.render("forms/cadastro/cadastro");
   });
 
-  app.post("/cadastrado", function(req, res) {
+  app.post('/cadastro',function(req, res){
+      res.render('forms/cadastro/cadastro');
+  });
+
+ app.post("/cadastrado", function(req, res) {
     var cadastro = req.body;
     var nome = req.body.nome;
     var email = req.body.email;
     var idade = req.body.idade;
     var senha = req.body.senha;
     var cadastro = [nome, email, idade, senha];
-
     var connection = app.config.dbConnection();
     var formModel = new app.app.models.formModel();
 

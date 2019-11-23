@@ -3,15 +3,28 @@ module.exports = function(app) {
     res.render("forms/resPass/resPass");
   });
 
-  app.post("/senhaalterada", function(req, res) {
-    var reSenha = req.body;
+  app.post('/senhaalterada' , function(req, res) {
+  
+    var md5 = require('md5');
+
+    var dados = req.body;
     var email = req.body.email;
-    var senha = req.body.senha;
+    var senha = md5(req.body.senha);
 
-    var reSenha = [email, senha];
-
+    var dados = [email, senha];
+        
     var connection = app.config.dbConnection();
-    var formModel = new app.app.models.formModel();
+    var formModel = new app.app.models.formModel;
+
+    	formModel.resPass(dados, connection, function(erro, result){
+            
+            if (erro) {
+                throw erro;
+            }
+    
+            console.log(dados);
+            res.redirect('/login');
+        })
 
     formModel.resPass(connection, function(erro, result) {
       console.log(reSenha);
