@@ -27,7 +27,7 @@ app.use(
     extended: true
   })
 );
-=======
+
 var express = require('express');
 var consign = require('consign');
 var bodyParser = require('body-parser');
