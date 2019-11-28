@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../utils/head'); %>
+
+<body>
+    <div class="title.dash">
+        <h1 class="descricao"> Informações de desempenho por Usuário </h1>
+
+        <table>
+            <tr>
+                <th>id_usuario</th>
+                <th>n_pontos</th>
+                <th>n_blocos</th>
+                <th>id_nivel</th>
+                <th>resultadoDesempenho</th>
+            </tr>
+
+        <% for(var i = 0; i < dados.length; i++) { %>
+
+            
+                <tr>
+                    <td><%= dados[i].id_usuario %></td>
+                    <td><%= dados[i].n_pontos %></td>
+                    <td><%= dados[i].n_blocos %></td>
+                    <td><%= dados[i].id_nivel %></td>
+                    <td><%= dados[i].resultadoDesempenho %></td>
+                </tr>
+            
+        
+        <% } %>
+        </table>
+
+        <div id="graphics">
+            <div id="tentativas"></div>
+            <div id="desempenho"></div>
+        </div>
+     
+        <script>
+            
+            Highcharts.chart('tentativas', {
+
+                title: {
+                    text: 'Tentativas por fase'
+                },
+
+                subtitle: {
+                    text: 'Este gráfico mostra o número de tentativas realizadas pelo jogador em cada fase já concluída'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Número de tentativas'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: true
+                        },
+                        pointStart: 1
+                    }
+                },
+                series: [{
+                    name: 'Tentativas',
+                    data: 1,
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 300
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            });
+
+            Highcharts.chart('desempenho', {
+
+                title: {
+                    text: 'Desempenho'
+                },
+
+                subtitle: {
+                    text: '-2 = RUIM // 0 = BOM // 2 = ÓTIMO'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Desempenho'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: true
+                        },
+                        pointStart: 1
+                    }
+                },
+
+
+                series: [{
+                    name: 'Desempenho',
+                    data: [2, 3, 4],
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 300
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+
+        </script>
+    </div>
+
+    <%- include('util'); %>
+</body>
+
+</html>
