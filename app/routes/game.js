@@ -27,21 +27,45 @@ module.exports = function(app) {
 
   app.post("/py", callName);
 
-  function callName(req, res) {
-    var spawn = require("child_process").spawn;
-    var userId = req.session.userId;
+  // function callName(req, res) {
+  //   var spawn = require("child_process").spawn;
+  //   var userId = req.session.userId;
 
-    var process = spawn("python", [
-      "./hello.py",
-      req.body.numberOfBlocks,
-      req.body.numberOfSteps,
-      req.body.numberOfTries,
-      req.body.points,
-      userId,
-      req.body.level
-    ]);
+  //   var process = spawn("python", [
+  //     "./hello.py",
+  //     req.body.numberOfBlocks,
+  //     req.body.numberOfSteps,
+  //     req.body.numberOfTries,
+  //     req.body.points,
+  //     userId,
+  //     req.body.level
+  //  ]);
+
+
+ numberOfBlocks = 13
+ numberOfSteps = 12
+ numberOfTries = 1
+ points = 10
+ userId = 1
+ level = 5
+
+    function callName(req, res) {
+      var spawn = require("child_process").spawn;
+      var userId = req.session.userId;
+      console.log("userId", userId);
+      var process = spawn("python", [
+        "./test.py",[
+        numberOfBlocks,
+        numberOfSteps,
+        numberOfTries,
+        points,
+        userId,
+        level]
+      ]);
+
 
     process.stdout.on("data", function(data) {
+      console.log(data.toString());
       res.send(data.toString());
     });
   }

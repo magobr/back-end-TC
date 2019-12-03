@@ -13,21 +13,26 @@ conn = mysql.connector.connect(
 )
 cur = conn.cursor() 
  
+numberOfBlocks = 13
+numberOfSteps = 12
+numberOfTries = 1
+points = 10
+userId = 1
+level = 5
 
-print("numberOfBlocks: " + sys.argv[1]) 
-print("numberOfSteps: " + sys.argv[2]) 
-print("numberOfTries: " + sys.argv[3]) 
-print("points: " + sys.argv[4]) 
-print ("userId: " + sys.argv[5])
-print ("level: " + sys.argv[6])
-numberOfBlocks= sys.argv[1]
-numberOfSteps=sys.argv[2]
-numberOfTries=sys.argv[3]
-points=sys.argv[4]
-userId=sys.argv[5]
-level=sys.argv[6]
+numberOfBlocks= sys.argv[0:]
+numberOfSteps=sys.argv[1:]
+numberOfTries=sys.argv[2:]
+points=sys.argv[3:]
+userId=sys.argv[4:]
+level=sys.argv[5:]
 
- 
+print("numberOfBlocks: " + sys.argv[0]) 
+print("numberOfSteps: " + sys.argv[1]) 
+print("numberOfTries: " + sys.argv[2]) 
+print("points: " + sys.argv[3]) 
+print ("userId: " + sys.argv[4])
+print ("level: " + sys.argv[5])
 
 df = pd.read_csv("treino de niveis - Treino.csv") 
 print(df)
@@ -52,10 +57,11 @@ pred = dtree.predict(X_test)
 x_random = [[level,numberOfBlocks,points,numberOfSteps,numberOfTries]]
 print(x_random)
 resultPred = dtree.predict(x_random) 
-test = resultPred[0]
+test = resultPred[0:]
 print(resultPred[0])
  
 val = (userId,numberOfSteps,points,numberOfBlocks,numberOfTries,level,test)
+
 
 cur.execute("INSERT INTO niveis (id_usuario,n_passos,n_pontos,n_blocos,n_tentativas,nivel,resultadoDesempenho) VALUES (%s,%s,%s,%s,%s,%s,%s)", (userId,numberOfSteps,points,numberOfBlocks,numberOfTries,level,test))
 print (cur)
