@@ -13,10 +13,9 @@ Forms.prototype.getAdmin = function(loginAdmin, connection, callback){
 Forms.prototype.getDataPlayer = function(connection, callback){
 	connection.query('select * from niveis where id_usuario = 2;', callback);
 }
-
-// Forms.prototype.getIdLogin = function(login, connection, callback){
-// 	connection.query('SELECT id_usuario FROM usuario WHERE (email = ?) and (senha = ?)', login, callback);
-// }
+Forms.prototype.getPlayers = function(connection, callback){
+	connection.query('select nome, nivelAtual, classificacao from usuario;', callback);
+}
 
 Forms.prototype.salvarCadastro = function(cadastro, connection, callback){
 	connection.query('insert into usuario(nome, email, idade, senha) values (?, ?, ?, md5(?)) ', cadastro, callback);

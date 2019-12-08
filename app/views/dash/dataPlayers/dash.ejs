@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<%- include('../utils/head'); %>
+<%- include('../../utils/head'); %>
+
 
 <body>
     <div class="title.dash">
@@ -9,24 +10,18 @@
 
         <table>
             <tr>
-                <th>id_usuario</th>
-                <th>n_pontos</th>
-                <th>n_blocos</th>
-                <th>n_tentativas</th>
-                <th>id_nivel</th>
-                <th>resultadoDesempenho</th>
+                <th>nome</th>
+                <th>nivelAtual</th>
+                <th>classificacao</th>
             </tr>
 
         <% for(var i = 0; i < dados.length; i++) { %>
 
             
                 <tr>
-                    <td id="id_usuario"><%= dados[i].id_usuario %></td>
-                    <td id="n_pontos"><%= dados[i].n_pontos %></td>
-                    <td id="n_blocos"><%= dados[i].n_blocos %></td>
-                    <td id="n_tentativas"><%= dados[i].n_tentativas %></td>
-                    <td id="id_nivel"><%= dados[i].id_nivel %></td>
-                    <td id="resultadoDesempenho"><%= dados[i].resultadoDesempenho %></td>
+                    <td id="nome"><%= dados[i].nome %></td>
+                    <td id="nivelAtual"><%= dados[i].nivelAtual %></td>
+                    <td id="classificacao"><%= dados[i].classificacao %></td>
                 </tr>
             
         
@@ -41,14 +36,10 @@
      
         <script>
 
-            var id_usuario = parseInt($('#id_usuario').html());
-            var n_pontos = parseInt($('#n_pontos').html());
-            var n_blocos = parseInt($('#n_blocos').html());
-            var n_tentativas = parseInt($('#n_tentativas').html());
-            var id_nivel = parseInt($('#id_nivel').html());
-            var resultadoDesempenho = $('#resultadoDesempenho').html();
-
-
+            var nome = parseInt($('#nome').html());
+            var nivelAtual = parseInt($('#nivelAtual').html());
+            var classificacao = $('#classificacao').html();
+            
             // alert(typeof n_tentativas === "number");
 
             Highcharts.chart('tentativas', {

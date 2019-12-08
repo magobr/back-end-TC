@@ -4,8 +4,8 @@ module.exports = function(app){
         var connection = app.config.dbConnection();       
         var formModel = new app.app.models.formModel;
 
-        formModel.getDataPlayer(connection, function(erro, result){
-            res.render('dash/dash', {dados: result});
+        formModel.getPlayers(connection, function(erro, result){
+            res.render('dash/players/dash', {dados: result});
         });
     });
 
@@ -15,7 +15,7 @@ module.exports = function(app){
         var formModel = new app.app.models.formModel;
 
         formModel.getDataPlayer(connection, function(erro, result){
-            res.render('dash/dash', {dados: result});
+            res.render('dash/datPlayers/dash', {dados: result});
         });
     })
 
