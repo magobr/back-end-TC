@@ -11,7 +11,7 @@ Forms.prototype.getAdmin = function(loginAdmin, connection, callback){
 }
 
 Forms.prototype.getDataPlayer = function(connection, callback){
-	connection.query('select * from niveis where id_nivel = 1;', callback);
+	connection.query('select * from niveis where id_usuario = 2;', callback);
 }
 
 // Forms.prototype.getIdLogin = function(login, connection, callback){
