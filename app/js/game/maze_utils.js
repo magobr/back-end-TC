@@ -1,4 +1,3 @@
-//BlocklyGames.NAME = 'maze';
 Maze.blocks = [
   ["maze_moveForward"],
   ["maze_moveForward", "maze_turnRight", "maze_turnLeft", "maze_collect"],
@@ -6,14 +5,14 @@ Maze.blocks = [
     "maze_moveForward",
     "maze_turnRight",
     "maze_turnLeft",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever"
   ],
   [
     "maze_moveForward",
     "maze_turnRight",
     "maze_turnLeft",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever"
   ],
   [
@@ -21,7 +20,37 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
+    "maze_forever",
+    "maze_if",
+    "maze_ifElse"
+  ],
+  [
+    "maze_moveForward",
+    "maze_turnRight",
+    "maze_turnLeft",
+    "maze_collect",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -41,7 +70,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -51,7 +80,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -61,7 +90,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -71,7 +100,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -81,7 +110,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -91,7 +120,7 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
@@ -101,61 +130,12 @@ Maze.blocks = [
     "maze_turnRight",
     "maze_turnLeft",
     "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
-    "maze_forever",
-    "maze_if",
-    "maze_ifElse"
-  ],
-  [
-    "maze_moveForward",
-    "maze_turnRight",
-    "maze_turnLeft",
-    "maze_collect",
-    "controls_repeat",
+    "maze_repeat",
     "maze_forever",
     "maze_if",
     "maze_ifElse"
   ]
 ];
-
-Maze.MAX_BLOCKS = [
-  undefined, // Level 0.
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity,
-  Infinity
-][Game.LEVEL];
 
 // Crash type constants.
 Maze.CRASH_STOP = 1;
@@ -175,7 +155,7 @@ Maze.SKINS = [
   {
     sprite: "../../../static/img/king.png",
     tiles: "../../../static/img/tiles_garden.png",
-    marker: "../../../static/img/crown.png",
+    marker: "../../../static/img/crown1.png",
     background: "../../../static/img/garden.png",
     graph: "#ccc",
     look: "#000",
@@ -246,12 +226,6 @@ Maze.map = [
     [0, 0, 0, 0, 0, 0, 0, 0]
   ],
   // Level 4.
-  /**
-   * Note, the path continues past the start and the goal in both directions.
-   * This is intentionally done so users see the maze is about getting from
-   * the start to the goal and not necessarily about moving over every part of
-   * the maze, 'mowing the lawn' as Neil calls it.
-   */
   [
     [1, 1, 0, 0, 0, 0, 0, 0],
     [0, 2, 1, 0, 0, 0, 0, 0],

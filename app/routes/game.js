@@ -11,7 +11,6 @@ module.exports = function(app) {
   });
 
   app.post("/dados", function(req, res) {
-    
     var dadosGame = req.body;
     console.log(req.body);
     res.send(dadosGame);
@@ -29,32 +28,19 @@ module.exports = function(app) {
   app.post("/py", callName);
 
   function callName(req, res) {
-    // Use child_process.spawn method from
-    // child_process module and assign it
-    // to variable spawn
     var spawn = require("child_process").spawn;
-    var  userId= req.session.userId
-    console.log("userId",userId)
-    console.log(req.body);
-    // Parameters passed in spawn -
-    // 1. type_of_script
-    // 2. list containing Path of the script
-    //    and arguments for the script
-
-    // E.g : http://localhost:3000/name?firstname=Mike&lastname=Will
-    // so, first name = Mike and last name = Will
+    var userId = req.session.userId;
+    console.log("userId", userId);
     var process = spawn("python", [
-      "./hello.py",
+      "./test.py",
       req.body.numberOfBlocks,
       req.body.numberOfSteps,
       req.body.numberOfTries,
       req.body.points,
-      userId
-
+      userId,
+      req.body.level
     ]);
 
-    // Takes stdout data from script which executed
-    // with arguments and send this data to res object
     process.stdout.on("data", function(data) {
       console.log(data.toString());
       res.send(data.toString());

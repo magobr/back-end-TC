@@ -1,33 +1,27 @@
-module.exports = function(app){
+module.exports = function(app) {
+  app.get("/login", function(req, res) {
+    res.render("forms/login/login");
+  });
 
-    app.get('/login',function(req, res){
-        res.render('forms/login/login');
-    });
+  app.post("/logado", function(req, res) {
+    var md5 = require("md5");
 
-    app.post('/logado', function(req, res) {
+    var email = req.body.email;
+    var senha = md5(req.body.senha);
+    var login = [email, senha];
 
-        var md5 = require('md5');
+    console.log(login);
 
-        var email = req.body.email;
-        var senha = md5(req.body.senha);
-        var login = [email, senha];
+    var connection = app.config.dbConnection();
+    var formModel = new app.app.models.formModel();
 
-        console.log(login);
 
-        var connection = app.config.dbConnection();             
-        var formModel = new app.app.models.formModel;
-        
-      
-        if (email && senha) {
-            
-
-            formModel.getLogin(login, connection, function(erro, result){
-        
-                if (erro) {
-                    throw erro;
-                } 
-
-                formModel.getIdLogin(login, connection, function(erro, id_usuario){
+    if (email && senha) {
+      formModel.getLogin(login, connection, function(erro, result) {
+        if (erro) {
+          throw erro;
+         } 
+            formModel.getIdLogin(login, connection, function(erro, id_usuario){
                     if (result.length > 0) {
                        
                         req.session.loggedin = true;
@@ -47,8 +41,6 @@ module.exports = function(app){
         } else {
             res.send('Please enter Username and Password!');
             res.end();
-        }
-        
-    })
-
+        };
+      })
 };

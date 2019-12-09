@@ -3,7 +3,7 @@
 goog.provide("Maze");
 
 goog.require("Blockly.FieldDropdown");
-goog.require("BlocklyInterface");
+goog.require("Game");
 goog.require("Maze.Blocks");
 
 Maze.ResultType = {
@@ -17,7 +17,7 @@ Maze.ResultType = {
 Maze.flowers = [];
 
 /**
- * Result of last execution.
+ * Resultado da última execução.
  */
 Maze.result = Maze.ResultType.UNSET;
 
@@ -30,13 +30,13 @@ Maze.DirectionType = {
 
 Maze.startDirection = Maze.DirectionType.EAST;
 Maze.reset = function(first) {
-  // Kill all tasks.
+  // Encerra todas as tarefas.
   for (var i = 0; i < Maze.pidList.length; i++) {
     window.clearTimeout(Maze.pidList[i]);
   }
   Maze.pidList = [];
 
-  // Move Pegman into position.
+  // Posiciona o rei no local inicial.
   Maze.kingX = Maze.start_.x;
   Maze.kingY = Maze.start_.y;
 
@@ -55,10 +55,10 @@ Maze.reset = function(first) {
     );
   } else {
     Maze.kingD = Maze.startDirection;
-    Maze.displayPegman(Maze.kingX, Maze.kingY, Maze.kingD * 4);
+    Maze.displayKing(Maze.kingX, Maze.kingY, Maze.kingD * 4);
   }
 
-  // Move the finish icon into position.
+  // Posiciona a coroa no local inicial.
   var finishIcon = document.getElementById("finish");
   finishIcon.setAttribute(
     "x",
@@ -71,7 +71,7 @@ Maze.reset = function(first) {
       finishIcon.getAttribute("height")
   );
 
-  // Make 'look' icon invisible and promote to top.
+  // Deixa o ícone "look" invisível.
   var lookIcon = document.getElementById("look");
   lookIcon.style.display = "none";
   lookIcon.parentNode.appendChild(lookIcon);
@@ -79,10 +79,11 @@ Maze.reset = function(first) {
   for (var i = 0, path; (path = paths[i]); i++) {
     path.setAttribute("stroke", Maze.SKIN.look);
   }
-  // Move the collect icon into position.
+
+  // Posiciona as flores para o local inicial.
   Maze.flowers.map(flower => {
     var flowerIcon = document.getElementById("flower" + flower.id);
-    console.log("flowerIcon", flowerIcon);
+
     flowerIcon.setAttribute(
       "x",
       Maze.SQUARE_SIZE * (flower.x + 0.5) - flowerIcon.getAttribute("width") / 2
@@ -98,7 +99,6 @@ Maze.reset = function(first) {
   points = 0;
   document.getElementById("points").innerHTML = points;
   document.getElementById("lbl_numberOfTries").innerHTML = numberOfTries;
-  console.log("workspace", Game.workspace.getAllBlocks());
 };
 
 /**
@@ -107,7 +107,6 @@ Maze.reset = function(first) {
  */
 Maze.execute = function() {
   if (!("Interpreter" in window)) {
-    console.log("teste");
     // Interpreter lazy loads and hasn't arrived yet.  Try again later.
     setTimeout(Maze.execute, 250);
     return;
@@ -116,7 +115,7 @@ Maze.execute = function() {
   Maze.log = [];
   Blockly.selected && Blockly.selected.unselect();
   var code = Blockly.JavaScript.workspaceToCode(Game.workspace);
-  console.log("code", code);
+
   Maze.result = Maze.ResultType.UNSET;
   var interpreter = new Interpreter(code, Maze.initInterpreter);
 
@@ -151,7 +150,7 @@ Maze.execute = function() {
     }
   }
 
-  // Fast animation if execution is successful.  Slow otherwise.
+  // Animação rápida se for executado com sucesso. Caso contrário a animação será lenta.
   if (Maze.result == Maze.ResultType.SUCCESS) {
     Maze.stepSpeed = 100;
     Maze.log.push(["finish", null]);
@@ -166,34 +165,15 @@ Maze.execute = function() {
 };
 
 Maze.runButtonClick = function(e) {
-  // Prevent double-clicks or double-taps.
-  // if (BlocklyInterface.eventSpam(e)) {
-  //   return;
-  // }
-  GameDialogs.hideDialog(false);
-  // // Only allow a single top block on level 1.
-  // if (
-  //   BlocklyGames.LEVEL == 1 &&
-  //   BlocklyGames.workspace.getTopBlocks(false).length > 1 &&
-  //   Maze.result != Maze.ResultType.SUCCESS &&
-  //   !BlocklyGames.loadFromLocalStorage(BlocklyGames.NAME, BlocklyGames.LEVEL)
-  // ) {
-  //   Maze.levelHelp();
-  //   return;
-  // }
-
-  if (
-    Game.LEVEL == 1 &&
-    Game.workspace.getTopBlocks(false).length > 1 &&
-    Maze.result != Maze.ResultType.SUCCESS
-  ) {
-    Maze.levelHelp();
+  // Previne duplo cliques ou dois toques no botão de executar.
+  if (Game.eventSpam(e)) {
     return;
   }
+  GameDialogs.hideDialog(false);
 
   var runButton = document.getElementById("runButton");
   var resetButton = document.getElementById("resetButton");
-  // Ensure that Reset button is at least as wide as Run button.
+
   if (!resetButton.style.minWidth) {
     resetButton.style.minWidth = runButton.offsetWidth + "px";
   }
@@ -203,14 +183,13 @@ Maze.runButtonClick = function(e) {
   Maze.reset(false);
   Maze.execute();
   numberOfBlocks = Game.workspace.getAllBlocks().length;
-  console.log("numberOfBlocks", numberOfBlocks);
 };
 
 Maze.resetButtonClick = function(e) {
-  // Prevent double-clicks or double-taps.
-  // if (BlocklyInterface.eventSpam(e)) {
-  //   return;
-  // }
+  // Previne duplo cliques ou dois toques no botão de de reiniciar.
+  if (Game.eventSpam(e)) {
+    return;
+  }
   var runButton = document.getElementById("runButton");
   runButton.style.display = "inline";
   document.getElementById("resetButton").style.display = "none";
@@ -220,6 +199,11 @@ Maze.resetButtonClick = function(e) {
   Maze.levelHelp();
 };
 
+/**
+ * Inject the Maze API into a JavaScript interpreter.
+ * @param {!Interpreter} interpreter The JS Interpreter.
+ * @param {!Interpreter.Object} scope Global scope.
+ */
 Maze.initInterpreter = function(interpreter, scope) {
   // API
   var wrapper;
@@ -296,8 +280,7 @@ Maze.initInterpreter = function(interpreter, scope) {
     interpreter.createNativeFunction(wrapper)
   );
   wrapper = function(id) {
-    console.log("id", id);
-    return Maze.collect(3, id);
+    return Maze.collect(id);
   };
   interpreter.setProperty(
     scope,
@@ -311,7 +294,7 @@ Maze.levelHelp = function(opt_event) {
     // Just a change to highlighting or somesuch.
     return;
   } else if (Game.workspace.isDragging()) {
-    // Don't change helps during drags.
+    // Não troca as mensagens de ajuda enquanto o usuário estiver arrastando os blocos.
     return;
   }
   //else if (Maze.result == Maze.ResultType.SUCCESS ||
@@ -320,18 +303,18 @@ Maze.levelHelp = function(opt_event) {
   //   // The user has already won.  They are just playing around.
   //   return;
   // }
-  var rtl = true;
+
   var userBlocks = Blockly.Xml.domToText(
     Blockly.Xml.workspaceToDom(Game.workspace)
   );
-  var toolbar = Game.workspace.flyout_.workspace_.getTopBlocks(true);
+
   var content = document.getElementById("tipsPopup");
   var origin = null;
   var style = { width: "370px", left: "70%", top: "3em" };
 
   if (Game.LEVEL == 1) {
     var topBlocks = Game.workspace.getTopBlocks(true);
-    console.log("topBlocks", topBlocks);
+
     if (topBlocks.length > 1) {
       var xml = [
         "<xml>",
@@ -396,7 +379,7 @@ Maze.levelHelp = function(opt_event) {
   } else if (Game.LEVEL == 5) {
     var linesText = document.getElementById("tipsText");
     linesText.textContent =
-      "Um bloco 'se' fará alguma coisa apenas se a condição for verdadeira. Já um bloco se-senão fará uma coisa ou outra.";
+      "Um bloco 'se' fará alguma coisa apenas se a condição for verdadeira. Já um bloco se-senão fará uma coisa se a condição 'se' for verdadeira e outra se for falsa.";
   } else if (Game.LEVEL > 5) {
     content = null;
   }
@@ -485,9 +468,6 @@ Game.displayLevelLink = function() {
 };
 
 Maze.init = function() {
-  // BlocklyInterface.init();
-
-  //var rtl = BlocklyGames.isRtl();
   var blocklyDiv = document.getElementById("blockly");
   var visualization = document.getElementById("visualization");
   var onresize = function(e) {
@@ -504,11 +484,11 @@ Maze.init = function() {
   onresize(null);
 
   Game.initToolbox(Maze);
-  Game.initWorkspace(Maze.MAX_BLOCKS);
+  Game.initWorkspace();
 
-  //Game.workspace.getAudioManager().load(Maze.SKIN.winSound, 'win');
-  //Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, 'fail');
-  // Not really needed, there are no user-defined functions or variables.
+  Game.workspace.getAudioManager().load(Maze.SKIN.winSound, "win");
+  Game.workspace.getAudioManager().load(Maze.SKIN.crashSound, "fail");
+
   Blockly.JavaScript.addReservedWords(
     "moveForward,moveBackward," +
       "turnRight,turnLeft,isPathForward,isPathRight,isPathBackward,isPathLeft"
@@ -525,7 +505,7 @@ Maze.init = function() {
     "</xml>";
   Game.loadBlocks(defaultXml, false);
 
-  // Locate the start and finish squares.
+  // Localiza as posições do rei (começo), coroa (fim) e das flores no mapa.
 
   var flowerId = 0;
   for (var y = 0; y < Maze.ROWS; y++) {
@@ -545,36 +525,16 @@ Maze.init = function() {
   Game.displayLevelLink();
   Maze.reset(true);
 
-  // document.body.addEventListener("mousemove", Maze.updatePegSpin_, true);
-
   Game.bindClick(document.getElementById("runButton"), Maze.runButtonClick);
   Game.bindClick(document.getElementById("resetButton"), Maze.resetButtonClick);
 
   Maze.initLevelDialog();
 
   if (Game.LEVEL == 1) {
-    // Make connecting blocks easier for beginners.
+    // Facilita o encaixe entre os blocos para usuários iniciantes.
     Blockly.SNAP_RADIUS *= 2;
     Blockly.CONNECTING_SNAP_RADIUS = Blockly.SNAP_RADIUS;
   }
- 
-  // else {
-  //   // All other levels get interactive help.  But wait 5 seconds for the
-  //   // user to think a bit before they are told what to do.
-  //   setTimeout(function() {
-  //     Game.workspace.addChangeListener(Maze.levelHelp);
-  //     Maze.levelHelp();
-  //   }, 5000);
-  // }
-
-  // Add the spinning Pegman icon to the done dialog.
-  // <img id="pegSpin" src="common/1x1.gif">
-  var buttonDiv = document.getElementById("dialogDoneButtons");
-  var pegSpin = document.createElement("img");
-  pegSpin.id = "pegSpin";
-  pegSpin.src = "../../../static/img/1x1.gif";
-  pegSpin.style.backgroundImage = "url(" + Maze.SKIN.sprite + ")";
-  buttonDiv.parentNode.insertBefore(pegSpin, buttonDiv);
 
   // Lazy-load the JavaScript interpreter.
   setTimeout(Game.importInterpreter, 1);

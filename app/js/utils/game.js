@@ -1,11 +1,7 @@
 "use strict";
+goog.provide("Game");
 
-var Game = {};
-
-// Game.LANGUAGE_NAME = {
-//   "pt-br": "Português Brasileiro",
-//   en: "English"
-// };
+Game.IS_HTML = /\.html$/.test(window.location.pathname);
 
 Game.clamp = function(min, val, max) {
   if (val < min) {
@@ -29,15 +25,6 @@ Game.getNumberParamFromUrl = function(name, minValue, maxValue) {
   return isNaN(val) ? minValue : Game.clamp(minValue, val, maxValue);
 };
 
-// Game.getLang = function() {
-//   var lang = Game.getStringParamFromUrl("lang", "pt-br");
-//   if (Game.LANGUAGE_NAME[lang] === undefined) {
-//     // Default to Chinese.
-//     lang = "pt-br";
-//   }
-//   return lang;
-// };
-
 Game.MAX_LEVEL = 15;
 
 /**
@@ -47,11 +34,7 @@ Game.LEVEL = Game.getNumberParamFromUrl("level", 1, Game.MAX_LEVEL);
 
 Game.workspace = null;
 
-// Game.LANG = Game.getLang();
-
 Game.importPrettify = function() {
-  //<link rel="stylesheet" href="./prettify.css">
-  //<script src="./prettify.js"></script>
   var link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
   link.setAttribute("href", "../../../static/js/prettify/prettify.css");
@@ -110,17 +93,10 @@ Game.bindClick = function(el, func) {
 };
 
 //
-Game.initWorkspace = function(maxBlocks) {
+Game.initWorkspace = function() {
   // Interpolate translated messages into toolbox.
-  var toolboxText = document.getElementById("toolbox").outerHTML;
-  toolboxText = toolboxText.replace(/{(\w+)}/g, function(m, p1) {
-    return MSG[p1];
-  });
-  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  var toolbox = document.getElementById("toolbox");
 
-  if (maxBlocks == void 0) {
-    maxBlocks = Infinity;
-  }
   var scale = 1 + (1 - Game.LEVEL / Game.MAX_LEVEL) / 3;
   Game.workspace = Blockly.inject("blockly", {
     grid: {
@@ -129,9 +105,8 @@ Game.initWorkspace = function(maxBlocks) {
       colour: "#ccc",
       snap: true
     },
-    maxBlocks: maxBlocks,
     media: "../../../static/js/blockly/media/",
-    toolbox: toolboxXml,
+    toolbox: toolbox,
     trashcan: true,
     zoom: {
       startScale: scale
@@ -161,8 +136,6 @@ Game.initToolbox = function(game) {
 };
 
 Game.importInterpreter = function() {
-  //<script type="text/javascript"
-  //  src="third-party/JS-Interpreter/compressed.js"></script>
   var script = document.createElement("script");
   script.setAttribute("type", "text/javascript");
   script.setAttribute("src", "../../../static/js/utils/acorn_interpreter.js");
@@ -173,26 +146,8 @@ Game.importInterpreter = function() {
  * Go to the index page.
  */
 Game.indexPage = function() {
-  window.location =
-    (BlocklyGames.IS_HTML ? "index.html" : "./") + "?lang=" + BlocklyGames.LANG;
+  window.location = Game.IS_HTML ? "index.html" : "./";
 };
-
-// TODO: Descomentar quando a tradução for implementada
-// Game.nextLevel = function() {
-//   if (Game.LEVEL < Game.MAX_LEVEL) {
-//     window.location =
-//       window.location.protocol +
-//       "//" +
-//       window.location.host +
-//       window.location.pathname +
-//       "?lang=" +
-//       BlocklyGames.LANG +
-//       "&level=" +
-//       (Game.LEVEL + 1);
-//   } else {
-//     Game.indexPage();
-//   }
-// };
 
 Game.nextLevel = function() {
   if (Game.LEVEL < Game.MAX_LEVEL) {
@@ -207,51 +162,6 @@ Game.nextLevel = function() {
     Game.indexPage();
   }
 };
-
-// Game.initLanguage = function() {
-//   // Set the HTML's language.
-//   document.head.parentElement.setAttribute("lang", Game.LANG);
-
-//   // Sort languages alphabetically.
-//   var languages = [];
-//   for (var lang in Game.LANGUAGE_NAME) {
-//     languages.push([Game.LANGUAGE_NAME[lang], lang]);
-//   }
-
-//   // Populate the language selection menu.
-//   var languageMenu = document.getElementById("languageMenu");
-//   console.log(languageMenu);s
-//   languageMenu.options.length = 0;
-//   for (var i = 0; i < languages.length; i++) {
-//     var tuple = languages[i];
-//     var lang = tuple[tuple.length - 1];
-//     var option = new Option(tuple[0], lang);
-//     if (lang == Game.LANG) {
-//       option.selected = true;
-//     }
-//     languageMenu.options.add(option);
-//   }
-//   languageMenu.addEventListener("change", Game.changeLanguage, true);
-
-//   // Inject language strings.
-//   document.getElementById("playBtn").textContent = MSG["play"];
-//   document.getElementById("resetBtn").textContent = MSG["reset"];
-//   document.getElementsByClassName("showcode")[0].textContent = MSG["showcode"];
-//   document.getElementById("html_index").textContent = MSG["index"];
-//   document.getElementById("html_game").textContent = MSG["selegame"];
-//   document.getElementById("html_about").textContent = MSG["about"];
-//   document.querySelector("#innertop_name h3").textContent = MSG[Game.NAME];
-//   document.querySelector("#dialogCode .dialog-h").textContent = MSG["code"];
-//   document.querySelector("#dialogCode #dialogCodeBtn").textContent =
-//     MSG["sure"];
-//   document.querySelector("#dialogTip .dialog-btn").textContent = MSG["sure"];
-//   document.querySelector("#dialogWin .dialog-h").textContent = MSG["success"];
-//   document.querySelector("#dialogWin .dialog-btn-left").textContent =
-//     MSG["replay"];
-//   document.querySelector("#dialogWin .dialog-btn-right").textContent =
-//     MSG["nextLevel"];
-//   document.querySelector("#popover button").textContent = MSG["reduceDiff"];
-// };
 
 Game.stripCode = function(code) {
   // Strip out serial numbers.
@@ -268,3 +178,41 @@ Game.injectReadonly = function(id, xml) {
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
   }
 };
+
+/**
+ * Determine if this event is unwanted.
+ * @param {!Event} e Mouse or touch event.
+ * @return {boolean} True if spam.
+ */
+Game.eventSpam = function(e) {
+  // Touch screens can generate 'touchend' followed shortly thereafter by
+  // 'click'.  For now, just look for this very specific combination.
+  // Some devices have both mice and touch, but assume the two won't occur
+  // within two seconds of each other.
+  var touchMouseTime = 2000;
+  if (
+    e.type == "click" &&
+    Game.eventSpam.previousType_ == "touchend" &&
+    Game.eventSpam.previousDate_ + touchMouseTime > Date.now()
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return true;
+  }
+  // Users double-click or double-tap accidentally.
+  var doubleClickTime = 400;
+  if (
+    Game.eventSpam.previousType_ == e.type &&
+    Game.eventSpam.previousDate_ + doubleClickTime > Date.now()
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    return true;
+  }
+  Game.eventSpam.previousType_ = e.type;
+  Game.eventSpam.previousDate_ = Date.now();
+  return false;
+};
+
+Game.eventSpam.previousType_ = null;
+Game.eventSpam.previousDate_ = 0;

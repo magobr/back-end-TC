@@ -7,35 +7,37 @@ goog.require("Blockly.JavaScript");
 goog.require("BlocklyGames");
 
 /**
- * Common HSV hue for all movement blocks.
+ * Cor para todos os blocos de movimento.
  */
 Maze.Blocks.MOVEMENT_HUE = 290;
 
 /**
- * HSV hue for loop block.
+ * Cor para todos os blocos de laço.
  */
 Maze.Blocks.LOOPS_HUE = 120;
 
 /**
- * Common HSV hue for all logic blocks.
+ * Cor para todos os blocos de lógica.
  */
 Maze.Blocks.LOGIC_HUE = 210;
+/**
+ * Cor para o bloco de coletar.
+ */
+Maze.Blocks.COLLECT = 330;
 
 /**
- * Left turn arrow to be appended to messages.
+ * Seta para esquerda para ser colocadas junto à mensagem dos blocos.
  */
 Maze.Blocks.LEFT_TURN = " \u21BA";
 
 /**
- * Left turn arrow to be appended to messages.
+ * Seta para direita para ser colocadas junto à mensagem dos blocos.
  */
 Maze.Blocks.RIGHT_TURN = " \u21BB";
 
-// Extensions to Blockly's existing blocks and JavaScript generator.
-
 Blockly.Blocks["maze_moveForward"] = {
   /**
-   * Block for moving forward.
+   * Bloco para avançar.
    * @this Blockly.Block
    */
   init: function() {
@@ -44,19 +46,19 @@ Blockly.Blocks["maze_moveForward"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_MOVE_FORWARD_TOOLTIP
     });
   }
 };
 
 Blockly.JavaScript["maze_moveForward"] = function(block) {
-  // Generate JavaScript for moving forward.
+  // Gera o código JavaScript para avançar.
   return "moveForward('block_id_" + block.id + "');\n";
 };
 
 Blockly.Blocks["maze_turnRight"] = {
   /**
-   * Block for moving forward.
+   * Bloco para virar à direita.
    * @this Blockly.Block
    */
   init: function() {
@@ -65,20 +67,20 @@ Blockly.Blocks["maze_turnRight"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_TURN_RIGHT_TOOLTIP
     });
   }
 };
 
 Blockly.JavaScript["maze_turnRight"] = function(block) {
-  // Generate JavaScript for turning left or right.
+  // Gera o código JavaScript para virar à direita.
 
   return "turnRight('block_id_" + block.id + "');\n";
 };
 
 Blockly.Blocks["maze_turnLeft"] = {
   /**
-   * Block for moving forward.
+   * Bloco para virar à esquerda.
    * @this Blockly.Block
    */
   init: function() {
@@ -87,20 +89,20 @@ Blockly.Blocks["maze_turnLeft"] = {
       previousStatement: null,
       nextStatement: null,
       colour: Maze.Blocks.MOVEMENT_HUE,
-      tooltip: ""
+      tooltip: Blockly.Msg.MAZE_TURN_LEFT_TOOLTIP
     });
   }
 };
 
 Blockly.JavaScript["maze_turnLeft"] = function(block) {
-  // Generate JavaScript for turning left or right.
+  // Gera o código JavaScript para virar à esquerda.
 
   return "turnLeft('block_id_" + block.id + "');\n";
 };
 
 Blockly.Blocks["maze_if"] = {
   /**
-   * Block for 'if' conditional if there is a path.
+   * Bloco para a condição 'se' se caso houver caminho.
    * @this Blockly.Block
    */
   init: function() {
@@ -109,7 +111,7 @@ Blockly.Blocks["maze_if"] = {
       [Blockly.Msg.MAZE_PATH_LEFT, "isPathLeft"],
       [Blockly.Msg.MAZE_PATH_RIGHT, "isPathRight"]
     ];
-    // Append arrows to direction messages.
+    // Coloca as setas nas mensagens de direita e esquerda.
     DIRECTIONS[1][0] += Maze.Blocks.LEFT_TURN;
     DIRECTIONS[2][0] += Maze.Blocks.RIGHT_TURN;
     this.setColour(Maze.Blocks.LOGIC_HUE);
@@ -125,7 +127,7 @@ Blockly.Blocks["maze_if"] = {
 };
 
 Blockly.JavaScript["maze_if"] = function(block) {
-  // Generate JavaScript for 'if' conditional if there is a path.
+  // Gera código JavaScript para a condição 'se' se caso houver caminho.
   var argument = block.getFieldValue("DIR") + "('block_id_" + block.id + "')";
   var branch = Blockly.JavaScript.statementToCode(block, "DO");
   var code = "if (" + argument + ") {\n" + branch + "}\n";
@@ -134,7 +136,7 @@ Blockly.JavaScript["maze_if"] = function(block) {
 
 Blockly.Blocks["maze_ifElse"] = {
   /**
-   * Block for 'if/else' conditional if there is a path.
+   * Bloco para a condição 'se/senão' se houver caminho.
    * @this Blockly.Block
    */
   init: function() {
@@ -143,7 +145,7 @@ Blockly.Blocks["maze_ifElse"] = {
       [Blockly.Msg.MAZE_PATH_LEFT, "isPathLeft"],
       [Blockly.Msg.MAZE_PATH_RIGHT, "isPathRight"]
     ];
-    // Append arrows to direction messages.
+    // Coloca as setas nas mensagens de direita e esquerda.
     DIRECTIONS[1][0] += Maze.Blocks.LEFT_TURN;
     DIRECTIONS[2][0] += Maze.Blocks.RIGHT_TURN;
     this.setColour(Maze.Blocks.LOGIC_HUE);
@@ -160,7 +162,7 @@ Blockly.Blocks["maze_ifElse"] = {
 };
 
 Blockly.JavaScript["maze_ifElse"] = function(block) {
-  // Generate JavaScript for 'if/else' conditional if there is a path.
+  // Gera código JavaScript para a condição 'se/senão' se houver caminho.
   var argument = block.getFieldValue("DIR") + "('block_id_" + block.id + "')";
   var branch0 = Blockly.JavaScript.statementToCode(block, "DO");
   var branch1 = Blockly.JavaScript.statementToCode(block, "ELSE");
@@ -171,7 +173,7 @@ Blockly.JavaScript["maze_ifElse"] = function(block) {
 
 Blockly.Blocks["maze_forever"] = {
   /**
-   * Block for repeat loop.
+   * Bloco para o laço de repetição sobre a condição de repetir até chegar a coroa(objetivo do jogo).
    * @this Blockly.Block
    */
   init: function() {
@@ -186,7 +188,7 @@ Blockly.Blocks["maze_forever"] = {
 };
 
 Blockly.JavaScript["maze_forever"] = function(block) {
-  // Generate JavaScript for repeat loop.
+  // Gera o código JavaScript para o laço de repetição sobre a condição de repetir até chegar a coroa(objetivo do jogo).
   var branch = Blockly.JavaScript.statementToCode(block, "DO");
   if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
     branch =
@@ -198,9 +200,87 @@ Blockly.JavaScript["maze_forever"] = function(block) {
   return "while (notDone()) {\n" + branch + "}\n";
 };
 
+Blockly.Blocks["maze_repeat"] = {
+  /**
+   * Bloco para o laço de repetição sobre a condição de repetir até a quantidade que o usuário escolher.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.jsonInit({
+      message0: Blockly.Msg.MAZE_REPEAT,
+      args0: [
+        {
+          type: "field_number",
+          name: "TIMES",
+          value: 10,
+          min: 0,
+          precision: 1
+        }
+      ],
+      message1: Blockly.Msg.MAZE_REPEAT_DO,
+      args1: [
+        {
+          type: "input_statement",
+          name: "DO"
+        }
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      style: "loop_blocks",
+      tooltip: "%{BKY_CONTROLS_REPEAT_TOOLTIP}",
+      helpUrl: "%{BKY_CONTROLS_REPEAT_HELPURL}"
+    });
+  }
+};
+
+Blockly.JavaScript["maze_repeat"] = function(block) {
+  // Repita n vezes.
+  if (block.getField("TIMES")) {
+    // Número interno.
+    var repeats = String(Number(block.getFieldValue("TIMES")));
+  } else {
+    // Número externo.
+    var repeats =
+      Blockly.JavaScript.valueToCode(
+        block,
+        "TIMES",
+        Blockly.JavaScript.ORDER_ASSIGNMENT
+      ) || "0";
+  }
+  var branch = Blockly.JavaScript.statementToCode(block, "DO");
+  branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
+  var code = "";
+  var loopVar = Blockly.JavaScript.variableDB_.getDistinctName(
+    "count",
+    Blockly.Variables.NAME_TYPE
+  );
+  var endVar = repeats;
+  if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
+    var endVar = Blockly.JavaScript.variableDB_.getDistinctName(
+      "repeat_end",
+      Blockly.Variables.NAME_TYPE
+    );
+    code += "var " + endVar + " = " + repeats + ";\n";
+  }
+  // Gera o código JavaScript para o bloco de laço de repetição sobre a condição de repetir até a quantidade que o usuário escolher.
+  code +=
+    "for (var " +
+    loopVar +
+    " = 0; " +
+    loopVar +
+    " < " +
+    endVar +
+    "; " +
+    loopVar +
+    "++) {\n" +
+    branch +
+    "}\n";
+  return code;
+};
+
 Blockly.Blocks["maze_collect"] = {
   /**
-   * Block for collect.
+   * Bloco para coletar.
    * @this Blockly.Block
    */
   init: function() {
@@ -208,13 +288,13 @@ Blockly.Blocks["maze_collect"] = {
       message0: Blockly.Msg.MAZE_COLLECT,
       previousStatement: null,
       nextStatement: null,
-      colour: Maze.Blocks.MOVEMENT_HUE,
+      colour: Maze.Blocks.COLLECT,
       tooltip: ""
     });
   }
 };
 
 Blockly.JavaScript["maze_collect"] = function(block) {
-  // Generate JavaScript for moving forward.
+  // Gera o código JavaScript para coletar.
   return "collect('block_id_" + block.id + "');\n";
 };

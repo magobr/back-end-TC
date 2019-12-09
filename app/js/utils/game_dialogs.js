@@ -280,116 +280,7 @@ GameDialogs.getBBox_ = function(element) {
 };
 
 /**
- * Display a storage-related modal dialog.
- * @param {?Element} origin Source of dialog opening animation.
- * @param {string} message Text to alert.
- */
-GameDialogs.storageAlert = function(origin, message) {
-  var container = document.getElementById("containerStorage");
-  container.textContent = "";
-  var lines = message.split("\n");
-  for (var i = 0; i < lines.length; i++) {
-    var p = document.createElement("p");
-    p.appendChild(document.createTextNode(lines[i]));
-    container.appendChild(p);
-  }
-
-  var content = document.getElementById("dialogStorage");
-  var style = {
-    width: "50%",
-    left: "25%",
-    top: "5em"
-  };
-  GameDialogs.showDialog(
-    content,
-    origin,
-    true,
-    true,
-    style,
-    GameDialogs.stopDialogKeyDown
-  );
-  GameDialogs.startDialogKeyDown();
-};
-
-/**
- * Display a dialog suggesting that the user give up.
- */
-// GameDialogs.abortOffer = function() {
-//   // If the user has solved the level, all is well.
-//   if (Game.loadFromLocalStorage(BlocklyGames.NAME,
-//                                         BlocklyGames.LEVEL)) {
-//     return;
-//   }
-//   // Don't override an existing dialog, or interrupt a drag.
-//   if (GameDialogs.isDialogVisible_ || BlocklyGames.workspace.isDragging()) {
-//     setTimeout(GameDialogs.abortOffer, 15 * 1000);
-//     return;
-//   }
-
-//   var content = document.getElementById('dialogAbort');
-//   var style = {
-//     width: '40%',
-//     left: '30%',
-//     top: '3em'
-//   };
-
-//   var cancel = document.getElementById('abortCancel');
-//   cancel.addEventListener('click', GameDialogs.hideDialog, true);
-//   cancel.addEventListener('touchend', GameDialogs.hideDialog, true);
-//   var ok = document.getElementById('abortOk');
-//   ok.addEventListener('click', Game.indexPage, true);
-//   ok.addEventListener('touchend', Game.indexPage, true);
-
-//   GameDialogs.showDialog(content, null, false, true, style,
-//       function() {
-//         document.body.removeEventListener('keydown',
-//             GameDialogs.abortKeyDown, true);
-//         });
-//   document.body.addEventListener('keydown', GameDialogs.abortKeyDown, true);
-// };
-
-/**
- * Display a dialog for submitting work to the gallery.
- */
-GameDialogs.showGalleryForm = function() {
-  // Encode the XML.
-  document.getElementById("galleryXml").value = BlocklyInterface.getCode();
-
-  var content = document.getElementById("galleryDialog");
-  var style = {
-    width: "40%",
-    left: "30%",
-    top: "3em"
-  };
-
-  if (!GameDialogs.showGalleryForm.runOnce_) {
-    var cancel = document.getElementById("galleryCancel");
-    cancel.addEventListener("click", GameDialogs.hideDialog, true);
-    cancel.addEventListener("touchend", GameDialogs.hideDialog, true);
-    var ok = document.getElementById("galleryOk");
-    ok.addEventListener("click", GameDialogs.gallerySubmit, true);
-    ok.addEventListener("touchend", GameDialogs.gallerySubmit, true);
-    // Only bind the buttons once.
-    GameDialogs.showGalleryForm.runOnce_ = true;
-  }
-  var origin = document.getElementById("submitButton");
-  GameDialogs.showDialog(content, origin, true, true, style, function() {
-    document.body.removeEventListener(
-      "keydown",
-      GameDialogs.galleryKeyDown,
-      true
-    );
-  });
-  document.body.addEventListener("keydown", GameDialogs.galleryKeyDown, true);
-  // Wait for the opening animation to complete, then focus the title field.
-  setTimeout(function() {
-    document.getElementById("galleryTitle").focus();
-  }, 250);
-};
-
-/**
- * Congratulates the user for completing the level and offers to
- * direct them to the next level, if available.
+ * Parabeniza o usuário por completar o nível e oferece direcioná-lo para o próximo nível, se este estiver disponível.
  */
 GameDialogs.congratulations = function() {
   var content = document.getElementById("dialogDone");
@@ -399,7 +290,7 @@ GameDialogs.congratulations = function() {
     top: "3em"
   };
 
-  // Add the user's code.
+  // Adiciona o código do usuário.
   if (Game.workspace) {
     var linesText = document.getElementById("dialogLinesText");
     linesText.textContent = "";
@@ -464,42 +355,9 @@ GameDialogs.congratulations = function() {
 };
 
 /**
- * If the user preses enter, escape, or space, hide the dialog.
- * @param {!Event} e Keyboard event.
- * @private
- */
-GameDialogs.dialogKeyDown_ = function(e) {
-  if (GameDialogs.isDialogVisible_) {
-    if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 32) {
-      GameDialogs.hideDialog(true);
-      e.stopPropagation();
-      e.preventDefault();
-    }
-  }
-};
-
-/**
- * Start listening for GameDialogs.dialogKeyDown_.
- */
-GameDialogs.startDialogKeyDown = function() {
-  document.body.addEventListener("keydown", GameDialogs.dialogKeyDown_, true);
-};
-
-/**
- * Stop listening for GameDialogs.dialogKeyDown_.
- */
-GameDialogs.stopDialogKeyDown = function() {
-  document.body.removeEventListener(
-    "keydown",
-    GameDialogs.dialogKeyDown_,
-    true
-  );
-};
-
-/**
- * If the user preses enter, escape, or space, hide the dialog.
+ * Se o usuário pressionar o enter, escape, ou espaço o dialog que aparece quando o usuário termina o nível será fechado.
  * Enter and space move to the next level, escape does not.
- * @param {!Event} e Keyboard event.
+ * @param {!Event} e Evento do teclado.
  */
 GameDialogs.congratulationsKeyDown = function(e) {
   if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 32) {
@@ -507,72 +365,7 @@ GameDialogs.congratulationsKeyDown = function(e) {
     e.stopPropagation();
     e.preventDefault();
     if (e.keyCode != 27) {
-      BlocklyInterface.nextLevel();
+      Game.nextLevel();
     }
   }
-};
-
-/**
- * If the user presses enter, escape, or space, hide the dialog.
- * Enter and space move to the index page, escape does not.
- * @param {!Event} e Keyboard event.
- */
-GameDialogs.abortKeyDown = function(e) {
-  if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 32) {
-    GameDialogs.hideDialog(true);
-    e.stopPropagation();
-    e.preventDefault();
-    if (e.keyCode != 27) {
-      Game.indexPage();
-    }
-  }
-};
-
-/**
- * If the user presses enter, or escape, hide the dialog.
- * Enter submits the form, escape does not.
- * @param {!Event} e Keyboard event.
- */
-GameDialogs.galleryKeyDown = function(e) {
-  if (e.keyCode == 27) {
-    GameDialogs.hideDialog(true);
-  } else if (e.keyCode == 13) {
-    GameDialogs.gallerySubmit();
-  }
-};
-
-/**
- * Submit the gallery submission form.
- */
-GameDialogs.gallerySubmit = function() {
-  // Check that there is a title.
-  var title = document.getElementById("galleryTitle");
-  if (!title.value.trim()) {
-    title.value = "";
-    title.focus();
-    return;
-  }
-  var form = document.getElementById("galleryForm");
-  var data = [];
-  for (var i = 0, element; (element = form.elements[i]); i++) {
-    if (element.name) {
-      data[i] =
-        encodeURIComponent(element.name) +
-        "=" +
-        encodeURIComponent(element.value);
-    }
-  }
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", form.action);
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.onload = function() {
-    //   if (xhr.readyState == 4) {
-    //     var text = (xhr.status == 200) ?
-    //         BlocklyGames.getMsg('Games_submitted') :
-    //         BlocklyGames.getMsg('Games_httpRequestError') + '\nStatus: ' + xhr.status;
-    //     GameDialogs.storageAlert(null, text);
-    //   }
-  };
-  xhr.send(data.join("&"));
-  GameDialogs.hideDialog(true);
 };
