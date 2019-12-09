@@ -1,7 +1,7 @@
 var app = require('./config/server');
 
 
-var ip = '127.0.0.1';
+var ip = 'localhost';
 var port = '3001';
 
 app.listen(port, ip, function (){
