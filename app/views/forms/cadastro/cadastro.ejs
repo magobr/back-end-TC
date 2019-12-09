@@ -40,6 +40,17 @@
 							<input type="password" class="form-control" id="reSenha" name="reSenha" placeholder="">
 						</div>
 
+						<select name="professor" id="professor" class="comboBox">
+
+							<option value="" selected>Qual seu professor?</option>
+							<% for(var i = 0; i < dados.length; i++) { %>
+							<option value="<%= dados[i].nome %>">
+								<%= dados[i].nome %>
+							</option>
+							<% } %>
+								
+						</select>
+
 						<div class="form-group">
 							<div class="btns">
 								<%- include('../../utils/components/btnVerde'); %>
@@ -48,6 +59,9 @@
 								<!-- <button class="btn btnCancelar" id="btnCancelar" name="btnCancelar" type="" value="">Cancelar</button>-->
 							</div>
 						</div>
+
+
+					
 
 					</form>
 

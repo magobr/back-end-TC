@@ -23,25 +23,25 @@ conn = mysql.connector.connect(
 cur = conn.cursor() 
   
 
-# numberOfBlocks= 1
-# numberOfSteps=1
-# numberOfTries=1
-# points=1
-# userId=1
-# level=1
+numberOfBlocks= 1
+numberOfSteps=1
+numberOfTries=1
+points=1
+userId=5
+level=2
 
-print("numberOfBlocks: " + sys.argv[1]) 
-print("numberOfSteps: " + sys.argv[2]) 
-print("numberOfTries: " + sys.argv[3]) 
-print("points: " + sys.argv[4]) 
-print ("userId: " + sys.argv[5])
-print ("level: " + sys.argv[6])
-numberOfBlocks= sys.argv[1]
-numberOfSteps=sys.argv[2]
-numberOfTries=sys.argv[3]
-points=sys.argv[4]
-userId=sys.argv[5]
-level=sys.argv[6]
+# print("numberOfBlocks: " + sys.argv[1]) 
+# print("numberOfSteps: " + sys.argv[2]) 
+# print("numberOfTries: " + sys.argv[3]) 
+# print("points: " + sys.argv[4]) 
+# print ("userId: " + sys.argv[5])
+# print ("level: " + sys.argv[6])
+# numberOfBlocks= sys.argv[1]
+# numberOfSteps=sys.argv[2]
+# numberOfTries=sys.argv[3]
+# points=sys.argv[4]
+# userId=sys.argv[5]
+# level=sys.argv[6]
  
 
 df = pd.read_csv("treino de niveis - Treino.csv") 

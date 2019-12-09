@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<%- include('../utils/head'); %>
+<%- include('../../utils/head'); %>
 
 <body>
     
@@ -20,19 +20,19 @@
             <div class="middle">
                 <div class="form">
                     
-					<form action="" method="POST">
+					<form action="/profe" method="POST" id="formLoginProf">
 					    <div class="form-group">
-                            <label for="name">Nome Professor(a)</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="">
+                            <label for="name">E-mail</label>
+                            <input type="text" class="form-control" id="user" name="user" placeholder="">
 
                             <label for="pass">Senha</label>
-                            <input type="password" class="form-control" id="pass" name="pass" placeholder="">
+                            <input type="password" class="form-control" id="senha" name="senha" placeholder="">
                         </div>
 						
 						  <div class="form-group">
                             <div class="btns" >
-                                <%- include('../utils/components/btnVerde'); %>
-                              <!--  <%- include('../utils/components/btnLaranja'); %> -->
+                                <%- include('../../utils/components/btnVerde'); %>
+                                <%- include('../../utils/components/btnLaranja'); %>
 
                             </div>
                         </div>

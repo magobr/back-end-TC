@@ -5,39 +5,44 @@
 
 
 <body>
-    <div class="title.dash">
-        <h1 class="descricao"> Informações de desempenho por Usuário </h1>
-
-        <table>
-            <tr>
-                <th>nome</th>
-                <th>nivelAtual</th>
-                <th>classificacao</th>
-            </tr>
-
-        <% for(var i = 0; i < dados.length; i++) { %>
-
-            
-                <tr>
-                    <td id="nome"><%= dados[i].nome %></td>
-                    <td id="nivelAtual"><%= dados[i].nivelAtual %></td>
-                    <td id="classificacao"><%= dados[i].classificacao %></td>
-                </tr>
-            
-        
-        <% } %>
-
-        </table>
-
-        <div id="graphics">
-            <div id="tentativas"></div>
-            <div id="desempenho"></div>
+    <div class="dash">
+        <div class="title">
+            <h1 class="descricao"> Informações de desempenho por Usuário </h1>
         </div>
-     
+        <div class="table-center">
+            <div class="tableUsers">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>nome</th>
+                            <th>nivel</th>
+                            <th>numero de tentativas</th>
+                            <th>classificacao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% for(var i = 0; i < dados.length; i++) { %>
+                        <tr>
+                            <td id="nome"><%= dados[i].nome %></td>
+                            <td id="nivel"><%= dados[i].nivel %></td>
+                            <td id="n_tentativas"><%= dados[i].n_tentativas %></td>
+                            <td id="classificacao"><%= dados[i].resultadoDesempenho %></td>
+                        </tr>       
+                    <% } %>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+            <div id="graphics" class="graphics">
+                <div id="tentativas" class="graphic"></div>
+                <div id="desempenho" class="graphic"></div>
+            </div>
+        
         <script>
 
-            var nome = parseInt($('#nome').html());
-            var nivelAtual = parseInt($('#nivelAtual').html());
+            var nome = $('#nome').html();
+            var n_tentativas = parseInt($('#n_tentativas').html());
             var classificacao = $('#classificacao').html();
             
             // alert(typeof n_tentativas === "number");
@@ -149,6 +154,7 @@
 
         </script>
     </div>
+</div>
 
     <%- include('util'); %>
 </body>
