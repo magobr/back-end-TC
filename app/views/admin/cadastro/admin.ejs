@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../../utils/head'); %>
+
+<body>
+    
+    <div class="page">
+
+        <div class="altdor-col col">
+            <div class="middle">
+                <div class="titulo">
+                    <h1>Cadastrar um professor</h1>
+                    <p class="descricao">Insira os dados para realizar o cadastro</p>
+                </div>
+            </div>
+        </div>
+		
+		<div class="form-col col">
+            <div class="middle">
+                <div class="form">
+                    
+					<form action="/cadastradoProfe" method="POST" id="formCadastroProf">
+					    <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="">
+
+                            <label for="pass">Credencial</label>
+                            <input type="text" class="form-control" id="credencial" name="credencial" placeholder="Registro de professor">
+
+                            <label for="name">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="">
+
+                            <label for="pass">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" placeholder="">
+
+                            <label for="pass">Repita a senha</label>
+                            <input type="password" class="form-control" id="reSenha" name="reSenha" placeholder="">
+                        </div>
+						
+						  <div class="form-group">
+                            <div class="btns" >
+                                <%- include('../../utils/components/btnVerde'); %>
+                                <%- include('../../utils/components/btnVermelho'); %>
+
+                            </div>
+                        </div>
+                        <div class="passRec">
+                        </div>
+                    </form>
+
+				</div>
+            </div>
+        </div>
+
+    </div>
+   
+    <%- include('util'); %>
+
+</body>
+
+
+</html>

@@ -5,152 +5,41 @@
 
 
 <body>
-    <div class="title.dash">
-        <h1 class="descricao"> Informações de desempenho por Usuário </h1>
-
-        <table>
-            <tr>
-                <th>nome</th>
-                <th>nivelAtual</th>
-                <th>classificacao</th>
-            </tr>
-
-        <% for(var i = 0; i < dados.length; i++) { %>
-
-            
-                <tr>
-                    <td id="nome"><%= dados[i].nome %></td>
-                    <td id="nivelAtual"><%= dados[i].nivelAtual %></td>
-                    <td id="classificacao"><%= dados[i].classificacao %></td>
-                </tr>
-            
-        
-        <% } %>
-
-        </table>
-
-        <div id="graphics">
-            <div id="tentativas"></div>
-            <div id="desempenho"></div>
+    <div class="dash">
+        <div class="title">
+            <h1 class="descricao"> Informações de desempenho por Usuário </h1>
         </div>
-     
-        <script>
 
-            var nome = parseInt($('#nome').html());
-            var nivelAtual = parseInt($('#nivelAtual').html());
-            var classificacao = $('#classificacao').html();
-            
-            // alert(typeof n_tentativas === "number");
+        <div class="middle">
+            <img src="/static/img/desempenho.png" alt="">
+        </div>
 
-            Highcharts.chart('tentativas', {
 
+        <div class="formDesen middle">
+        <form action="/getniveis" method="POST">
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
                 
+            <select name="comboBox" id="comboBox" class="comboBox">
 
-                title: {
-                    text: 'Tentativas por fase'
-                },
+                <option value="" selected>Selecione um jogador</option>
+                <% for(var i = 0; i < dados.length; i++) { %>
+                <option value="<%= dados[i].email %>">
+                    <%= dados[i].nome %>
+                </option>
+                <% } %>
+                
+            </select>
 
-                subtitle: {
-                    text: 'Este gráfico mostra o número de tentativas realizadas pelo jogador em cada fase já concluída'
-                },
+            
 
-                yAxis: {
-                    title: {
-                        text: 'Número de tentativas'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: true
-                        },
-                        pointStart: 1
-                    }
-                },
-                series: [{
-                    name: 'Tentativas',
-                    data: [1, n_tentativas],
-                }],
-
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 300
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
-                        }
-                    }]
-                }
-            });
-
-            Highcharts.chart('desempenho', {
-
-                title: {
-                    text: 'Desempenho'
-                },
-
-                subtitle: {
-                    text: '-2 = RUIM // 0 = BOM // 2 = ÓTIMO'
-                },
-
-                yAxis: {
-                    title: {
-                        text: 'Desempenho'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: true
-                        },
-                        pointStart: 1
-                    }
-                },
-
-
-                series: [{
-                    name: 'Desempenho',
-                    data: [2, 3, 4],
-                }],
-
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 300
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
-                        }
-                    }]
-                }
-
-            });
-
-        </script>
+            <button id="verDados">Ver dados</button>
+        </form>
+        </div>
+                
     </div>
 
-    <%- include('util'); %>
+    
 </body>
 
 </html>

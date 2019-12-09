@@ -1,45 +1,13 @@
 <script>
-        $(document).ready(function(){
+
+$('#verDados').click(function(){
+
+$("select").on("change", function() {
+var valor = $(this).val();   // aqui vc pega cada valor selecionado com o this
+alert("evento disparado e o valor é: " + valor);
+})
+
+});
     
-            $('#btnVerde2').attr({
-                id: 'btnAprovar',
-                name: 'btnAprovar'
-            }).
-            html('Aprovar');
-    
-            $('#btnVermelho').attr({
-                id: 'btnReprovar',
-                name: 'btnReprovar'
-            }).
-            html('Reprovar');
-
-            $('#btnLaranja').attr({
-                id: 'btnVisualizar',
-                name: 'bntVisualizar'
-            }).
-            html('Visualizar');
-        });
-
-    $('#btnVerde').attr({
-        id: 'btnLogin',
-        name: 'btnLogin'
-    }).
-    html('Login');
-    
-    $('#btnLogin').click(function(){
-
-        var name = $('#name').val();
-        var pass = $('#pass').val();
-
-        if (name == 'undefined' ||  name == '' || name < 3) {
-            alert('name');
-            return false;
-        }
-        if (pass == 'undefined' || pass == '' || pass.length < 3) {
-            alert('Defina uma Senha');
-            return false;
-        } 
-    });
-
 </script>
 

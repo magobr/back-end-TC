@@ -1,0 +1,47 @@
+<script>
+
+    $(document).ready(function(){
+
+        $('#btnVerde').attr({
+            id: 'btnCadastrar',
+            name: 'btnCadastrar'            
+        }).
+        html('Fazer Cadastro');
+
+        $('#btnVermelho').attr({
+            id: 'btnCancelar',
+            name: 'btnCancelar'
+        }).
+        html('Cancelar');
+
+        $('#btnCadastrar').click(function(){
+
+            var nome = $('#nome').val();
+            if (nome == 'undefined' || nome == '' || nome.length < 3) {
+                alert('nome');
+                return false;
+            }
+
+            var email = $('#email').val();
+            if (email == 'undefined' || email == '' || email.length < 3) {
+                alert('email');
+                return false;
+            }
+            
+            var senha = $('#senha').val();
+            if (senha == 'undefined' || senha == '' || senha.length < 3) {
+                alert('Defina uma Senha');
+                return false;
+            } 
+        });
+
+        $('#btnCancelar').click(function(){
+            $('#formCadastroProf').attr({
+                action: '/admin',
+                method: 'POST'
+            })
+        });
+    });
+
+</script>
+

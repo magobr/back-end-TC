@@ -1,16 +1,56 @@
 module.exports = function(app){
-    
+    app.post("/cadastroProf", function(req, res) {
+        res.render("admin/cadastro/admin");
+    });
+
     app.get('/admin',function(req, res){
-        res.render('admin/admin');
+        res.render('admin/login/admin');
+    });
+
+    app.post('/admin',function(req, res){
+        res.render('admin/login/admin');
+    });
+
+    app.post('/cadastradoProfe', function(req, res){
+
+        var connection = app.config.dbConnection();             
+        var formModel = new app.app.models.formModel;
+
+        var nome = req.body.nome;
+        var credencial = req.body.credencial;
+        var email = req.body.email;
+        var senha = req.body.senha.toString();
+        var cadastro = [nome, credencial, email, senha];
+
+        console.log(cadastro);
+
+        if(nome == '' || nome == undefined){
+            if(email == '' || email == undefined){
+                if(senha == '' || senha == undefined){
+                
+                    formModel.salvarCadastroProfe(cadastro, connection, function(erro, result) {
+                        if (erro) {
+                          throw erro;
+                        }                  
+                        console.log(cadastro);
+                        res.redirect("/admin");
+                    });
+
+                }    
+            }
+
+        }
+
+
     });
 
     app.post('/profe', function(req, res){
           
-        var md5 = require('md5');
+        var md5 = require("md5");
 
-        var email = req.body.email;
+        var user = req.body.user;
         var senha = md5(req.body.senha);
-        var login = [email, senha];
+        var login = [user, senha];
 
         console.log(login);
 
@@ -18,37 +58,77 @@ module.exports = function(app){
         var formModel = new app.app.models.formModel;
         
       
-        if (email && senha) {
+        if (user && senha) {
             
 
-            formModel.getLogin(login, connection, function(erro, result){
+            formModel.getLoginAdmin(login, connection, function(erro, result){
         
                 if (erro) {
                     throw erro;
                 } 
 
-                formModel.getIdLogin(login, connection, function(erro, id_usuario){
+               
                     if (result.length > 0) {
                        
                         req.session.loggedin = true;
-                        req.session.email = result[0].email;
-                        req.session.userId = result[0].id_usuario;
+                        req.session.user = result[0].nome;
+                        req.session.id_professor = result[0].id_professor;
                         res.redirect('/dash');
-                        console.log(result[0].id_usuario);
+                        console.log('id: ',result[0].id_professor);
 
                     } else {
                         res.send('Incorrect Username and/or Password!');
                     }			
                     res.end();
-                });
-    
             });
+    
+            
 
         } else {
             res.send('Please enter Username and Password!');
             res.end();
         }
         
+    })
+
+
+
+    app.get('/dash',function(req, res){
+        var connection = app.config.dbConnection();       
+        var formModel = new app.app.models.formModel;
+
+        formModel.getPlayers(connection, function(erro, result){
+            res.render('dash/players/dash', {dados: result});
+        });
+    });
+
+    app.post('/getniveis' ,function(req, res){
+       
+
+        var connection = app.config.dbConnection();       
+        var formModel = new app.app.models.formModel;
+
+        var playerEmail = req.body.comboBox;
+
+        console.log(playerEmail);
+
+        formModel.getIdPlayers(playerEmail, connection, function(erro, result){
+            
+            var idUsuario = result[0].id_usuario;
+            console.log(idUsuario);
+            
+            formModel.getDataPlayer(idUsuario, connection, function(erro, result){
+                console.log('data', result);
+                if (result == ''){
+                    res.send('teste');
+                }else{
+                    res.render('dash/dataPlayers/dash', {dados: result});               
+                }
+                
+            });
+
+            
+        });
     })
 
 

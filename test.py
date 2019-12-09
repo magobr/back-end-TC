@@ -27,8 +27,8 @@ cur = conn.cursor()
 # numberOfSteps=1
 # numberOfTries=1
 # points=1
-# userId=1
-# level=1
+# userId=5
+# level=2
 
 print("numberOfBlocks: " + sys.argv[1]) 
 print("numberOfSteps: " + sys.argv[2]) 
