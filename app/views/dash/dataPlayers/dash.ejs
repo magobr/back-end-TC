@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../../utils/head'); %>
+
+
+<body>
+    <div class="title.dash">
+        <h1 class="descricao"> Informações de desempenho por Usuário </h1>
+
+        <table>
+            <tr>
+                <th>nome</th>
+                <th>nivelAtual</th>
+                <th>classificacao</th>
+            </tr>
+
+        <% for(var i = 0; i < dados.length; i++) { %>
+
+            
+                <tr>
+                    <td id="nome"><%= dados[i].nome %></td>
+                    <td id="nivelAtual"><%= dados[i].nivelAtual %></td>
+                    <td id="classificacao"><%= dados[i].classificacao %></td>
+                </tr>
+            
+        
+        <% } %>
+
+        </table>
+
+        <div id="graphics">
+            <div id="tentativas"></div>
+            <div id="desempenho"></div>
+        </div>
+     
+        <script>
+
+            var nome = parseInt($('#nome').html());
+            var nivelAtual = parseInt($('#nivelAtual').html());
+            var classificacao = $('#classificacao').html();
+            
+            // alert(typeof n_tentativas === "number");
+
+            Highcharts.chart('tentativas', {
+
+                
+
+                title: {
+                    text: 'Tentativas por fase'
+                },
+
+                subtitle: {
+                    text: 'Este gráfico mostra o número de tentativas realizadas pelo jogador em cada fase já concluída'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Número de tentativas'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: true
+                        },
+                        pointStart: 1
+                    }
+                },
+                series: [{
+                    name: 'Tentativas',
+                    data: [1, n_tentativas],
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 300
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            });
+
+            Highcharts.chart('desempenho', {
+
+                title: {
+                    text: 'Desempenho'
+                },
+
+                subtitle: {
+                    text: '-2 = RUIM // 0 = BOM // 2 = ÓTIMO'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Desempenho'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: true
+                        },
+                        pointStart: 1
+                    }
+                },
+
+
+                series: [{
+                    name: 'Desempenho',
+                    data: [2, 3, 4],
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 300
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+
+        </script>
+    </div>
+
+    <%- include('util'); %>
+</body>
+
+</html>

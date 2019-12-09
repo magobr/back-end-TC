@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<%- include('../utils/head'); %>
+
+<body>
+    
+    <div class="page">
+
+        <div class="altdor-col col">
+            <div class="middle">
+                <div class="titulo">
+                    <h1>Olá Professor(a)!</h1>
+                    <p class="descricao">Bem-Vindo à sua área de avaliação!</p>
+                </div>
+            </div>
+        </div>
+		
+		<div class="form-col col">
+            <div class="middle">
+                <div class="form">
+                    
+					<form action="" method="POST">
+					    <div class="form-group">
+                            <label for="name">Nome Professor(a)</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="">
+
+                            <label for="pass">Senha</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="">
+                        </div>
+						
+						  <div class="form-group">
+                            <div class="btns" >
+                                <%- include('../utils/components/btnVerde'); %>
+                              <!--  <%- include('../utils/components/btnLaranja'); %> -->
+
+                            </div>
+                        </div>
+                        <div class="passRec">
+                            <a href="/alterarsenha">Alterar Minha Senha!</a>
+                        </div>
+                    </form>
+
+				</div>
+            </div>
+        </div>
+
+    </div>
+   
+    <%- include('util'); %>
+
+</body>
+
+
+</html>
