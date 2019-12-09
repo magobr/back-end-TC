@@ -1,11 +1,11 @@
-var mysql = require("mysql2");
+var mysql = require("mysql");
 
 var connMySQL = function() {
   return mysql.createConnection({
-    host: "localhost",
+    host: "35.226.93.2",
     user: "root",
     password: "root",
-    database: "LogicGamesTC2"
+    database: "LogicaGamesTC"
   });
 };
 module.exports = function() {

@@ -1,48 +1,79 @@
 import sys 
-# Takes first name and last name via command  
-# line arguments and then display them 
-# save the script as hello.py 
-import pandas as pd
+import mysql.connector 
+import pandas as pd 
+import os 
 import numpy as np 
-import seaborn as sns
-import matplotlib.pyplot as plt
 
+# print("Output from Python") 
+# conn = mysql.connector.connect(
+#   host="localhost",
+#   user="root",
+#   passwd="root",
+#   database="LogicGamesTC2"
+# )
 
-lista = np.array([1,8,3,3,'bom',1,5,4,4,'razoavel',1,2,7,7,'ruim'])
+print("Output from Python") 
+conn = mysql.connector.connect(
+  host="35.226.93.2",
+  user="root",
+  passwd="root",
+  database="LogicaGamesTC"
+)
 
-lista.reshape(3,5)
+cur = conn.cursor() 
+  
 
-df = pd.DataFrame(np.array(lista.reshape(3,5)),  columns='nivel pontuacao passos blocos classificacao'.split())
+# numberOfBlocks= 1
+# numberOfSteps=1
+# numberOfTries=1
+# points=1
+# userId=1
+# level=1
 
-from sklearn.model_selection import train_test_split
+print("numberOfBlocks: " + sys.argv[1]) 
+print("numberOfSteps: " + sys.argv[2]) 
+print("numberOfTries: " + sys.argv[3]) 
+print("points: " + sys.argv[4]) 
+print ("userId: " + sys.argv[5])
+print ("level: " + sys.argv[6])
+numberOfBlocks= sys.argv[1]
+numberOfSteps=sys.argv[2]
+numberOfTries=sys.argv[3]
+points=sys.argv[4]
+userId=sys.argv[5]
+level=sys.argv[6]
+ 
 
-X = df.drop('classificacao',axis=1)
-y = df['classificacao']
+df = pd.read_csv("treino de niveis - Treino.csv") 
+print(df)
+ 
+from sklearn.model_selection import train_test_split 
+ 
+X = df.drop('resultado',axis=1) 
+y = df['resultado'] 
+print(X)
+ 
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.30) 
+ 
 
+from sklearn.tree import DecisionTreeClassifier 
+ 
+dtree = DecisionTreeClassifier() 
+print(X_train,y_train)
+dtree.fit(X_train,y_train) 
+ 
+print(X_train,y_train)
+pred = dtree.predict(X_test) 
+x_random = [[level,numberOfBlocks,points,numberOfSteps,numberOfTries]]
+print(x_random)
+resultPred = dtree.predict(x_random) 
+test = resultPred[0]
+print(resultPred[0])
+ 
+val = (userId,numberOfSteps,points,numberOfBlocks,numberOfTries,level,test)
 
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.30)
+cur.execute("INSERT INTO niveis (id_usuario,n_passos,n_pontos,n_blocos,n_tentativas,nivel,resultadoDesempenho) VALUES (%s,%s,%s,%s,%s,%s,%s)", (userId,numberOfSteps,points,numberOfBlocks,numberOfTries,level,test))
+print (cur)
+conn.commit()
 
-
-from sklearn.tree import DecisionTreeClassifier
-
-dtree = DecisionTreeClassifier()
-
-
-dtree.fit(X_train,y_train)
-
-
-teste = np.array([[5,8,0,12],[5,15,0,12],[5,7,20,12]])
-
-
-y_pred = dtree.predict(X_test)
-
-
-test_pred = dtree.predict(teste)
-
-from sklearn.metrics import classification_report, confusion_matrix
-
-print(classification_report(y_test,y_pred))
-
-print(confusion_matrix(y_test,y_pred))
-
-print(test_pred)
+print(cur.rowcount, "record inserted.")

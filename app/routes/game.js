@@ -30,9 +30,9 @@ module.exports = function(app) {
   function callName(req, res) {
     var spawn = require("child_process").spawn;
     var userId = req.session.userId;
-
+    console.log("userId", userId);
     var process = spawn("python", [
-      "./hello.py",
+      "./test.py",
       req.body.numberOfBlocks,
       req.body.numberOfSteps,
       req.body.numberOfTries,
@@ -42,6 +42,7 @@ module.exports = function(app) {
     ]);
 
     process.stdout.on("data", function(data) {
+      console.log(data.toString());
       res.send(data.toString());
     });
   }
