@@ -30,7 +30,7 @@ Forms.prototype.getIdPlayers = function(playerEmail, connection, callback){
 }
 
 Forms.prototype.salvarCadastro = function(cadastro, connection, callback){
-	connection.query('insert into usuario(nome, email, idade, professor, senha) values (?, ?, ?, ?, md5(?)) ', cadastro, callback);
+	connection.query('insert into usuario(nome, email, idade, professor, senha) values (?, ?, ?, ?, md5(?))', cadastro, callback);
 }
 
 Forms.prototype.salvarCadastroProfe = function(cadastro, connection, callback){
