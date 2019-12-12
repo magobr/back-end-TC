@@ -13,32 +13,25 @@ module.exports = function(app){
 
     app.post('/cadastradoProfe', function(req, res){
 
-        var connection = app.config.dbConnection();             
-        var formModel = new app.app.models.formModel;
-
         var nome = req.body.nome;
         var credencial = req.body.credencial;
         var email = req.body.email;
-        var senha = req.body.senha.toString();
+        var senha = req.body.senha;
         var cadastro = [nome, credencial, email, senha];
 
-        console.log(cadastro);
+        var connection = app.config.dbConnection();             
+        var formModel = new app.app.models.formModel;
 
-        if(nome == '' || nome == undefined){
-            if(email == '' || email == undefined){
-                if(senha == '' || senha == undefined){
-                
-                    formModel.salvarCadastroProfe(cadastro, connection, function(erro, result) {
-                        if (erro) {
-                          throw erro;
-                        }                  
-                        console.log(cadastro);
-                        res.redirect("/admin");
-                    });
-
-                }    
-            }
-
+        if(!nome == '' || !nome == undefined){
+            formModel.salvarCadastroProfe(cadastro, connection, function(erro, result) {
+                if (erro) {
+                  throw erro;
+                }                  
+                console.log(cadastro);
+                res.redirect("/admin");
+            });
+        } else{
+            res.send("Error");
         }
 
 
