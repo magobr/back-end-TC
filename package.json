@@ -14,7 +14,7 @@
     "consolidate": "^0.15.1",
     "ejs": "^2.6.2",
     "eslint": "^6.2.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.0",
     "google-closure-compiler": "^20190819.0.0",
     "google-closure-library": "^20190819.0.0",
